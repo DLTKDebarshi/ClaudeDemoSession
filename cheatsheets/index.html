@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Cheat Sheets | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --purple: #5E35B1;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+        .hero {
+            background: linear-gradient(135deg, #F59E0B, var(--g-red));
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 20px; opacity: 0.95; max-width: 680px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: -36px auto 60px; padding: 0 40px; }
+
+        .cs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+        .cs-card {
+            background: white; border-radius: var(--radius-lg); border: 2px solid #E2E8F0;
+            overflow: hidden; text-decoration: none; color: var(--text-main);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.3s ease;
+            display: flex; flex-direction: column;
+        }
+        .cs-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+        .cs-card:hover .cs-cta { text-decoration: underline; }
+        .cs-banner { padding: 36px 28px; color: white; text-align: center; }
+        .cs-banner .cs-icon { font-size: 48px; margin-bottom: 8px; }
+        .cs-banner h2 { font-size: 22px; font-weight: 700; }
+        .cs-body { padding: 24px 28px; flex: 1; display: flex; flex-direction: column; }
+        .cs-body p { font-size: 15px; color: var(--text-subtle); line-height: 1.7; flex: 1; margin-bottom: 12px; }
+        .cs-body .cs-tags { margin-bottom: 16px; }
+        .cs-tag {
+            display: inline-block; padding: 4px 12px; border-radius: 16px;
+            font-size: 12px; font-weight: 600; margin: 3px 4px 3px 0;
+            background: var(--bg-light); color: var(--text-subtle);
+        }
+        .cs-cta {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-weight: 600; color: var(--g-blue); font-size: 15px;
+        }
+
+        .cs-banner.accounting { background: linear-gradient(135deg, var(--g-green), #0D652D); }
+        .cs-banner.leadership { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
+        .cs-banner.sales      { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .cs-banner.hr         { background: linear-gradient(135deg, var(--purple), #7B1FA2); }
+        .cs-card.accounting:hover { border-color: var(--g-green); }
+        .cs-card.leadership:hover { border-color: var(--g-blue); }
+        .cs-card.sales:hover      { border-color: #D97706; }
+        .cs-card.hr:hover         { border-color: var(--purple); }
+
+        .how-box {
+            margin-top: 48px; padding: 32px; border-radius: var(--radius-lg);
+            border: 2px solid #E2E8F0; background: var(--bg-light);
+        }
+        .how-box h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
+        .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .how-step { text-align: center; }
+        .how-step .step-num {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--g-blue);
+            color: white; display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px; margin-bottom: 10px;
+        }
+        .how-step h4 { font-size: 16px; color: var(--g-blue); margin-bottom: 4px; }
+        .how-step p { font-size: 14px; color: var(--text-subtle); }
+
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px; color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0; margin-top: 40px;
+        }
+        .footer strong { color: var(--text-main); }
+        .footer a { color: var(--g-blue); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 800px) { .cs-grid, .how-steps { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Prompt Cheat Sheets</h1>
+    <p>Copy-paste prompts for real daily work. Organised by role. Ready to use in Claude right now.</p>
+</div>
+
+<div class="container">
+
+    <div class="cs-grid">
+        <a href="accounting.html" class="cs-card accounting">
+            <div class="cs-banner accounting">
+                <div class="cs-icon">&#128200;</div>
+                <h2>Accounting &amp; Finance</h2>
+            </div>
+            <div class="cs-body">
+                <p>P&amp;L reviews, variance analysis, audit prep, expense categorisation, budget forecasting, journal entry checks, and month-end close acceleration.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">P&amp;L</span>
+                    <span class="cs-tag">Variance</span>
+                    <span class="cs-tag">Audit</span>
+                    <span class="cs-tag">Forecasting</span>
+                    <span class="cs-tag">Month-End</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="leadership.html" class="cs-card leadership">
+            <div class="cs-banner leadership">
+                <div class="cs-icon">&#127942;</div>
+                <h2>Leadership &amp; Strategy</h2>
+            </div>
+            <div class="cs-body">
+                <p>Executive summaries, meeting-to-memo, decision frameworks, stakeholder comms, OKR drafting, board prep, resource planning, and strategic analysis.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">Exec Summary</span>
+                    <span class="cs-tag">Decision Memo</span>
+                    <span class="cs-tag">OKRs</span>
+                    <span class="cs-tag">Board Prep</span>
+                    <span class="cs-tag">Comms</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="sales.html" class="cs-card sales">
+            <div class="cs-banner sales">
+                <div class="cs-icon">&#128640;</div>
+                <h2>Sales &amp; Business Development</h2>
+            </div>
+            <div class="cs-body">
+                <p>Prospecting emails, deal analysis, proposal drafts, competitive positioning, pipeline reviews, objection handling, and account planning.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">Outreach</span>
+                    <span class="cs-tag">Proposals</span>
+                    <span class="cs-tag">Pipeline</span>
+                    <span class="cs-tag">Competitive</span>
+                    <span class="cs-tag">Forecasting</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="hr.html" class="cs-card hr">
+            <div class="cs-banner hr">
+                <div class="cs-icon">&#129309;</div>
+                <h2>HR &amp; People Operations</h2>
+            </div>
+            <div class="cs-body">
+                <p>Job descriptions, interview questions, performance reviews, onboarding plans, policy drafts, employee comms, DE&amp;I reporting, and exit analysis.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">Recruiting</span>
+                    <span class="cs-tag">Reviews</span>
+                    <span class="cs-tag">Onboarding</span>
+                    <span class="cs-tag">Policy</span>
+                    <span class="cs-tag">Comms</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="how-box">
+        <h3>How to Use These Cheat Sheets</h3>
+        <div class="how-steps">
+            <div class="how-step">
+                <div class="step-num">1</div>
+                <h4>Find Your Task</h4>
+                <p>Browse the prompts by category. Each one targets a specific daily task you already do.</p>
+            </div>
+            <div class="how-step">
+                <div class="step-num">2</div>
+                <h4>Copy &amp; Customise</h4>
+                <p>Click to copy a prompt, then replace the [bracketed placeholders] with your real data.</p>
+            </div>
+            <div class="how-step">
+                <div class="step-num">3</div>
+                <h4>Paste into Claude</h4>
+                <p>Go to claude.ai, paste the prompt, and iterate. Refine until the output is ready to use.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <a href="../index.html">&larr; Back to Home</a><br><br>
+    Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+</div>
+
+</body></html>

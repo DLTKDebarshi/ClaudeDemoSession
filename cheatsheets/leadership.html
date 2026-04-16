@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership &amp; Strategy Cheat Sheet | Deltek AI Community</title>
+    <style>
+        :root {
+            --accent: #4285F4;
+            --accent-dark: #1A73E8;
+            --g-blue: #4285F4;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Google Sans','Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:var(--text-main); line-height:1.6; }
+        .topnav { display:flex; align-items:center; justify-content:space-between; padding:14px 40px; border-bottom:1px solid #E2E8F0; background:white; position:sticky; top:0; z-index:100; }
+        .topnav a { text-decoration:none; color:var(--g-blue); font-weight:600; font-size:15px; }
+        .topnav .brand { color:var(--text-main); font-weight:700; font-size:15px; }
+        .hero { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:white; text-align:center; padding:64px 40px 48px; }
+        .hero .icon { font-size:56px; margin-bottom:8px; }
+        .hero h1 { font-size:44px; font-weight:700; margin-bottom:12px; }
+        .hero p { font-size:18px; opacity:0.95; max-width:640px; margin:0 auto; }
+        .content-wrap { max-width:900px; margin:0 auto; padding:48px 40px 80px; }
+        .cat { margin-bottom:56px; }
+        .cat-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; padding-bottom:12px; border-bottom:3px solid var(--accent); }
+        .cat-icon { font-size:28px; }
+        .cat-header h2 { font-size:26px; font-weight:700; }
+        .prompt-card { background:white; border:2px solid #E2E8F0; border-radius:var(--radius-md); margin-bottom:20px; overflow:hidden; transition:border-color 0.2s; }
+        .prompt-card:hover { border-color:var(--accent); }
+        .prompt-card-header { padding:16px 24px; background:var(--bg-light); display:flex; align-items:center; justify-content:space-between; }
+        .prompt-card-header h3 { font-size:17px; font-weight:700; }
+        .use-tag { font-size:12px; font-weight:600; padding:3px 12px; border-radius:12px; white-space:nowrap; }
+        .use-tag.daily { background:rgba(52,168,83,0.12); color:#34A853; }
+        .use-tag.weekly { background:rgba(66,133,244,0.12); color:var(--g-blue); }
+        .use-tag.monthly { background:rgba(251,188,5,0.15); color:#B8860B; }
+        .use-tag.asneeded { background:rgba(94,53,177,0.12); color:#5E35B1; }
+        .prompt-card-body { padding:20px 24px; }
+        .prompt-card-body .when { font-size:14px; color:var(--text-subtle); margin-bottom:12px; font-style:italic; }
+        .prompt-box { position:relative; background:#1a1a2e; color:#e0e0e0; border-radius:var(--radius-sm); padding:20px 24px; font-family:'Roboto Mono','Courier New',monospace; font-size:14px; line-height:1.7; white-space:pre-wrap; word-wrap:break-word; border-left:4px solid var(--accent); }
+        .prompt-box em { color:#FBBC05; font-style:normal; }
+        .copy-btn { position:absolute; top:10px; right:10px; padding:6px 14px; border-radius:6px; border:none; background:rgba(255,255,255,0.15); color:#ccc; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:background 0.2s; }
+        .copy-btn:hover { background:rgba(255,255,255,0.25); }
+        .copy-btn.copied { background:var(--accent); color:white; }
+        .pro-tip { margin-top:14px; padding:12px 16px; border-radius:var(--radius-sm); background:rgba(66,133,244,0.06); border-left:3px solid var(--accent); font-size:14px; color:var(--text-subtle); }
+        .pro-tip strong { color:var(--accent); }
+        .footer { text-align:center; padding:40px; font-size:14px; color:var(--text-subtle); border-top:1px solid #E2E8F0; }
+        .footer a { color:var(--g-blue); text-decoration:none; font-weight:600; }
+        @media print { .topnav,.copy-btn { display:none; } .hero { padding:24px; } }
+    </style>
+</head>
+<body>
+
+<div class="topnav">
+    <a href="accounting.html">&larr; Accounting</a>
+    <span class="brand">Leadership &amp; Strategy</span>
+    <a href="sales.html">Sales &rarr;</a>
+</div>
+
+<div class="hero">
+    <div class="icon">&#127942;</div>
+    <h1>Leadership &amp; Strategy</h1>
+    <p>Reclaim the hours you spend aggregating, summarising, and formatting. Lead with the output, not the busywork.</p>
+</div>
+
+<div class="content-wrap">
+
+<!-- ========== SYNTHESIS ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128218;</span>
+        <h2>Synthesis &amp; Summarisation</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Meeting Transcript &rarr; Executive Memo</h3>
+            <span class="use-tag daily">Daily</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: You just left a long meeting and need a clean summary with owners and deadlines.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Here's a transcript (or my raw notes) from a <em>[type of meeting: leadership sync / project review / strategy session]</em>.
+
+<em>[Paste transcript or notes]</em>
+
+Turn this into a one-page Executive Memo with:
+1. <em>Key Decisions Made</em> &mdash; what was agreed, in one line each
+2. <em>Action Items</em> &mdash; table format: Action | Owner | Deadline
+3. <em>Open Questions</em> &mdash; things that weren't resolved
+4. <em>Parking Lot</em> &mdash; topics raised but deferred
+
+Tone: direct and professional. No filler. Each section should be scannable in 15 seconds.</div>
+            <div class="pro-tip"><strong>Pro tip:</strong> If you record meetings, upload the audio file directly to Claude &mdash; it will transcribe and summarise in one step.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Long Document &rarr; Executive Summary</h3>
+            <span class="use-tag daily">Daily</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Someone sent you a 20-page report and you need the gist before a 2 PM meeting.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Summarise this document into an executive brief for a <em>[VP / C-suite / board member]</em>:
+
+<em>[Paste or upload the document]</em>
+
+Structure:
+- <em>Bottom Line Up Front:</em> One sentence &mdash; the single most important takeaway.
+- <em>Key Findings:</em> 3-5 bullet points, each one sentence.
+- <em>Implications for Us:</em> What does this mean for our <em>[team/project/company]</em>?
+- <em>Recommended Next Step:</em> One concrete action.
+
+Hard limit: 300 words. My reader has 90 seconds.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Weekly Status Report Generator</h3>
+            <span class="use-tag weekly">Weekly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: It's Friday and you need to send your VP an update.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Here are my raw notes from this week:
+
+<em>[Paste bullet points, Slack messages, task updates, or just brain-dump]</em>
+
+Turn this into a professional weekly status report:
+- <em>Accomplishments:</em> What got done (results, not activities)
+- <em>In Progress:</em> What's underway with expected completion
+- <em>Blockers / Risks:</em> Anything that needs leadership attention
+- <em>Next Week Focus:</em> Top 3 priorities
+
+Keep each bullet to one line. My VP reads 15 of these every Friday &mdash; make mine the easiest to scan.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== DECISION MAKING ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#9878;&#65039;</span>
+        <h2>Decision Making &amp; Analysis</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Decision Memo (Options Analysis)</h3>
+            <span class="use-tag weekly">Weekly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: You need to present options to a decision-maker with a clear recommendation.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to make a decision about <em>[describe the decision]</em>.
+
+Context: <em>[Background &mdash; why this decision matters, timeline, constraints]</em>
+
+The options are:
+- Option A: <em>[describe]</em>
+- Option B: <em>[describe]</em>
+- Option C: <em>[describe, or "Status quo"]</em>
+
+For each option, give me:
+1. Pros (2-3 bullets)
+2. Cons (2-3 bullets)
+3. Estimated cost / effort
+4. Risk level (Low / Medium / High) with a one-line justification
+
+Then give me your recommendation and explain why in 2-3 sentences.
+
+Format this as a decision memo I can share with <em>[audience: my VP / the leadership team / the board]</em>.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Stakeholder Impact Analysis</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Planning a change that affects multiple teams or stakeholders.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>We're planning to <em>[describe the change: reorg, new tool rollout, policy change, process update]</em>.
+
+The stakeholders involved are:
+<em>[List groups: e.g., Engineering, Sales, Finance, External Partners, Customers]</em>
+
+For each stakeholder group, analyse:
+1. How are they impacted? (High / Medium / Low)
+2. What changes for them specifically?
+3. What's their likely reaction? (Supportive / Neutral / Resistant)
+4. What do we need to communicate to them, and when?
+5. Who should deliver that message?
+
+Format as a stakeholder map table, then give me a recommended communication sequence (who gets told first, second, etc.) with rationale.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Pre-Mortem (Risk Identification)</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: About to kick off a major initiative and want to anticipate what could go wrong.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>We're about to launch <em>[initiative/project description]</em>.
+
+Timeline: <em>[X weeks/months]</em>
+Team: <em>[team size and composition]</em>
+Budget: <em>[if relevant]</em>
+Key dependencies: <em>[list any]</em>
+
+Run a pre-mortem: Imagine it's <em>[end date]</em> and this project has failed. What went wrong?
+
+Give me:
+1. Top 10 failure modes, ranked by likelihood x impact
+2. For each: a one-line description, the early warning sign, and one preventive action
+3. The 3 risks I should be watching personally as the leader
+
+Be brutally honest. I'd rather hear it now than in a post-mortem.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== COMMUNICATION ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128172;</span>
+        <h2>Communication &amp; Announcements</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Org Change Announcement</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Communicating a reorg, leadership change, or structural update.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft an announcement email for the following change:
+
+<em>[Describe the change: new team structure, role changes, reporting line updates]</em>
+
+Constraints:
+- Tone: <em>[warm and direct / formal / casual but clear]</em>
+- DO mention: <em>[list what to include]</em>
+- DO NOT mention: <em>[list sensitive items to exclude]</em>
+- Length: under <em>[300/400/500]</em> words
+- Sign from: <em>[name and title]</em>
+
+The audience is <em>[who will read this]</em>. They care most about: "How does this affect me?"
+
+End with a clear "what happens next" section and how to ask questions.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Board / Executive Presentation Outline</h3>
+            <span class="use-tag monthly">Monthly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Preparing a presentation for the board, executive committee, or senior leadership.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm presenting to <em>[audience: board / exec team / investors]</em> on <em>[topic]</em>.
+
+Time slot: <em>[X minutes]</em>
+Goal: <em>[inform / get approval / align on direction]</em>
+
+Key data points I have:
+<em>[List 5-8 facts, metrics, or decisions you want to cover]</em>
+
+Create:
+1. A slide-by-slide outline (title + 2-3 bullet points per slide)
+2. An "anticipated questions" section with suggested answers
+3. A one-sentence opening that hooks the audience immediately
+4. A closing slide with a clear ask or next step
+
+Rule: No slide should have more than 3 bullets. If I can't present each slide in 90 seconds, it's too dense.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>OKR / Goal Drafting</h3>
+            <span class="use-tag monthly">Quarterly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Setting quarterly or annual goals for your team.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me draft OKRs for <em>[team/department name]</em> for <em>[Q3 2026 / H2 2026 / FY2027]</em>.
+
+Our company-level priorities are:
+<em>[List 2-3 company objectives]</em>
+
+My team's mandate: <em>[describe what the team does and its strategic role]</em>
+
+Last quarter's results:
+<em>[Brief summary of what was achieved and what was missed]</em>
+
+Draft 3 Objectives, each with 2-3 Key Results. Each Key Result should be:
+- Measurable (specific number or clear yes/no)
+- Ambitious but achievable (not sandbagged, not fantasy)
+- Within this team's control
+
+Then add a "What We Will NOT Do" section &mdash; 2-3 things we're explicitly deprioritising. This is as important as the goals themselves.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Resource Planning &amp; Staffing Proposal</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Building a case for headcount, contractors, or budget to support a project or growth.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to build a resource plan for <em>[project/initiative]</em>.
+
+Scope: <em>[describe what needs to happen]</em>
+Timeline: <em>[start to finish]</em>
+Current team: <em>[who's available and their capacity]</em>
+
+Please:
+1. Break the work into phases with key milestones
+2. Identify the roles needed for each phase (title, FTE %, duration)
+3. Flag gaps between what I have and what I need
+4. Estimate the cost of filling those gaps (use <em>[$X/hr for contractors, $Y salary for FTEs]</em>)
+5. Create a one-page staffing proposal I can send to my VP with a clear ask
+
+Format: executive-ready, not a project plan. Keep it to one page with a table.</div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+    <a href="accounting.html">&larr; Accounting</a> &nbsp;&bull;&nbsp;
+    <a href="index.html">All Cheat Sheets</a> &nbsp;&bull;&nbsp;
+    <a href="sales.html">Sales &rarr;</a><br><br>
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+</body></html>

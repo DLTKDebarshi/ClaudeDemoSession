@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR &amp; People Ops Cheat Sheet | Deltek AI Community</title>
+    <style>
+        :root {
+            --accent: #5E35B1;
+            --accent-dark: #4527A0;
+            --accent-light: #EDE7F6;
+            --g-blue: #4285F4;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Google Sans','Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:var(--text-main); line-height:1.6; }
+        .topnav { display:flex; align-items:center; justify-content:space-between; padding:14px 40px; border-bottom:1px solid #E2E8F0; background:white; position:sticky; top:0; z-index:100; }
+        .topnav a { text-decoration:none; color:var(--g-blue); font-weight:600; font-size:15px; }
+        .topnav .brand { color:var(--text-main); font-weight:700; font-size:15px; }
+        .hero { background:linear-gradient(135deg,var(--accent),#7B1FA2); color:white; text-align:center; padding:64px 40px 48px; }
+        .hero .icon { font-size:56px; margin-bottom:8px; }
+        .hero h1 { font-size:44px; font-weight:700; margin-bottom:12px; }
+        .hero p { font-size:18px; opacity:0.95; max-width:640px; margin:0 auto; }
+        .content-wrap { max-width:900px; margin:0 auto; padding:48px 40px 80px; }
+        .cat { margin-bottom:56px; }
+        .cat-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; padding-bottom:12px; border-bottom:3px solid var(--accent); }
+        .cat-icon { font-size:28px; }
+        .cat-header h2 { font-size:26px; font-weight:700; }
+        .prompt-card { background:white; border:2px solid #E2E8F0; border-radius:var(--radius-md); margin-bottom:20px; overflow:hidden; transition:border-color 0.2s; }
+        .prompt-card:hover { border-color:var(--accent); }
+        .prompt-card-header { padding:16px 24px; background:var(--bg-light); display:flex; align-items:center; justify-content:space-between; }
+        .prompt-card-header h3 { font-size:17px; font-weight:700; }
+        .use-tag { font-size:12px; font-weight:600; padding:3px 12px; border-radius:12px; white-space:nowrap; }
+        .use-tag.daily { background:rgba(52,168,83,0.12); color:#34A853; }
+        .use-tag.weekly { background:rgba(66,133,244,0.12); color:var(--g-blue); }
+        .use-tag.perevent { background:rgba(94,53,177,0.12); color:var(--accent); }
+        .use-tag.quarterly { background:rgba(251,188,5,0.15); color:#B8860B; }
+        .use-tag.asneeded { background:rgba(234,67,53,0.12); color:#EA4335; }
+        .prompt-card-body { padding:20px 24px; }
+        .prompt-card-body .when { font-size:14px; color:var(--text-subtle); margin-bottom:12px; font-style:italic; }
+        .prompt-box { position:relative; background:#1a1a2e; color:#e0e0e0; border-radius:var(--radius-sm); padding:20px 24px; font-family:'Roboto Mono','Courier New',monospace; font-size:14px; line-height:1.7; white-space:pre-wrap; word-wrap:break-word; border-left:4px solid var(--accent); }
+        .prompt-box em { color:#FBBC05; font-style:normal; }
+        .copy-btn { position:absolute; top:10px; right:10px; padding:6px 14px; border-radius:6px; border:none; background:rgba(255,255,255,0.15); color:#ccc; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:background 0.2s; }
+        .copy-btn:hover { background:rgba(255,255,255,0.25); }
+        .copy-btn.copied { background:var(--accent); color:white; }
+        .pro-tip { margin-top:14px; padding:12px 16px; border-radius:var(--radius-sm); background:var(--accent-light); border-left:3px solid var(--accent); font-size:14px; color:var(--text-subtle); }
+        .pro-tip strong { color:var(--accent-dark); }
+        .footer { text-align:center; padding:40px; font-size:14px; color:var(--text-subtle); border-top:1px solid #E2E8F0; }
+        .footer a { color:var(--g-blue); text-decoration:none; font-weight:600; }
+        @media print { .topnav,.copy-btn { display:none; } .hero { padding:24px; } }
+    </style>
+</head>
+<body>
+
+<div class="topnav">
+    <a href="sales.html">&larr; Sales</a>
+    <span class="brand">HR &amp; People Operations</span>
+    <a href="index.html">All Sheets</a>
+</div>
+
+<div class="hero">
+    <div class="icon">&#129309;</div>
+    <h1>HR &amp; People Operations</h1>
+    <p>Streamline the paperwork of people. More time for humans, less time on documents.</p>
+</div>
+
+<div class="content-wrap">
+
+<!-- ========== RECRUITING ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128269;</span>
+        <h2>Recruiting &amp; Hiring</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Job Description Writer</h3>
+            <span class="use-tag perevent">Per Hire</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Opening a new req and need a compelling, unbiased JD fast.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a job description for: <em>[Job Title]</em>
+
+Department: <em>[team name]</em>
+Reports to: <em>[manager title]</em>
+Level: <em>[junior / mid / senior / lead]</em>
+Location: <em>[remote / hybrid / office city]</em>
+
+Key responsibilities (my rough notes):
+<em>[Brain-dump the main duties]</em>
+
+Must-have skills: <em>[list hard requirements]</em>
+Nice-to-have: <em>[list preferred but not required]</em>
+
+Rules:
+- Use inclusive, gender-neutral language throughout
+- Avoid "rockstar," "ninja," "guru," or other exclusionary terms
+- Separate "requirements" from "nice-to-haves" clearly (research shows underrepresented groups self-select out when lists are blurred)
+- Include a 30/60/90-day snapshot: what does success look like in the first 3 months?
+- Keep it under 500 words &mdash; longer JDs get fewer applicants
+- End with our commitment to diversity statement: <em>[paste yours, or ask me to draft one]</em></div>
+            <div class="pro-tip"><strong>Pro tip:</strong> Ask Claude to "Review this JD for bias" after generating it &mdash; it will flag terms that may discourage diverse applicants.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Interview Question Generator</h3>
+            <span class="use-tag perevent">Per Hire</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Preparing interview guides for a hiring panel.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a structured interview guide for: <em>[Job Title]</em>
+
+Interview stage: <em>[phone screen / technical / behavioral / final round]</em>
+Interviewer: <em>[role of the person conducting: hiring manager / peer / skip-level]</em>
+Duration: <em>[30 / 45 / 60 minutes]</em>
+
+Key competencies to assess:
+<em>[List 3-5: e.g., problem-solving, cross-functional collaboration, data-driven decision-making, customer empathy]</em>
+
+For each competency, give me:
+1. A behavioral question (STAR format: "Tell me about a time when...")
+2. A follow-up probe (to dig deeper into their answer)
+3. What a STRONG answer sounds like (key signals to listen for)
+4. What a WEAK answer sounds like (red flags)
+
+Also include:
+- 2 opening rapport-building questions
+- A closing "What questions do you have for us?" framework
+- A quick scorecard template the interviewer can fill out in 2 minutes after the call</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Offer Letter / Rejection Email</h3>
+            <span class="use-tag perevent">Per Hire</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: You've made a decision and need to communicate it well.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a <em>[offer letter / rejection email]</em> for <em>[Candidate Name]</em> who interviewed for <em>[Job Title]</em>.
+
+<em>[If offer:]</em>
+- Compensation: <em>[base, bonus, equity if applicable]</em>
+- Start date: <em>[date]</em>
+- Key selling points about the role/team: <em>[list 2-3]</em>
+- Tone: excited and warm &mdash; make them feel chosen, not processed
+
+<em>[If rejection:]</em>
+- Reason (internal, do not state explicitly): <em>[e.g., another candidate had more relevant experience]</em>
+- Tone: respectful, genuine, and encouraging
+- Leave the door open for future roles if they were a strong candidate
+- Do NOT give specific feedback on weaknesses (legal risk)
+- Keep it under 150 words &mdash; long rejections feel worse</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== PERFORMANCE & DEVELOPMENT ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128200;</span>
+        <h2>Performance &amp; Development</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Performance Review Synthesis</h3>
+            <span class="use-tag quarterly">Quarterly / Annual</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Writing or preparing for performance reviews from multiple data sources.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to write a performance review for <em>[Employee Name, Title]</em>.
+
+Here's the raw input:
+- Self-assessment: <em>[paste or summarise]</em>
+- Peer feedback (3 sources): <em>[paste or summarise]</em>
+- Manager notes: <em>[paste your observations]</em>
+- Key metrics/outcomes: <em>[deliverables, projects, numbers]</em>
+
+Write a balanced performance review that includes:
+1. <em>Summary:</em> 2-3 sentences overall assessment
+2. <em>Strengths:</em> 3 specific strengths with evidence from the input
+3. <em>Growth Areas:</em> 2 areas for development with specific, actionable suggestions (not vague "improve communication")
+4. <em>Key Achievements:</em> Top 3 accomplishments this period
+5. <em>Development Plan:</em> 2-3 concrete next steps with suggested timeline
+
+Tone: honest, supportive, growth-oriented. Avoid hedging language ("sort of," "kind of"). Be direct but kind.</div>
+            <div class="pro-tip"><strong>Pro tip:</strong> Upload multiple peer feedback forms at once. Ask Claude to "Identify consistent themes across all feedback sources" before writing the review.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>90-Day Development Plan</h3>
+            <span class="use-tag perevent">Per Employee</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: An employee needs a structured development plan after a review or promotion.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a 90-day development plan for <em>[Employee Name, Title]</em>.
+
+Current performance level: <em>[meets expectations / exceeds / needs improvement]</em>
+Growth areas identified: <em>[list 2-3 from their review]</em>
+Career aspiration: <em>[where they want to grow: management track, technical depth, cross-functional]</em>
+Available resources: <em>[budget for training, mentorship available, stretch projects, etc.]</em>
+
+Structure the plan in 30-day blocks:
+- <em>Days 1-30:</em> Foundation &mdash; awareness and learning
+- <em>Days 31-60:</em> Application &mdash; practice in real work
+- <em>Days 61-90:</em> Demonstration &mdash; visible impact
+
+For each block include:
+1. Specific actions (not "read more about leadership")
+2. Success criteria (how do we know this is working?)
+3. Check-in cadence with their manager
+4. One stretch assignment that pushes them outside their comfort zone</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>PIP (Performance Improvement Plan) Draft</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: An employee needs formal documented improvement expectations. Always review with legal.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a Performance Improvement Plan for an employee in a <em>[role type]</em> position.
+
+Performance gaps:
+<em>[List specific, documented issues with dates and examples]</em>
+
+Previous coaching provided:
+<em>[List prior conversations, feedback, and support given]</em>
+
+Draft a PIP that includes:
+1. <em>Specific expectations:</em> What does "meets expectations" look like? (measurable)
+2. <em>Support provided:</em> What the company will do to help (training, mentoring, reduced workload)
+3. <em>Timeline:</em> <em>[30/60/90 days]</em> with check-in dates
+4. <em>Success metrics:</em> Clear, objective criteria for each expectation
+5. <em>Consequences:</em> What happens if expectations are not met
+
+Tone: factual, fair, and professional. Document-ready.
+
+<em>IMPORTANT: This is a draft. I will review with Legal and Employee Relations before finalising.</em></div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== ONBOARDING & OFFBOARDING ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128075;</span>
+        <h2>Onboarding &amp; Offboarding</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>New Hire Onboarding Plan</h3>
+            <span class="use-tag perevent">Per Hire</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: A new employee is starting and you need a structured first-week/first-month plan.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create an onboarding plan for a new <em>[Job Title]</em> joining the <em>[Team]</em> on <em>[Start Date]</em>.
+
+Their manager: <em>[name]</em>
+Buddy/mentor: <em>[name, if assigned]</em>
+Key tools they'll use: <em>[list: e.g., Jira, Salesforce, Slack, Workday]</em>
+
+Structure:
+- <em>Pre-Day 1:</em> What to send before they start (welcome email, equipment, access requests)
+- <em>Day 1:</em> Hour-by-hour schedule (orientation, IT setup, team intro, lunch)
+- <em>Week 1:</em> Day-by-day goals (what they should learn, who they should meet)
+- <em>30-Day Milestone:</em> What "success at day 30" looks like
+- <em>60-Day Check-in:</em> Questions to ask them about their experience
+
+Include a "buddy checklist" &mdash; tasks for the assigned buddy to complete with the new hire.
+
+Format as a checklist the manager can print and work through.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Exit Interview Summary &amp; Trends</h3>
+            <span class="use-tag quarterly">Quarterly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Analysing exit interview data to find patterns and present to leadership.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Here are exit interview notes from <em>[X]</em> departing employees over <em>[time period]</em>:
+
+<em>[Paste anonymised exit interview summaries]</em>
+
+Please analyse:
+1. <em>Top 3 themes:</em> What are the most common reasons for leaving?
+2. <em>Department patterns:</em> Are certain teams over-represented?
+3. <em>Sentiment analysis:</em> What's the overall tone? (bitter, neutral, grateful, mixed)
+4. <em>Fixable vs. unfixable:</em> Separate reasons we can address from ones we can't (e.g., relocation vs. toxic manager)
+5. <em>Quotes:</em> Pull 3-5 anonymised quotes that best capture the themes (for leadership impact)
+
+Format as a one-page briefing for the CHRO with:
+- A headline finding
+- A data summary table
+- 3 recommended actions ranked by impact</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== POLICY & COMMS ========== -->
+<div class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128172;</span>
+        <h2>Policy &amp; Employee Communications</h2>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Policy Draft / Update</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Creating a new HR policy or updating an existing one.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a <em>[new / updated]</em> policy for: <em>[policy topic: e.g., Remote Work, PTO, Expense Reimbursement, Social Media Usage]</em>
+
+Company context: <em>[industry, size, locations, culture: e.g., "mid-size professional services firm, 500 employees, hybrid model"]</em>
+
+Key requirements:
+<em>[List what the policy needs to cover]</em>
+
+Must comply with: <em>[relevant regulations: e.g., FMLA, ADA, state-specific laws, GDPR]</em>
+
+Include:
+1. <em>Purpose:</em> Why this policy exists (1-2 sentences)
+2. <em>Scope:</em> Who it applies to
+3. <em>Policy statement:</em> The actual rules, written clearly
+4. <em>Procedures:</em> Step-by-step process for employees to follow
+5. <em>Exceptions:</em> How to request exceptions
+6. <em>Effective date and review cadence</em>
+
+Write in plain English. If a new employee can't understand a sentence on first read, simplify it.
+
+<em>NOTE: This is a first draft. Legal review required before publication.</em></div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>All-Hands / Company-Wide Email</h3>
+            <span class="use-tag asneeded">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Communicating a sensitive change (benefits update, layoff, reorg, policy change) to all employees.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a company-wide communication about: <em>[topic]</em>
+
+What's happening: <em>[the facts, plainly stated]</em>
+Why: <em>[the reason behind the change]</em>
+Who's affected: <em>[everyone / specific teams / specific locations]</em>
+When: <em>[effective date and timeline]</em>
+
+Tone: <em>[empathetic and transparent / upbeat and forward-looking / serious and measured]</em>
+
+Must include:
+- An honest explanation of "why" (employees see through vague corporate-speak)
+- What changes for them specifically
+- What does NOT change (people need reassurance)
+- Where to get answers (FAQ link, manager, HR contact)
+- A human sign-off from <em>[sender name and title]</em>
+
+Must NOT include:
+<em>[List any sensitive details to exclude]</em>
+
+Length: under <em>[300/400]</em> words. Read it like an employee who's anxious about their job &mdash; does it answer their real questions?</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Onboarding Feedback Summary</h3>
+            <span class="use-tag weekly">Weekly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">Use when: Collecting and synthesising onboarding feedback from recent hires.</p>
+            <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Here are onboarding survey responses from <em>[X]</em> new hires who started in <em>[month/quarter]</em>:
+
+<em>[Paste survey responses]</em>
+
+Analyse and give me:
+1. <em>Overall satisfaction score</em> (average rating if numerical, or sentiment summary if text)
+2. <em>What's working well:</em> Top 3 things new hires consistently praise
+3. <em>What needs fixing:</em> Top 3 pain points or complaints, with frequency
+4. <em>Quick wins:</em> Issues we could fix this week with minimal effort
+5. <em>Systemic issues:</em> Problems that need a process change or investment
+6. <em>Verbatim highlights:</em> 3 positive and 3 constructive quotes (anonymised)
+
+Format as a one-page summary I can present at our weekly HR standup.</div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+    <a href="sales.html">&larr; Sales</a> &nbsp;&bull;&nbsp;
+    <a href="index.html">All Cheat Sheets</a><br><br>
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+</body></html>

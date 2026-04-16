@@ -27,8 +27,8 @@
         .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
         .hero h2 { font-size: 24px; font-weight: 400; opacity: 0.95; margin-bottom: 32px; }
         .hero .subtitle { font-size: 16px; opacity: 0.85; }
-        .container { max-width: 960px; margin: -40px auto 60px; padding: 0 40px; }
-        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .container { max-width: 1120px; margin: -40px auto 60px; padding: 0 40px; }
+        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
         .card {
             background: white; border-radius: var(--radius-lg); border: 2px solid #E2E8F0;
             overflow: hidden; text-decoration: none; color: var(--text-main);
@@ -43,6 +43,7 @@
         .card-banner { padding: 32px 28px; color: white; }
         .card-banner.session { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
         .card-banner.labs    { background: linear-gradient(135deg, var(--g-green), #0D652D); }
+        .card-banner.sheets  { background: linear-gradient(135deg, #F59E0B, #EA4335); }
         .card-banner h3 { font-size: 22px; font-weight: 700; }
         .card-banner .icon { font-size: 40px; margin-bottom: 8px; }
         .card-body { padding: 24px 28px; flex: 1; }
@@ -85,7 +86,11 @@
             color: white; text-decoration: underline; pointer-events: auto;
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 960px) {
+            .card-grid { grid-template-columns: 1fr 1fr; }
+            .lab-list { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
             .card-grid, .lab-list { grid-template-columns: 1fr; }
         }
     </style>
@@ -120,6 +125,17 @@
             <div class="card-body">
                 <p>Three real-world lab exercises with problems, step-by-step prompts, sample data files, and collapsible solution walkthroughs.</p>
                 <span class="cta">Open Labs &rarr;</span>
+            </div>
+        </a>
+
+        <a href="cheatsheets/index.html" class="card">
+            <div class="card-banner sheets">
+                <div class="icon">&#128220;</div>
+                <h3>Prompt Cheat Sheets</h3>
+            </div>
+            <div class="card-body">
+                <p>Copy-paste prompts for daily work. Tailored for Accounting, Leadership, Sales, and HR. Use them in Claude right now.</p>
+                <span class="cta">Open Cheat Sheets &rarr;</span>
             </div>
         </a>
     </div>
