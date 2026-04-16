@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3: Voice to Vision | Hands-On Labs</title>
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --purple: #5E35B1;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+        .topnav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 40px; border-bottom: 1px solid #E2E8F0; background: white;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topnav a { text-decoration: none; color: var(--g-blue); font-weight: 600; font-size: 15px; }
+        .topnav .brand { color: var(--text-main); font-weight: 700; font-size: 16px; }
+
+        .hero {
+            background: linear-gradient(135deg, var(--purple), #7B1FA2);
+            color: white; text-align: center; padding: 80px 40px 60px;
+        }
+        .hero .lab-number { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.85; margin-bottom: 12px; }
+        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 16px; }
+        .hero p  { font-size: 20px; opacity: 0.95; max-width: 720px; margin: 0 auto; }
+
+        .content-wrap { max-width: 960px; margin: 0 auto; padding: 60px 40px 80px; }
+
+        .section { margin-bottom: 56px; }
+        .section-label {
+            display: inline-block; padding: 6px 18px; border-radius: 20px;
+            font-size: 13px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .section-label.scenario  { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .section-label.problem   { background: rgba(234,67,53,0.12);  color: var(--g-red); }
+        .section-label.data      { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .section-label.steps     { background: rgba(94,53,177,0.12);  color: var(--purple); }
+        .section-label.solution  { background: rgba(94,53,177,0.12);  color: var(--purple); }
+        .section-label.takeaway  { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .section-label.optionA   { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .section-label.optionB   { background: rgba(52,168,83,0.12);  color: var(--g-green); }
+
+        .section h2 { font-size: 32px; font-weight: 700; margin-bottom: 16px; }
+        .section h3 { font-size: 22px; font-weight: 700; color: var(--purple); margin: 28px 0 12px; }
+        .section p  { font-size: 17px; margin-bottom: 14px; }
+        .section ul, .section ol { margin-left: 28px; margin-bottom: 20px; }
+        .section li { margin-bottom: 10px; font-size: 16px; }
+
+        .highlight-box {
+            padding: 24px 28px; border-radius: var(--radius-md); margin: 24px 0; border-left: 5px solid;
+        }
+        .highlight-box.blue   { border-color: var(--g-blue);  background: rgba(66,133,244,0.08); }
+        .highlight-box.green  { border-color: var(--g-green);  background: rgba(52,168,83,0.08); }
+        .highlight-box.yellow { border-color: var(--g-yellow); background: rgba(251,188,5,0.08); }
+        .highlight-box.red    { border-color: var(--g-red);    background: rgba(234,67,53,0.08); }
+        .highlight-box.purple { border-color: var(--purple);   background: rgba(94,53,177,0.08); }
+        .highlight-box strong { display: block; font-size: 18px; margin-bottom: 8px; }
+
+        .prompt-block {
+            background: #1a1a2e; color: #e0e0e0; border-radius: var(--radius-md);
+            padding: 24px 28px; margin: 20px 0; font-family: 'Roboto Mono', 'Courier New', monospace;
+            font-size: 15px; line-height: 1.7; border-left: 4px solid var(--g-green);
+            white-space: pre-wrap; word-wrap: break-word;
+        }
+        .prompt-block .label {
+            color: var(--g-green); font-weight: 700; font-size: 12px; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 10px; display: block;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+        .prompt-block em { color: #FBBC05; font-style: normal; }
+
+        .step-row { display: flex; gap: 20px; margin-bottom: 28px; align-items: flex-start; }
+        .step-num {
+            flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+            background: var(--purple); color: white; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 18px;
+        }
+        .step-body h4 { font-size: 18px; color: var(--purple); margin-bottom: 4px; }
+        .step-body p  { font-size: 15px; color: var(--text-subtle); margin: 0; }
+
+        details { margin: 24px 0; }
+        details summary {
+            cursor: pointer; padding: 18px 24px; background: linear-gradient(135deg, var(--purple), #7B1FA2);
+            color: white; border-radius: var(--radius-md); font-size: 18px; font-weight: 700;
+            list-style: none; display: flex; align-items: center; gap: 12px;
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before { content: '\25B6'; font-size: 14px; transition: transform 0.2s; }
+        details[open] summary::before { transform: rotate(90deg); }
+        details[open] summary { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+        .solution-body {
+            border: 2px solid var(--purple); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md);
+            padding: 32px 28px; background: #FAFAFE;
+        }
+        .solution-body h3 { color: var(--purple); font-size: 20px; margin: 24px 0 12px; }
+        .solution-body h3:first-child { margin-top: 0; }
+        .solution-body p  { font-size: 16px; margin-bottom: 12px; }
+        .solution-body ul, .solution-body ol { margin-left: 24px; margin-bottom: 16px; }
+        .solution-body li { margin-bottom: 8px; font-size: 15px; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+        .col-card { padding: 24px; border-radius: var(--radius-md); border: 2px solid #E2E8F0; background: white; }
+        .col-card h4 { color: var(--purple); font-size: 18px; margin-bottom: 12px; }
+        .col-card p  { font-size: 15px; color: var(--text-subtle); }
+
+        /* Whiteboard mock */
+        .whiteboard-mock {
+            background: #F9F9F9; border: 3px dashed #CBD5E1; border-radius: var(--radius-lg);
+            padding: 40px; margin: 24px 0; font-family: 'Comic Sans MS', 'Marker Felt', cursive;
+            color: #374151; position: relative;
+        }
+        .whiteboard-mock::before {
+            content: 'WHITEBOARD PHOTO'; position: absolute; top: 12px; right: 16px;
+            font-family: 'Google Sans', sans-serif; font-size: 11px; font-weight: 700;
+            color: #9CA3AF; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .whiteboard-mock h4 {
+            font-size: 24px; margin-bottom: 20px; text-decoration: underline;
+            text-decoration-color: var(--g-red); font-weight: 700;
+        }
+        .whiteboard-mock .wb-box {
+            display: inline-block; border: 2px solid #6B7280; border-radius: 8px;
+            padding: 8px 16px; margin: 4px 6px; font-size: 16px;
+        }
+        .whiteboard-mock .wb-arrow { color: var(--g-blue); font-weight: 700; font-size: 24px; margin: 0 8px; }
+        .whiteboard-mock .wb-note { font-size: 14px; color: var(--g-red); margin-top: 12px; font-style: italic; }
+        .whiteboard-mock .wb-row { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+
+        /* Voice transcript mock */
+        .voice-transcript {
+            background: #1a1a2e; color: #A0AEC0; border-radius: var(--radius-md);
+            padding: 28px; margin: 24px 0; font-size: 16px; line-height: 1.8;
+            border-left: 4px solid var(--purple); position: relative;
+        }
+        .voice-transcript::before {
+            content: 'VOICE MEMO TRANSCRIPT'; position: absolute; top: 12px; right: 16px;
+            font-size: 11px; font-weight: 700; color: #4A5568; text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Google Sans', sans-serif;
+        }
+        .voice-transcript .speaker { color: var(--g-yellow); font-weight: 700; }
+
+        .option-tabs {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 32px 0;
+            border-radius: var(--radius-md); overflow: hidden; border: 2px solid #E2E8F0;
+        }
+        .option-tab {
+            padding: 32px 28px; background: white;
+        }
+        .option-tab:first-child { border-right: 2px solid #E2E8F0; }
+        .option-tab h3 { margin-top: 0; }
+
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px; color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0;
+        }
+        .footer strong { color: var(--text-main); }
+        .footer a { color: var(--g-blue); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 700px) {
+            .two-col, .option-tabs { grid-template-columns: 1fr; }
+            .option-tab:first-child { border-right: none; border-bottom: 2px solid #E2E8F0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topnav">
+    <a href="lab2-cross-domain-intelligence.html">&larr; Lab 2</a>
+    <span class="brand">Deltek Cloud AI Learning Community</span>
+    <a href="index.html">All Labs</a>
+</div>
+
+<div class="hero">
+    <div class="lab-number">Hands-On Lab 3</div>
+    <h1>Voice to Vision</h1>
+    <p>Turn messy whiteboard scribbles or a rambling voice memo into a professional Org Chart and team announcement &mdash; in your leadership tone.</p>
+</div>
+
+<div class="content-wrap">
+
+    <!-- ============================================================ -->
+    <!-- SCENARIO                                                      -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label scenario">Scenario</span>
+        <h2>The Post-Meeting Mess</h2>
+        <p>You just walked out of a high-stakes 1:1 with your CEO. The two of you mapped out a new department structure on a whiteboard &mdash; boxes, arrows, scribbled names, crossed-out ideas. It made perfect sense in the room.</p>
+        <p>Now you need to:</p>
+        <ol>
+            <li>Turn those scribbles into a <strong>professional Org Chart</strong> you can present to the leadership team</li>
+            <li>Draft an <strong>announcement email</strong> to the broader team explaining the new structure</li>
+            <li>Do both in <strong>your specific leadership tone</strong> &mdash; not generic corporate-speak</li>
+        </ol>
+
+        <div class="highlight-box purple">
+            <strong>This lab proves that Claude understands intent, not just text.</strong>
+            <p>It's a "Thought Translator" &mdash; taking unstructured, messy human thinking and turning it into polished, professional output.</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROBLEM                                                       -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label problem">The Problem</span>
+        <h2>What You Need to Deliver</h2>
+        <ol>
+            <li><strong>Upload a messy input</strong> &mdash; a photo of whiteboard scribbles OR a rough voice memo transcript</li>
+            <li><strong>Generate a clean Org Chart</strong> as a Claude Artifact (visual, not just text)</li>
+            <li><strong>Draft an announcement email</strong> that explains the changes in a specific leadership tone</li>
+            <li><strong>Iterate</strong> until it matches what was actually discussed (not what Claude assumes)</li>
+        </ol>
+
+        <div class="highlight-box yellow">
+            <strong>Choose Your Input</strong>
+            <p>This lab has two paths. Pick the one that matches your style &mdash; or try both!</p>
+        </div>
+
+        <div class="option-tabs">
+            <div class="option-tab">
+                <h3 style="color: var(--g-blue);">Option A: Whiteboard Photo</h3>
+                <p style="font-size:15px; color:var(--text-subtle);">For visual thinkers. Take a photo of the mock whiteboard below (screenshot works too) and upload it to Claude.</p>
+            </div>
+            <div class="option-tab">
+                <h3 style="color: var(--g-green);">Option B: Voice Memo Transcript</h3>
+                <p style="font-size:15px; color:var(--text-subtle);">For verbal thinkers. Copy the rambling voice memo transcript below and paste it into Claude.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OPTION A: WHITEBOARD                                          -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label optionA">Option A</span>
+        <h2>The Whiteboard Scribbles</h2>
+        <p>Imagine this is a photo you just snapped of the whiteboard. Screenshot this box and upload it to Claude, or describe it in your prompt.</p>
+
+        <div class="whiteboard-mock">
+            <h4>Cloud Ops Reorg &mdash; Q3 2026</h4>
+
+            <div class="wb-row">
+                <span class="wb-box" style="border-color: var(--g-red); font-weight:700;">VP Cloud Operations<br><small>NEW ROLE &mdash; hire externally?</small></span>
+            </div>
+
+            <div class="wb-row" style="margin-left: 40px;">
+                <span class="wb-arrow">&darr;</span>
+            </div>
+
+            <div class="wb-row" style="margin-left: 20px;">
+                <span class="wb-box">Platform Engineering<br><small>Marcus T. (current)</small></span>
+                <span class="wb-arrow">&larr;&rarr;</span>
+                <span class="wb-box">Site Reliability<br><small>Priya K. (promote??)</small></span>
+                <span class="wb-arrow">&larr;&rarr;</span>
+                <span class="wb-box">Cloud Security<br><small>NEW TEAM &mdash; 3 hires</small></span>
+            </div>
+
+            <div class="wb-row" style="margin-left: 60px; margin-top: 16px;">
+                <span class="wb-box" style="border-style: dashed;">DevOps (merge into Platform?)</span>
+                <span style="margin-left: 16px; font-size: 20px;">&#10060;</span>
+                <span style="margin-left: 8px; font-size: 14px; color: var(--g-red);">NO &mdash; keep separate for now</span>
+            </div>
+
+            <div class="wb-note">* Move "Observability" under SRE, not Platform</div>
+            <div class="wb-note">* Cloud Security reports dotted-line to CISO</div>
+            <div class="wb-note">* Announce by end of April &mdash; before Q3 planning starts</div>
+            <div class="wb-note" style="color: var(--g-blue);">* Priya's promo needs HR loop &mdash; don't announce title yet</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OPTION B: VOICE MEMO                                          -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label optionB">Option B</span>
+        <h2>The Voice Memo Transcript</h2>
+        <p>Imagine you recorded a 2-minute voice memo while walking back to your desk after the meeting. Here's what you said:</p>
+
+        <div class="voice-transcript">
+            <span class="speaker">You (walking, slightly out of breath):</span><br><br>
+            OK so just got out of the meeting with Raj. We're doing the reorg. Here's the plan &mdash; trying to get this down before I forget.<br><br>
+            So we're creating a VP of Cloud Operations role. That's new. We'll probably hire externally for that, Raj doesn't think anyone internal is ready, but we should still post internally first, you know, for optics.<br><br>
+            Under that VP, three teams. Platform Engineering stays as-is, Marcus keeps that. SRE &mdash; we want to promote Priya to lead that, but... actually, hold on, Raj said we need to loop in HR before announcing Priya's title change, something about comp bands, so let's not put her name in any announcements yet. Just say "new leadership" or whatever.<br><br>
+            Third team is Cloud Security. Brand new. We need to hire three people for that. It reports to the VP of Cloud Ops but has a dotted line to the CISO &mdash; Raj was very clear about that, it's a compliance thing.<br><br>
+            Oh and the Observability team &mdash; that's moving. It's currently under Platform but it should be under SRE. That makes more sense operationally. But DevOps stays under Platform, we talked about merging them but decided against it. Too disruptive right now.<br><br>
+            Timeline &mdash; we need to announce this by end of April, before Q3 planning kicks off. Raj wants it clean and simple, no jargon. He said, and I quote, "Write it like you're telling a friend, not like you're writing a press release." So keep it human.<br><br>
+            That's it. I'll clean this up later... or maybe I'll just paste this into Claude. <em>[laughs]</em> Yeah, let's do that.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- STEP BY STEP                                                  -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label steps">Step-by-Step</span>
+        <h2>How to Run This Lab</h2>
+
+        <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <h4>Open claude.ai</h4>
+                <p>Start a new conversation. If using Option A, prepare to upload the whiteboard screenshot.</p>
+            </div>
+        </div>
+
+        <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <h4>Upload or Paste Your Input</h4>
+                <p><strong>Option A:</strong> Screenshot the whiteboard mock above and drag it into Claude.<br>
+                <strong>Option B:</strong> Copy-paste the voice memo transcript into Claude.</p>
+            </div>
+        </div>
+
+        <div class="step-row">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <h4>Prompt #1 &mdash; The Org Chart</h4>
+                <p>Ask Claude to interpret the messy input and create a professional visual.</p>
+            </div>
+        </div>
+
+        <div class="prompt-block"><span class="label">Prompt #1 &mdash; Org Chart (Option A: Photo)</span>I just took this photo of a whiteboard from a planning meeting with my CEO. It maps out a new department structure for Cloud Operations.
+
+Please:
+1. <em>Interpret the whiteboard</em> &mdash; figure out the reporting structure, new roles, and key decisions.
+2. <em>Create a professional Org Chart as an Artifact</em> &mdash; clean boxes, clear reporting lines, and color-coded to distinguish existing roles (blue), new roles to be hired (orange), and roles pending HR approval (gray).
+3. <em>Add notes</em> below the chart for: dotted-line relationships, teams being moved, and any open decisions from the whiteboard.
+
+Make it presentation-ready &mdash; I'm sharing this with the leadership team on Friday.</div>
+
+        <div class="prompt-block"><span class="label">Prompt #1 &mdash; Org Chart (Option B: Voice Memo)</span>Here's a voice memo transcript I recorded right after a planning meeting with my CEO about a Cloud Operations reorg. It's rambling and unstructured &mdash; that's fine, I need you to make sense of it.
+
+Please:
+1. <em>Extract the org structure</em> from my stream-of-consciousness notes.
+2. <em>Create a professional Org Chart as an Artifact</em> &mdash; clean boxes, clear reporting lines, and color-coded: existing roles (blue), new roles to be hired (orange), and roles pending HR approval (gray).
+3. <em>Add notes</em> below the chart for: dotted-line relationships, teams being moved, and anything I flagged as sensitive or pending.
+4. <em>List any ambiguities</em> &mdash; things that weren't clear from my memo that I should clarify before presenting.
+
+Make it presentation-ready for the leadership team.</div>
+
+        <div class="step-row">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <h4>Prompt #2 &mdash; The Announcement Email</h4>
+                <p>Once the org chart looks right, ask for the communication piece.</p>
+            </div>
+        </div>
+
+        <div class="prompt-block"><span class="label">Prompt #2 &mdash; Announcement Email</span>Now draft the <em>team announcement email</em> for this reorg. Here are my constraints:
+
+<em>Tone:</em> Warm but direct. My CEO's exact words: "Write it like you're telling a friend, not like you're writing a press release." No corporate jargon. No buzzwords.
+
+<em>What to include:</em>
+- Why we're making this change (growth, operational clarity)
+- The new structure (high-level, link to the full org chart)
+- What's changing for existing team members (be honest)
+- What's NOT changing (reassure people)
+- Timeline (announce by end of April, effective Q3)
+
+<em>What to EXCLUDE:</em>
+- Do NOT name Priya or her promotion &mdash; HR hasn't approved the title change yet
+- Do NOT mention the VP role is being hired externally &mdash; say "we're launching a search"
+- Keep it under 400 words
+
+Sign it from me &mdash; use the name "[Your Name]" as a placeholder.</div>
+
+        <div class="step-row">
+            <div class="step-num">5</div>
+            <div class="step-body">
+                <h4>Prompt #3 &mdash; The Sensitivity Check</h4>
+                <p>Leaders need to be careful about what gets communicated. Ask Claude to audit its own output.</p>
+            </div>
+        </div>
+
+        <div class="prompt-block"><span class="label">Prompt #3 &mdash; Sensitivity Audit</span>Before I send this, <em>audit the email and org chart</em> for anything I asked you to exclude:
+
+1. Does the email or chart mention Priya's name or her specific promotion?
+2. Does it reveal that the VP role will be hired externally?
+3. Is there anything that could be misread as a layoff or role elimination?
+4. Does the tone match "telling a friend" or did it drift into corporate-speak?
+
+Flag anything that needs fixing and suggest specific rewrites.</div>
+
+        <div class="step-row">
+            <div class="step-num">6</div>
+            <div class="step-body">
+                <h4>Review, Iterate, Share</h4>
+                <p>Polish the outputs. Try: "Make the org chart wider," "Add a FAQ section to the email," "Translate the email to Spanish for the LATAM team." Share with your lab partner.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SOLUTION                                                      -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label solution">Solution Walkthrough</span>
+        <h2>What Good Looks Like</h2>
+
+        <details>
+            <summary>Reveal the Solution &amp; Evaluation Guide</summary>
+            <div class="solution-body">
+
+                <h3>Expected Org Chart</h3>
+                <p>Claude should generate an Artifact with a visual org chart. Here's the structure to verify:</p>
+
+                <div class="highlight-box blue">
+                    <strong>Correct Structure:</strong>
+                    <pre style="font-family: monospace; font-size: 14px; line-height: 1.8; margin-top: 8px; white-space: pre-wrap;">
+VP Cloud Operations [ORANGE - New, to be hired]
+  |
+  |--- Platform Engineering [BLUE - Existing]
+  |      Lead: Marcus T.
+  |      Contains: DevOps (separate team, NOT merged)
+  |
+  |--- Site Reliability Engineering [GRAY - Pending HR]
+  |      Lead: [Pending HR Approval]
+  |      Contains: Observability (moved FROM Platform)
+  |
+  |--- Cloud Security [ORANGE - New team]
+         3 hires needed
+         Dotted line to CISO
+                    </pre>
+                </div>
+
+                <p><strong>Common mistakes to watch for:</strong></p>
+                <ul>
+                    <li>Merging DevOps into Platform &mdash; the whiteboard explicitly decided against this</li>
+                    <li>Keeping Observability under Platform &mdash; it should move to SRE</li>
+                    <li>Naming Priya as SRE lead &mdash; should say "Pending HR Approval" or similar</li>
+                    <li>Missing the dotted-line from Cloud Security to CISO</li>
+                    <li>Showing the VP role as filled &mdash; should be marked as open/hiring</li>
+                </ul>
+
+                <h3>Expected Announcement Email</h3>
+                <p>A strong email will:</p>
+                <ul>
+                    <li><strong>Lead with the "why":</strong> "As our cloud infrastructure has grown, so has the need for clearer ownership and dedicated focus areas..."</li>
+                    <li><strong>Be conversational:</strong> Short sentences. First-person. No "synergies" or "leveraging" or "strategic alignment."</li>
+                    <li><strong>Name what's staying the same:</strong> "Platform Engineering stays exactly as it is. Marcus continues to lead. Your day-to-day doesn't change."</li>
+                    <li><strong>Be honest about the new VP role:</strong> "We're launching a search for a VP of Cloud Operations" &mdash; NOT "we're hiring externally."</li>
+                    <li><strong>Handle the SRE leadership carefully:</strong> "We'll share more about SRE leadership in the coming weeks" &mdash; no mention of Priya or promotion.</li>
+                    <li><strong>End with an open door:</strong> "If you have questions, grab time on my calendar. I mean it."</li>
+                    <li><strong>Stay under 400 words.</strong></li>
+                </ul>
+
+                <h3>Expected Sensitivity Audit</h3>
+                <p>Claude should catch and flag:</p>
+                <ul>
+                    <li>Any instance where Priya's name appears (it shouldn't)</li>
+                    <li>Any language implying external hire for the VP role</li>
+                    <li>Any phrasing that could be read as "your team is being dissolved" (especially around the Observability move)</li>
+                    <li>Any drift into corporate jargon that contradicts the "tell a friend" instruction</li>
+                </ul>
+
+                <h3>Bonus: Ambiguities Claude Should Flag</h3>
+                <p>If using the voice memo, Claude should identify these open questions:</p>
+                <ul>
+                    <li>"Should we still post the VP role internally first?" &mdash; you mentioned it but didn't confirm</li>
+                    <li>"What's the reporting structure for DevOps within Platform?" &mdash; you kept it separate but didn't name a lead</li>
+                    <li>"Does the Observability team move to SRE immediately or at Q3 start?" &mdash; timeline is ambiguous</li>
+                    <li>"Who approves the 3 Cloud Security hires &mdash; the new VP or existing leadership?" &mdash; chicken-and-egg problem</li>
+                </ul>
+
+                <h3>Evaluation Checklist</h3>
+                <ul>
+                    <li>Did the Org Chart render as a visual Artifact (not just a text list)?</li>
+                    <li>Is the color-coding correct (blue/orange/gray)?</li>
+                    <li>Did Claude correctly interpret the crossed-out "merge DevOps" decision?</li>
+                    <li>Is the Observability team under SRE, not Platform?</li>
+                    <li>Does the email stay under 400 words?</li>
+                    <li>Is Priya's name absent from all outputs?</li>
+                    <li>Does the tone sound like a real person, not a press release?</li>
+                    <li>Did the sensitivity audit catch real issues (not just generic warnings)?</li>
+                </ul>
+
+                <div class="highlight-box green">
+                    <strong>The "Wow" Realization</strong>
+                    <p>You just turned 2 minutes of unstructured, messy, human thinking &mdash; scribbles on a whiteboard or a rambling voice note &mdash; into a presentation-ready org chart, a carefully worded announcement, and a sensitivity audit that caught political landmines.</p>
+                    <p><strong>Claude didn't just process text. It understood intent, respected constraints, and translated your thinking into professional output &mdash; while knowing what NOT to say.</strong></p>
+                    <p>This is what transforms AI from a "writing tool" into a "Thought Translator."</p>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAKEAWAY                                                      -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label takeaway">Key Takeaway</span>
+        <h2>Why This Is a Game Changer</h2>
+        <div class="two-col">
+            <div class="col-card">
+                <h4>Before</h4>
+                <p>You take a photo of the whiteboard. It sits in your camera roll for two days. You finally open PowerPoint, recreate the boxes, draft the email, get nervous about what to include, run it by a colleague, revise it, and send it 5 days later. <strong>The momentum from the meeting is gone.</strong></p>
+            </div>
+            <div class="col-card">
+                <h4>After</h4>
+                <p>You upload the photo (or paste your voice notes) while walking back from the meeting. By the time you sit down at your desk, you have a polished org chart, a draft email, and a sensitivity audit. <strong>You send it the same afternoon. The momentum holds.</strong></p>
+            </div>
+        </div>
+
+        <div class="highlight-box purple" style="margin-top:24px; text-align:center;">
+            <strong>For leaders who think in conversations, not documents &mdash; Claude bridges the gap between what's in your head and what needs to be on the page.</strong>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BONUS CHALLENGE                                               -->
+    <!-- ============================================================ -->
+    <div class="section">
+        <span class="section-label scenario">Bonus Challenge</span>
+        <h2>Try It With Your Own Mess</h2>
+        <p>If you've finished the lab early, try one of these with your own real-world input:</p>
+        <div class="two-col">
+            <div class="col-card" style="border-color: var(--g-blue);">
+                <h4 style="color: var(--g-blue);">Meeting Notes &rarr; Action Plan</h4>
+                <p>Paste your raw, messy notes from a recent meeting. Ask Claude to extract: decisions made, action items with owners, open questions, and a follow-up email to attendees.</p>
+            </div>
+            <div class="col-card" style="border-color: var(--g-green);">
+                <h4 style="color: var(--g-green);">Brainstorm &rarr; Strategy Doc</h4>
+                <p>Describe a strategic idea you've been noodling on &mdash; stream-of-consciousness is fine. Ask Claude to turn it into a structured one-page strategy brief with objectives, key results, risks, and a timeline.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <a href="lab2-cross-domain-intelligence.html">&larr; Lab 2</a> &nbsp;&bull;&nbsp;
+    <a href="index.html">All Labs</a><br><br>
+    Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+</div>
+
+</body></html>

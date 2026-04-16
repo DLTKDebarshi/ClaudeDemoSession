@@ -1,0 +1,17 @@
+Department,Service,Budget ($),Actual ($),Variance (%)
+Engineering,AWS EC2,45000,52300,16.2
+Engineering,AWS S3,12000,13800,15.0
+Engineering,Datadog,8500,9100,7.1
+Data Science,AWS SageMaker,28000,34600,23.6
+Data Science,Snowflake,15000,16200,8.0
+Marketing,HubSpot,6000,6000,0.0
+Marketing,Google Ads API,3500,3200,-8.6
+Sales,Salesforce,18000,18000,0.0
+Sales,Outreach.io,4200,4500,7.1
+HR,Workday,9000,9000,0.0
+HR,LinkedIn Recruiter,5500,7200,30.9
+Finance,NetSuite,11000,11000,0.0
+Finance,Expensify,2800,2600,-7.1
+IT / Infra,Azure AD,7500,8900,18.7
+IT / Infra,Cloudflare,4000,4100,2.5
+IT / Infra,PagerDuty,3200,3200,0.0

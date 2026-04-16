@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hands-On Labs | The AI-Powered Business Lead</title>
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--g-blue) 0%, var(--g-green) 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 40px 60px;
+        }
+        .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero p { font-size: 22px; opacity: 0.95; max-width: 720px; margin: 0 auto; }
+
+        /* Cards */
+        .labs-container {
+            max-width: 1100px;
+            margin: -40px auto 80px;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .lab-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 2px solid #E2E8F0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .lab-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+            border-color: var(--g-blue);
+        }
+        .lab-card-banner {
+            padding: 40px 28px;
+            text-align: center;
+            color: white;
+        }
+        .lab-card-banner.blue { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
+        .lab-card-banner.green { background: linear-gradient(135deg, var(--g-green), #0D652D); }
+        .lab-card-banner.purple { background: linear-gradient(135deg, #5E35B1, #7B1FA2); }
+        .lab-card-banner .lab-icon { font-size: 56px; margin-bottom: 12px; }
+        .lab-card-banner h2 { font-size: 22px; font-weight: 700; }
+        .lab-card-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+        .lab-card-body p { font-size: 16px; color: var(--text-subtle); line-height: 1.7; flex: 1; }
+        .lab-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+        .lab-tag.artifact { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .lab-tag.project  { background: rgba(52,168,83,0.12); color: var(--g-green); }
+        .lab-tag.multi    { background: rgba(94,53,177,0.12); color: #5E35B1; }
+        .lab-card-body .lab-cta {
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--g-blue);
+            font-size: 15px;
+        }
+        .lab-card:hover .lab-cta { text-decoration: underline; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 14px;
+            color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0;
+        }
+        .footer strong { color: var(--text-main); }
+
+        @media (max-width: 900px) {
+            .labs-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Hands-On Labs</h1>
+    <p>Three real-world scenarios. Each one turns a daily leadership headache into a 30-second AI-powered solution.</p>
+</div>
+
+<div class="labs-container">
+    <!-- Lab 1 -->
+    <a href="lab1-interactive-war-room.html" class="lab-card">
+        <div class="lab-card-banner blue">
+            <div class="lab-icon">&#128202;</div>
+            <h2>Lab 1: The Interactive War Room</h2>
+        </div>
+        <div class="lab-card-body">
+            <p>A crisis hits &mdash; cloud costs spiked 15%. Build a live, interactive Decision Dashboard in 30 seconds using Claude Artifacts. Toggle between departments, run "What-If" scenarios, and make data-driven calls in real time.</p>
+            <span class="lab-tag artifact">Artifacts &bull; Data Visualization</span>
+            <span class="lab-cta">Start Lab &rarr;</span>
+        </div>
+    </a>
+
+    <!-- Lab 2 -->
+    <a href="lab2-cross-domain-intelligence.html" class="lab-card">
+        <div class="lab-card-banner green">
+            <div class="lab-icon">&#128373;&#65039;</div>
+            <h2>Lab 2: Cross-Domain Intelligence</h2>
+        </div>
+        <div class="lab-card-body">
+            <p>Approve a new vendor in minutes, not days. Use a Claude Project loaded with HR, Legal, and Finance documents. Paste one proposal &mdash; Claude cross-references everything and flags issues across all three domains.</p>
+            <span class="lab-tag project">Projects &bull; MCP &bull; Cross-Reference</span>
+            <span class="lab-cta">Start Lab &rarr;</span>
+        </div>
+    </a>
+
+    <!-- Lab 3 -->
+    <a href="lab3-voice-to-vision.html" class="lab-card">
+        <div class="lab-card-banner purple">
+            <div class="lab-icon">&#127908;</div>
+            <h2>Lab 3: Voice to Vision</h2>
+        </div>
+        <div class="lab-card-body">
+            <p>Turn messy whiteboard scribbles or a rambling voice memo into a polished Org Chart and a team announcement email &mdash; in your leadership tone. AI as a Thought Translator, not just a writing tool.</p>
+            <span class="lab-tag multi">Multi-Modal &bull; Image &bull; Voice</span>
+            <span class="lab-cta">Start Lab &rarr;</span>
+        </div>
+    </a>
+</div>
+
+<div class="footer">
+    Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+</div>
+
+</body></html>

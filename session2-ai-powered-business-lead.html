@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session 2: The AI-Powered Business Lead | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+            position: relative;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, var(--g-blue) 0%, var(--g-green) 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 60px;
+        }
+
+        .title-main h1 {
+            font-size: 68px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .title-main h1 span {
+            display: inline-block;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .title-main h1 span:nth-child(1) { animation-delay: 0.1s; }
+        .title-main h1 span:nth-child(2) { animation-delay: 0.2s; }
+        .title-main h1 span:nth-child(3) { animation-delay: 0.3s; }
+        .title-main h1 span:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title-main h2 {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .title-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .chip {
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .chip.blue { background: rgba(66, 133, 244, 0.3); }
+        .chip.red { background: rgba(234, 67, 53, 0.3); }
+        .chip.yellow { background: rgba(251, 188, 5, 0.3); }
+        .chip.green { background: rgba(52, 168, 83, 0.3); }
+        .chip.purple { background: rgba(156, 39, 176, 0.3); }
+
+        .title-footnote {
+            margin-top: 60px;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .section-slide {
+            background: linear-gradient(135deg, var(--g-blue) 0%, #5E35B1 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 60px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .section-tagline {
+            font-size: 24px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-slide { background: white; }
+
+        .slide-inner { max-width: 1200px; margin: 0 auto; }
+
+        .slide-header { margin-bottom: 40px; }
+
+        .slide-pill {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--g-blue);
+            color: white;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .content { font-size: 18px; line-height: 1.8; }
+
+        .content h3 {
+            font-size: 28px;
+            color: var(--g-blue);
+            margin: 24px 0 16px 0;
+        }
+
+        .content p { margin-bottom: 16px; }
+        .content ul, .content ol { margin-left: 32px; margin-bottom: 20px; }
+        .content li { margin-bottom: 12px; }
+
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: var(--text-subtle);
+            font-weight: 600;
+        }
+
+        .slide-branding {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            font-size: 13px;
+            color: var(--text-subtle);
+            font-weight: 500;
+            max-width: 60%;
+        }
+
+        .slide-branding a { color: var(--g-blue); text-decoration: none; }
+        .slide-branding a:hover { opacity: 0.7; }
+
+        .title-slide .slide-branding,
+        .section-slide .slide-branding { color: rgba(255, 255, 255, 0.9); }
+
+        .title-slide .slide-branding a,
+        .section-slide .slide-branding a { color: white; }
+
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .comparison-card {
+            padding: 32px;
+            border-radius: var(--radius-md);
+            border: 2px solid #E2E8F0;
+        }
+
+        .comparison-card.traditional { background: #FEF2F2; border-color: var(--g-red); }
+        .comparison-card.vibe { background: #F0FDF4; border-color: var(--g-green); }
+        .comparison-card h3 { margin-top: 0; margin-bottom: 20px; font-size: 24px; }
+        .comparison-card.traditional h3 { color: var(--g-red); }
+        .comparison-card.vibe h3 { color: var(--g-green); }
+        .comparison-card ol { margin-left: 20px; }
+        .comparison-card ol li { margin-bottom: 12px; font-size: 16px; }
+
+        .highlight-box {
+            padding: 24px;
+            border-radius: var(--radius-md);
+            margin: 24px 0;
+            border-left: 5px solid;
+        }
+
+        .highlight-box.blue { border-color: var(--g-blue); background: rgba(66, 133, 244, 0.08); }
+        .highlight-box.green { border-color: var(--g-green); background: rgba(52, 168, 83, 0.08); }
+        .highlight-box.yellow { border-color: var(--g-yellow); background: rgba(251, 188, 5, 0.08); }
+        .highlight-box.red { border-color: var(--g-red); background: rgba(234, 67, 53, 0.08); }
+        .highlight-box.purple { border-color: #5E35B1; background: rgba(94, 53, 177, 0.08); }
+
+        .highlight-box strong { display: block; font-size: 20px; margin-bottom: 12px; }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 24px 0;
+        }
+
+        .column-card {
+            padding: 28px;
+            border-radius: var(--radius-md);
+            border: 2px solid #E2E8F0;
+            background: white;
+        }
+
+        .column-card h4 { color: var(--g-blue); font-size: 22px; margin-bottom: 16px; }
+        .column-card ul { margin-left: 20px; }
+        .column-card ul li { margin-bottom: 10px; font-size: 16px; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 32px 24px;
+            border-radius: var(--radius-md);
+            background: var(--bg-light);
+            border: 2px solid #E2E8F0;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: var(--g-blue);
+        }
+
+        .feature-icon { font-size: 48px; margin-bottom: 16px; }
+
+        .feature-card h4 { color: var(--g-blue); font-size: 20px; margin-bottom: 12px; }
+
+        .feature-card p { color: var(--text-subtle); font-size: 15px; line-height: 1.6; }
+
+        .process-steps { margin: 32px 0; }
+
+        .step {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: var(--g-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .step-content h4 { color: var(--g-blue); font-size: 20px; margin-bottom: 8px; }
+        .step-content p { color: var(--text-subtle); font-size: 16px; }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--g-blue), var(--g-green), #5E35B1);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            padding: 16px 0;
+            position: relative;
+        }
+
+        .timeline-badge {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            flex: 1;
+            border: 2px solid #E2E8F0;
+        }
+
+        .timeline-content h4 { color: var(--g-blue); font-size: 18px; margin-bottom: 4px; }
+        .timeline-content .time-label { font-size: 14px; color: var(--text-subtle); font-weight: 600; margin-bottom: 8px; }
+        .timeline-content p { color: var(--text-subtle); font-size: 15px; margin: 0; }
+
+        .prompt-example {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            border-radius: var(--radius-md);
+            padding: 24px 28px;
+            margin: 16px 0;
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.7;
+            border-left: 4px solid var(--g-green);
+        }
+
+        .prompt-example .prompt-label {
+            color: var(--g-green);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+
+        .prompt-example em { color: #FBBC05; font-style: normal; }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .preview-card {
+            padding: 28px 32px;
+            border-radius: var(--radius-md);
+            border: 2px solid #E2E8F0;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .preview-card:hover {
+            border-color: var(--g-blue);
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.12);
+        }
+
+        .preview-card h4 { color: var(--g-blue); font-size: 22px; margin-bottom: 8px; }
+
+        .preview-card .preview-format {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .preview-format.demo { background: rgba(66, 133, 244, 0.12); color: var(--g-blue); }
+        .preview-format.practice { background: rgba(52, 168, 83, 0.12); color: var(--g-green); }
+        .preview-format.walkthrough { background: rgba(251, 188, 5, 0.15); color: #D49A00; }
+        .preview-format.lab { background: rgba(234, 67, 53, 0.12); color: var(--g-red); }
+        .preview-format.discussion { background: rgba(156, 39, 176, 0.12); color: #7B1FA2; }
+
+        .preview-card p { color: var(--text-subtle); font-size: 16px; margin: 0; line-height: 1.6; }
+
+        @media (max-width: 1200px) {
+            .comparison-table, .two-column, .feature-grid, .preview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .slide { page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: Title Slide                                         -->
+<!-- ============================================================ -->
+<div class="slide title-slide">
+    <div class="title-main">
+        <h1>
+            <span>The</span> <span>AI-Powered</span> <span>Business</span> <span>Lead</span>
+        </h1>
+        <h2>From Delegation to Synthesis &mdash; Practical AI for Every Business Function.</h2>
+
+        <div class="title-tags">
+            <div class="chip blue">Finance &amp; Ops</div>
+            <div class="chip green">HR &amp; Talent</div>
+            <div class="chip yellow">Consulting &amp; Advisory</div>
+            <div class="chip purple">Leadership &amp; Strategy</div>
+            <div class="chip red">60-Minute Session</div>
+        </div>
+
+        <p class="title-footnote">
+            <strong>Deltek Cloud AI Learning Community</strong><br>
+            Session 2 &bull; Non-Technical Track
+        </p>
+    </div>
+    <div class="slide-branding">
+        Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: Session Roadmap (60-min timeline)                   -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Your 60 Minutes</div>
+            <div class="slide-title">Session Roadmap</div>
+        </div>
+        <div class="content">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:var(--g-blue);">0'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">0 &ndash; 10 min</div>
+                        <h4>Claude &amp; Claude Code &mdash; Your Autonomous Assistant</h4>
+                        <p>Quick refresher on what Claude is, then a reframe of Claude Code as a "Terminal for Tasks" that business leaders can leverage.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:var(--g-green);">10'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">10 &ndash; 20 min</div>
+                        <h4>Prompt Engineering for Business Leaders</h4>
+                        <p>The R-C-T framework &mdash; Role, Context, Task. Live examples for Marketing, Legal, Finance, and HR.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:var(--g-yellow); color:var(--text-main);">20'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">20 &ndash; 30 min</div>
+                        <h4>AI for Leadership &mdash; From "Draft" to "Done"</h4>
+                        <p>Synthesis at speed: status reports, executive memos, development plans, meeting summaries.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:var(--g-red);">30'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">30 &ndash; 40 min</div>
+                        <h4>Data Analysis &mdash; No VLOOKUP Required</h4>
+                        <p>Upload a CSV, ask plain-English questions, and watch Claude build live dashboards in Artifacts.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:#5E35B1;">40'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">40 &ndash; 55 min</div>
+                        <h4>Hands-On Lab &mdash; Solve a "Real Work" Problem</h4>
+                        <p>Bring your own email, report, or spreadsheet. Work in pairs. Summarise, transform, or audit it live.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-badge" style="background:var(--g-blue);">55'</div>
+                    <div class="timeline-content">
+                        <div class="time-label">55 &ndash; 60 min</div>
+                        <h4>Wrap-Up &amp; The "Monday Morning" Plan</h4>
+                        <p>Key takeaways, prompt cheat sheet, and clear next steps you can act on immediately.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">2</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: Quick Refresher &mdash; What Is Claude?             -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Quick Refresher</div>
+            <div class="slide-title">What Is Claude, Again?</div>
+        </div>
+        <div class="content">
+            <div class="highlight-box blue" style="font-size:20px; text-align:center;">
+                <strong>Claude is an AI assistant built by Anthropic. You talk to it in plain English &mdash; and it writes, analyses, summarises, and creates for you.</strong>
+            </div>
+
+            <h3 style="margin-top:40px;">Three things to remember from Session 1:</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128172;</div>
+                    <h4>It's a Conversation</h4>
+                    <p>You type, it responds. The clearer you communicate, the better the result. No code needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#9989;</div>
+                    <h4>It Creates, Not Just Finds</h4>
+                    <p>Unlike a search engine, Claude drafts documents, builds tables, analyses data, and generates new content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#9888;&#65039;</div>
+                    <h4>Confident, Not Infallible</h4>
+                    <p>Always review the output. Claude is a tireless assistant &mdash; but your judgment is the final check.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box green" style="margin-top:32px; text-align:center;">
+                <strong>If you can write an email, you can use Claude. Today we go from "using it" to "leading with it."</strong>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">3</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: Section &mdash; Claude Code for Business            -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">0 &ndash; 10 Minutes</div>
+    <div class="section-title">Claude "Code" for Business</div>
+    <div class="section-tagline">
+        Don't let the name scare you.<br>
+        Think of it as your <em>Terminal for Tasks</em> &mdash;<br>
+        an autonomous assistant that navigates, organises, and connects.
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: Claude Code Reframed                                -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">The Reframe</div>
+            <div class="slide-title">Claude Code = Your Task Agent</div>
+        </div>
+        <div class="content">
+            <div class="highlight-box blue" style="font-size:20px; text-align:center;">
+                <strong>For a non-technical leader, Claude Code is an agent that can navigate your computer, organise files, and connect to your apps through the Model Context Protocol (MCP).</strong>
+            </div>
+
+            <h3 style="margin-top:40px;">What does that actually mean?</h3>
+            <div class="comparison-table">
+                <div class="comparison-card vibe">
+                    <h3>What Claude Code Can Do</h3>
+                    <ol>
+                        <li>Read, sort, and summarise files on your machine</li>
+                        <li>Connect to Slack, Google Drive, Email &mdash; via MCP integrations</li>
+                        <li>Process batches of documents (PDFs, receipts, resumes) in seconds</li>
+                        <li>Execute multi-step workflows you describe in plain English</li>
+                    </ol>
+                </div>
+                <div class="comparison-card traditional">
+                    <h3>What You Still Own</h3>
+                    <ol>
+                        <li>The decision on what to act on and when</li>
+                        <li>Final review of every output before it goes anywhere</li>
+                        <li>Sensitive-data judgment &mdash; you decide what Claude sees</li>
+                        <li>Strategic thinking &mdash; Claude handles the busywork</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="highlight-box green" style="margin-top:32px;">
+                <strong>You are the Air Traffic Controller. Claude is the autopilot.</strong>
+                <p>It handles navigation and execution &mdash; you set the destination and clear for landing.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">5</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: Claude Code by Role                                 -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Domain Examples</div>
+            <div class="slide-title">Claude Code in Your World</div>
+        </div>
+        <div class="content">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128188;</div>
+                    <h4>Consulting &amp; Support</h4>
+                    <p>"Find the latest implementation guide in my downloads and summarise the 'compliance' section."</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128101;</div>
+                    <h4>HR &amp; Talent</h4>
+                    <p>"Search my email for 'onboarding feedback' from the last 30 days and draft a summary of common complaints."</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128176;</div>
+                    <h4>Finance &amp; Ops</h4>
+                    <p>"Organise these 40 PDF receipts into a single expenses table and flag any missing vendor names."</p>
+                </div>
+            </div>
+
+            <div class="highlight-box yellow" style="margin-top:32px; text-align:center;">
+                <strong>Live Demo: Drag a folder of messy PDFs into Claude and watch it standardise everything into one clean table &mdash; flagging gaps automatically.</strong>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">6</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: Section &mdash; Prompt Engineering                  -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">10 &ndash; 20 Minutes</div>
+    <div class="section-title">Prompt Engineering for Business Leaders</div>
+    <div class="section-tagline">
+        Prompting isn't "coding" &mdash; it's <em>Delegation</em>.<br>
+        Give a junior employee vague instructions, you get vague results.<br>
+        Same principle. Better tool.
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: The R-C-T Framework                                 -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">The Framework</div>
+            <div class="slide-title">R &ndash; C &ndash; T: Three Letters, Better Results</div>
+        </div>
+        <div class="content">
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number" style="background:var(--g-blue);">R</div>
+                    <div class="step-content">
+                        <h4>Role</h4>
+                        <p>Who should Claude act as? &mdash; "You are a Brand Strategist," "Act as a senior HR Business Partner," "You are a financial analyst."</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number" style="background:var(--g-red);">C</div>
+                    <div class="step-content">
+                        <h4>Context</h4>
+                        <p>What background does Claude need? &mdash; "We are launching a new Deltek Vantagepoint feature," "This NDA is for a mid-market SaaS deal," "Q3 revenue is down 8%."</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number" style="background:var(--g-green);">T</div>
+                    <div class="step-content">
+                        <h4>Task</h4>
+                        <p>What exactly should Claude deliver? &mdash; "Write three social media hooks targeting Project Accountants," "Flag the 3 most aggressive indemnity clauses," "Build a comparison table."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box blue" style="margin-top:20px; text-align:center;">
+                <strong>Role sets the expertise. Context sets the scene. Task sets the deliverable.</strong>
+                <p>Nail all three and you get first-draft quality that's ready to edit &mdash; not rewrite.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">8</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: R-C-T in Action                                     -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">R-C-T in Action</div>
+            <div class="slide-title">See the Difference</div>
+        </div>
+        <div class="content">
+            <div class="comparison-table">
+                <div class="comparison-card traditional">
+                    <h3>Vague Delegation</h3>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Write something about our new feature for social media."
+                    </div>
+                    <p style="margin-top:16px; color:var(--text-subtle);">Result: generic filler that sounds like every other LinkedIn post.</p>
+                </div>
+                <div class="comparison-card vibe">
+                    <h3>R-C-T Delegation</h3>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "<em>You are a Brand Strategist</em> <strong>(Role)</strong>. We are launching a new Deltek Vantagepoint feature for resource planning <strong>(Context)</strong>. Write three social media hooks targeting Project Accountants &mdash; each under 150 characters, with a clear call-to-action <strong>(Task)</strong>."
+                    </div>
+                    <p style="margin-top:16px; color:var(--g-green); font-weight:600;">Result: three sharp, audience-specific hooks ready for review.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top:40px;">More domain examples:</h3>
+            <div class="two-column">
+                <div class="column-card">
+                    <h4>Legal / Compliance</h4>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Review this NDA <em>(Context)</em>. Flag the 3 most aggressive indemnity clauses <em>(Task)</em> and explain them like I'm a Sales Rep <em>(Persona layer)</em>."
+                    </div>
+                </div>
+                <div class="column-card">
+                    <h4>HR / Talent</h4>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "You are a senior HR Business Partner <em>(Role)</em>. An employee received mixed feedback in their annual review <em>(Context)</em>. Draft a 90-day development plan focused on leadership growth <em>(Task)</em>."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">9</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: Section &mdash; AI for Leadership                  -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">20 &ndash; 30 Minutes</div>
+    <div class="section-title">AI for Leadership</div>
+    <div class="section-tagline">
+        Leaders spend hours aggregating information.<br>
+        Claude does it in seconds.<br><br>
+        <em>The skill isn't writing &mdash; it's synthesis.</em>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11: From Draft to Done                                 -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Synthesis at Speed</div>
+            <div class="slide-title">Moving from "Draft" to "Done"</div>
+        </div>
+        <div class="content">
+            <div class="two-column">
+                <div class="column-card">
+                    <h4>Finance</h4>
+                    <p style="font-size:16px; color:var(--text-subtle); margin-bottom:16px;">Paste or upload two months of P&amp;L data and ask:</p>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Compare last month's P&amp;L draft with this month's. Highlight every discrepancy over $5K in plain English, and flag anything that needs explanation before the board review."
+                    </div>
+                </div>
+                <div class="column-card">
+                    <h4>HR / Talent</h4>
+                    <p style="font-size:16px; color:var(--text-subtle); margin-bottom:16px;">Upload three performance reviews and ask:</p>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Read these three reviews for the same employee. Draft a balanced development plan focusing on leadership growth, with specific actions and a 90-day timeline."
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:40px;">The Strategic Task</h3>
+            <div class="highlight-box purple" style="text-align:center;">
+                <strong>Take a 45-minute leadership meeting transcript and turn it into a High-Level Executive Memo with clear owners, deadlines, and open decisions.</strong>
+                <p>What used to take an hour of note cleanup now takes two minutes of review.</p>
+            </div>
+
+            <div class="feature-grid" style="margin-top:32px;">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128203;</div>
+                    <h4>Status Reports</h4>
+                    <p>Paste raw notes &rarr; get a polished update your VP can forward as-is</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128200;</div>
+                    <h4>Resource Planning</h4>
+                    <p>Describe the project scope &rarr; get a staffing plan with roles and timelines</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#9878;&#65039;</div>
+                    <h4>Decision Memos</h4>
+                    <p>List your options &rarr; get a structured pros/cons analysis with a recommendation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">11</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12: Section &mdash; Data Analysis                      -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">30 &ndash; 40 Minutes</div>
+    <div class="section-title">Data Analysis &mdash; No VLOOKUP Required</div>
+    <div class="section-tagline">
+        Use Claude Artifacts to visualise your data<br>
+        without ever opening a spreadsheet formula bar.
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13: Data Analysis Deep Dive                            -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Plain-English Analytics</div>
+            <div class="slide-title">Ask Questions, Get Answers</div>
+        </div>
+        <div class="content">
+            <div class="two-column">
+                <div class="column-card">
+                    <h4>Sales &amp; Ops</h4>
+                    <p style="font-size:16px; color:var(--text-subtle); margin-bottom:16px;">Upload a CSV of lead generation data:</p>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Which region has the highest conversion rate vs. cost-per-lead? Show me a bar chart comparing all regions."
+                    </div>
+                </div>
+                <div class="column-card">
+                    <h4>Consulting &amp; Advisory</h4>
+                    <p style="font-size:16px; color:var(--text-subtle); margin-bottom:16px;">Upload project utilisation logs:</p>
+                    <div class="prompt-example">
+                        <span class="prompt-label">Prompt</span>
+                        "Which team is at risk of burnout based on overtime trends over the last quarter? Flag anyone above 15% overtime."
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:40px;">What Artifacts Make Possible</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128202;</div>
+                    <h4>Live Charts</h4>
+                    <p>Bar charts, line graphs, pie charts &mdash; built in the side panel as you chat</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128269;</div>
+                    <h4>Trend Detection</h4>
+                    <p>"What patterns do you see?" &mdash; Claude spots what would take you an hour in a pivot table</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128680;</div>
+                    <h4>Anomaly Flagging</h4>
+                    <p>"Anything unusual in these numbers?" &mdash; Claude highlights outliers and explains why they matter</p>
+                </div>
+            </div>
+
+            <div class="highlight-box green" style="margin-top:32px; text-align:center;">
+                <strong>Interactive Demo: A live dashboard in Claude's side panel that updates as you ask follow-up questions &mdash; "Now show me that as a bar chart by department."</strong>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">13</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14: Section &mdash; Hands-On Lab                       -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">40 &ndash; 55 Minutes</div>
+    <div class="section-title">Hands-On Lab</div>
+    <div class="section-tagline">
+        Solve a real problem from your actual work &mdash; right now.<br>
+        Not a toy exercise. Your inbox. Your data. Your documents.
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15: Lab Instructions                                   -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Your Turn</div>
+            <div class="slide-title">Bring Your Own Work</div>
+        </div>
+        <div class="content">
+            <h3 style="margin-top:0;">Pick one of these challenges:</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128221;</div>
+                    <h4>Summarise</h4>
+                    <p>"Make this 10-page doc into 3 bullets for my 2 PM meeting."</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128296;</div>
+                    <h4>Transform</h4>
+                    <p>"Turn these messy notes into a structured Project Plan with owners and dates."</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128270;</div>
+                    <h4>Audit</h4>
+                    <p>"Compare this proposal against our 'Standard Terms' document and flag deviations."</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top:40px;">How the lab works:</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Pair Up</h4>
+                        <p>Find a partner. You'll learn from each other's experiments and prompt strategies.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Pick Your Task</h4>
+                        <p>Pull up an email, report, spreadsheet, or document you've been meaning to tackle.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Apply R-C-T</h4>
+                        <p>Use the framework: set the Role, provide Context, define the Task. Iterate until you're happy.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Review &amp; Share</h4>
+                        <p>Check the output critically. Share your best prompt and result with the group.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box red" style="margin-top:20px; text-align:center;">
+                <strong>Remember the Human-in-the-Loop rule: Claude is the pilot, but you are the Air Traffic Controller. Always verify before you send.</strong>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">15</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16: Section &mdash; Wrap-Up                            -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">55 &ndash; 60 Minutes</div>
+    <div class="section-title">Wrap-Up &amp; Your Monday Morning Plan</div>
+    <div class="section-tagline">
+        Three takeaways. One cheat sheet. Zero excuses.
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17: Key Takeaways                                      -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Key Takeaways</div>
+            <div class="slide-title">What to Carry Forward</div>
+        </div>
+        <div class="content">
+            <div class="feature-grid">
+                <div class="feature-card" style="border-color:var(--g-blue); border-width:3px;">
+                    <div class="feature-icon">&#128161;</div>
+                    <h4>Claude Is for Synthesis</h4>
+                    <p>Not just writing. Aggregation, comparison, pattern-finding, document cross-referencing &mdash; the work that eats your week.</p>
+                </div>
+                <div class="feature-card" style="border-color:var(--g-green); border-width:3px;">
+                    <div class="feature-icon">&#128202;</div>
+                    <h4>Use Artifacts to See Data</h4>
+                    <p>Don't just read numbers &mdash; visualise them. Charts, tables, and dashboards built in real time, right in the side panel.</p>
+                </div>
+                <div class="feature-card" style="border-color:#5E35B1; border-width:3px;">
+                    <div class="feature-icon">&#127919;</div>
+                    <h4>Good Prompting = Good Management</h4>
+                    <p>Role, Context, Task. The same clarity that makes a great brief to a colleague makes a great prompt to Claude.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top:40px;">Why This Matters for Deltek Teams</h3>
+            <div class="two-column">
+                <div class="column-card">
+                    <h4>Compliance &amp; Finance</h4>
+                    <ul>
+                        <li>Cross-reference documents instantly &mdash; NDAs, terms, audit reports</li>
+                        <li>Spot discrepancies in financial data without manual cell-by-cell review</li>
+                        <li>Generate audit-ready summaries from raw data</li>
+                    </ul>
+                </div>
+                <div class="column-card">
+                    <h4>Consulting &amp; Billability</h4>
+                    <ul>
+                        <li>Save 5+ hours per week on documentation and status reports</li>
+                        <li>More billable hours, less time on internal paperwork</li>
+                        <li>Faster client deliverables with higher consistency</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="two-column" style="margin-top:24px;">
+                <div class="column-card">
+                    <h4>HR &amp; Talent</h4>
+                    <ul>
+                        <li>Streamline the "paperwork of people" &mdash; reviews, plans, onboarding</li>
+                        <li>Synthesise feedback from multiple sources into actionable insights</li>
+                        <li>Draft communications that are consistent and professional</li>
+                    </ul>
+                </div>
+                <div class="column-card">
+                    <h4>Leadership &amp; Strategy</h4>
+                    <ul>
+                        <li>Turn 20-page reports into 1-page executive summaries</li>
+                        <li>Generate decision memos with structured analysis in minutes</li>
+                        <li>Reclaim hours spent on aggregation for actual strategic thinking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">17</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 18: Prompt Cheat Sheet                                 -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Your Cheat Sheet</div>
+            <div class="slide-title">Prompts You Can Reuse Monday Morning</div>
+        </div>
+        <div class="content">
+            <div class="preview-grid">
+                <div class="preview-card">
+                    <span class="preview-format demo">Finance</span>
+                    <h4>P&amp;L Comparison</h4>
+                    <p>"You are a financial analyst. I'm uploading two months of P&amp;L data. Compare them, highlight discrepancies over $5K in plain English, and flag items that need board-level explanation."</p>
+                </div>
+                <div class="preview-card">
+                    <span class="preview-format practice">HR</span>
+                    <h4>Development Plan</h4>
+                    <p>"You are a senior HR Business Partner. Read these three performance reviews for the same employee. Draft a balanced 90-day development plan focused on leadership growth with specific actions."</p>
+                </div>
+                <div class="preview-card">
+                    <span class="preview-format walkthrough">Sales</span>
+                    <h4>Lead Analysis</h4>
+                    <p>"Analyse this lead generation CSV. Which region has the highest conversion rate relative to cost-per-lead? Show me a comparison chart and recommend where to increase spend."</p>
+                </div>
+                <div class="preview-card">
+                    <span class="preview-format lab">Consulting</span>
+                    <h4>Utilisation Risk</h4>
+                    <p>"Review these project utilisation logs. Identify any team members at risk of burnout based on overtime trends over the past quarter. Flag anyone above 15% overtime."</p>
+                </div>
+                <div class="preview-card">
+                    <span class="preview-format discussion">Leadership</span>
+                    <h4>Meeting &rarr; Memo</h4>
+                    <p>"Here's a 45-minute meeting transcript. Turn it into a one-page executive memo with: key decisions, action items with owners and deadlines, and open questions."</p>
+                </div>
+                <div class="preview-card">
+                    <span class="preview-format demo">Marketing</span>
+                    <h4>Social Hooks</h4>
+                    <p>"You are a Brand Strategist. We're launching a new Vantagepoint resource planning feature. Write three social media hooks targeting Project Accountants, each under 150 characters."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">18</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 19: Do's and Don'ts Refresher                          -->
+<!-- ============================================================ -->
+<div class="slide content-slide">
+    <div class="slide-inner">
+        <div class="slide-header">
+            <div class="slide-pill">Ground Rules</div>
+            <div class="slide-title">The Rules Haven't Changed</div>
+        </div>
+        <div class="content">
+            <div class="comparison-table">
+                <div class="comparison-card vibe">
+                    <h3>Do</h3>
+                    <ol>
+                        <li>Use R-C-T every time &mdash; Role, Context, Task</li>
+                        <li>Iterate &mdash; refine the output instead of starting over</li>
+                        <li>Ask Claude to explain its reasoning when something looks off</li>
+                        <li>Start with low-stakes tasks to build confidence</li>
+                        <li>Use Artifacts for anything visual &mdash; charts, tables, dashboards</li>
+                        <li>Share your best prompts with your team</li>
+                    </ol>
+                </div>
+                <div class="comparison-card traditional">
+                    <h3>Don't</h3>
+                    <ol>
+                        <li>Paste confidential data without checking your org's AI policy</li>
+                        <li>Trust numbers or claims without independent verification</li>
+                        <li>Send AI-generated output without reading it first</li>
+                        <li>Give up after one bad result &mdash; refine your prompt</li>
+                        <li>Skip the human-in-the-loop step &mdash; you own the final call</li>
+                        <li>Overthink it &mdash; the best way to learn is to start</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="highlight-box yellow" style="margin-top:32px; text-align:center;">
+                <strong>Claude is confident, not always correct. Your judgment is still the most important ingredient.</strong>
+            </div>
+        </div>
+    </div>
+    <div class="slide-branding">Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL</div>
+    <div class="slide-number">19</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 20: Thank You / Closing                                -->
+<!-- ============================================================ -->
+<div class="slide section-slide">
+    <div class="section-subtitle">That's a Wrap!</div>
+    <div class="section-title">Thank You!</div>
+    <div class="section-tagline" style="margin-top:40px;">
+        <strong>Remember:</strong><br>
+        Claude is for synthesis, not just writing.<br>
+        Good prompting is good management.<br>
+        You are the Air Traffic Controller &mdash; always.<br><br>
+        <strong>Your Monday Morning Plan:</strong><br>
+        Pick one recurring task. Apply R-C-T. Save yourself an hour.<br>
+        Then do it again on Tuesday.<br><br>
+        <em style="opacity:0.85;">Prompt Cheat Sheets for Accounting, Sales, and HR will be distributed after this session.</em><br><br>
+        <strong>Questions?</strong>
+    </div>
+    <div class="slide-branding">
+        Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+    </div>
+</div>
+
+</body></html>
