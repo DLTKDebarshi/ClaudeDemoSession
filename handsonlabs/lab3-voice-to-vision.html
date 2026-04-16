@@ -171,6 +171,17 @@
         .footer strong { color: var(--text-main); }
         .footer a { color: var(--g-blue); text-decoration: none; font-weight: 600; }
 
+        /* Auth: hide solutions by default, reveal for admins */
+        .section-solution-wrap { display: none; }
+        body.is-admin .section-solution-wrap { display: block; }
+        .participant-notice {
+            padding: 28px; border-radius: var(--radius-md); margin: 24px 0;
+            border: 2px dashed #CBD5E1; background: var(--bg-light); text-align: center;
+        }
+        .participant-notice strong { display: block; font-size: 18px; margin-bottom: 8px; color: var(--text-subtle); }
+        .participant-notice p { font-size: 15px; color: var(--text-subtle); margin: 0; }
+        body.is-admin .participant-notice { display: none; }
+
         @media (max-width: 700px) {
             .two-col, .option-tabs { grid-template-columns: 1fr; }
             .option-tab:first-child { border-right: none; border-bottom: 2px solid #E2E8F0; }
@@ -406,9 +417,16 @@ Flag anything that needs fixing and suggest specific rewrites.</div>
         </div>
     </div>
 
+    <!-- Participant notice (visible only to non-admins) -->
+    <div class="participant-notice">
+        <strong>&#128274; Solution Walkthrough &mdash; Admin Only</strong>
+        <p>Complete the lab first! The facilitator will review the solution with you.</p>
+    </div>
+
     <!-- ============================================================ -->
-    <!-- SOLUTION                                                      -->
+    <!-- SOLUTION &mdash; Admin Only                                   -->
     <!-- ============================================================ -->
+    <div class="section-solution-wrap">
     <div class="section">
         <span class="section-label solution">Solution Walkthrough</span>
         <h2>What Good Looks Like</h2>
@@ -499,6 +517,7 @@ VP Cloud Operations [ORANGE - New, to be hired]
             </div>
         </details>
     </div>
+    </div><!-- end .section-solution-wrap -->
 
     <!-- ============================================================ -->
     <!-- TAKEAWAY                                                      -->
@@ -549,4 +568,6 @@ VP Cloud Operations [ORANGE - New, to be hired]
     Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
 </div>
 
+<script src="../auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function () { Auth.initPage(); });</script>
 </body></html>

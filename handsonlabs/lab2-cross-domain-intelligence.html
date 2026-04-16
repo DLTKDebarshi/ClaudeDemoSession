@@ -150,6 +150,27 @@
         .footer strong { color: var(--text-main); }
         .footer a { color: var(--g-blue); text-decoration: none; font-weight: 600; }
 
+        /* Auth: hide solutions by default, reveal for admins */
+        .section-solution-wrap { display: none; }
+        body.is-admin .section-solution-wrap { display: block; }
+        .participant-notice {
+            padding: 28px; border-radius: var(--radius-md); margin: 24px 0;
+            border: 2px dashed #CBD5E1; background: var(--bg-light); text-align: center;
+        }
+        .participant-notice strong { display: block; font-size: 18px; margin-bottom: 8px; color: var(--text-subtle); }
+        .participant-notice p { font-size: 15px; color: var(--text-subtle); margin: 0; }
+        body.is-admin .participant-notice { display: none; }
+        .download-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; border-radius: var(--radius-sm);
+            background: var(--g-green); color: white; text-decoration: none;
+            font-weight: 600; font-size: 14px; margin: 6px 8px 6px 0;
+            transition: background 0.2s;
+        }
+        .download-btn:hover { background: #0D652D; }
+        .download-group { margin: 24px 0; }
+        .download-group p { font-weight: 600; margin-bottom: 12px; font-size: 16px; }
+
         @media (max-width: 900px) { .doc-grid { grid-template-columns: 1fr; } }
         @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
     </style>
@@ -264,6 +285,14 @@
                     </ul>
                 </div>
             </div>
+        </div>
+
+        <div class="download-group">
+            <p>Download Sample Files for This Lab:</p>
+            <a href="sample-travel-policy.txt" download class="download-btn">&#11015; Travel Policy</a>
+            <a href="sample-vendor-agreement.txt" download class="download-btn">&#11015; Vendor Agreement</a>
+            <a href="sample-q3-budget-memo.txt" download class="download-btn">&#11015; Q3 Budget Memo</a>
+            <a href="sample-vendor-proposal.txt" download class="download-btn">&#11015; Vendor Proposal</a>
         </div>
 
         <div class="highlight-box yellow">
@@ -383,9 +412,16 @@ Keep it direct. The CFO doesn't read past page one.</div>
         </div>
     </div>
 
+    <!-- Participant notice (visible only to non-admins) -->
+    <div class="participant-notice">
+        <strong>&#128274; Solution Walkthrough &mdash; Admin Only</strong>
+        <p>Complete the lab first! The facilitator will review the solution with you.</p>
+    </div>
+
     <!-- ============================================================ -->
-    <!-- SOLUTION                                                      -->
+    <!-- SOLUTION &mdash; Admin Only                                   -->
     <!-- ============================================================ -->
+    <div class="section-solution-wrap">
     <div class="section">
         <span class="section-label solution">Solution Walkthrough</span>
         <h2>What Good Looks Like</h2>
@@ -460,6 +496,7 @@ Keep it direct. The CFO doesn't read past page one.</div>
             </div>
         </details>
     </div>
+    </div><!-- end .section-solution-wrap -->
 
     <!-- ============================================================ -->
     <!-- TAKEAWAY                                                      -->
@@ -491,4 +528,6 @@ Keep it direct. The CFO doesn't read past page one.</div>
     Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
 </div>
 
+<script src="../auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function () { Auth.initPage(); });</script>
 </body></html>
