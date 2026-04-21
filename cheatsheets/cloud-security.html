@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Security Engineer Prompt Cheat Sheet | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --accent: #EA4335;
+            --accent-dark: #B71C1C;
+            --accent-light: #FFEBEE;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Sticky Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--accent-dark); color: white;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 28px; font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .topnav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        .topnav a:hover { color: #FFFFFF; }
+        .topnav .brand { font-weight: 700; font-size: 15px; color: #FFFFFF; letter-spacing: 0.3px; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #EA4335, #B71C1C);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 56px; margin-bottom: 12px; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 19px; opacity: 0.93; max-width: 700px; margin: 0 auto; line-height: 1.7; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 28px 60px; }
+
+        /* ── Category Section ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 24px; font-weight: 700; color: var(--accent-dark);
+            margin-bottom: 24px; padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Card ── */
+        .prompt-card {
+            background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .prompt-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 20px rgba(234,67,53,0.10);
+        }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; color: var(--text-main); }
+        .use-tag {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap;
+        }
+        .use-tag.daily       { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly      { background: rgba(66,133,244,0.12); color: #4285F4; }
+        .use-tag.monthly     { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded    { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.quarterly   { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perincident { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perproject  { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perfeature  { background: rgba(234,67,53,0.12);  color: #EA4335; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when { font-size: 14px; color: var(--text-subtle); margin-bottom: 14px; line-height: 1.6; }
+
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 20px 56px 20px 20px;
+            font-family: 'Roboto Mono', 'Consolas', 'Courier New', monospace;
+            font-size: 13.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.12); color: #FFFFFF; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px;
+            font-weight: 600; cursor: pointer; transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: #34A853; }
+
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: var(--radius-md);
+            background: var(--accent-light); border-left: 4px solid var(--accent);
+            font-size: 13.5px; color: var(--text-subtle); line-height: 1.6;
+        }
+        .pro-tip strong { color: var(--accent-dark); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px 28px; font-size: 14px;
+            color: var(--text-subtle); border-top: 1px solid #E2E8F0; margin-top: 20px;
+        }
+        .footer a { color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 12px; }
+        .footer a:hover { text-decoration: underline; }
+        .footer strong { color: var(--text-main); }
+
+        @media (max-width: 640px) {
+            .hero { padding: 48px 20px 36px; }
+            .hero h1 { font-size: 32px; }
+            .container { padding: 0 14px 40px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<div class="topnav">
+    <a href="devops-engineer.html">&larr; DevOps Engineer</a>
+    <span class="brand">Cloud Security</span>
+    <a href="index.html">All Sheets</a>
+</div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="icon">&#128274;</div>
+    <h1>Cloud Security Engineer</h1>
+    <p>Secure by design, compliant by default. Prompts for IAM, threat modelling, compliance, vulnerability management, and zero trust.</p>
+</div>
+
+<div class="container">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 1 : IAM & Access Control            -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128273;</span> IAM &amp; Access Control</div>
+
+        <!-- Card 1-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>IAM Policy Generator (Least Privilege)</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need to create a tightly scoped IAM policy for a workload instead of using overly broad managed policies.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a least-privilege IAM policy for <em>[AWS / GCP / Azure]</em> that grants only the permissions needed by <em>[service/workload name]</em>.
+
+What the workload does:
+- <em>[e.g. "Reads from S3 bucket X, writes to DynamoDB table Y, publishes to SNS topic Z"]</em>
+- <em>[e.g. "Pulls container images from ECR, writes logs to CloudWatch"]</em>
+- <em>[e.g. "Invokes Lambda function A, reads secrets from Secrets Manager path /app/prod/*"]</em>
+
+Environment: <em>[account ID / project ID, region, VPC]</em>
+Identity type: <em>[IAM role for EC2/Lambda/ECS task / service account / user]</em>
+
+The policy must:
+1. Use specific resource ARNs (no wildcards on resources unless absolutely necessary)
+2. Include conditions: <em>[aws:SourceVpc, aws:PrincipalTag, StringEquals on specific keys, IP restrictions]</em>
+3. Add explicit Deny statements for sensitive actions (iam:*, sts:AssumeRole to admin roles, s3:DeleteBucket, etc.)
+4. Separate read-only vs. write permissions into distinct policy statements
+5. Include comments/descriptions explaining why each permission is needed
+
+Also provide:
+- A trust policy / assume role configuration
+- Recommended SCPs or permission boundaries to layer on top
+- A checklist of permissions to review and remove after 30 days if unused (using Access Analyzer data)</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> After deploying, use IAM Access Analyzer or GCP Policy Analyzer to verify no unused permissions remain after 30 days, then ask Claude to generate the trimmed policy.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>IAM Audit &amp; Overprivileged User Detection</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When conducting a periodic IAM review to identify over-permissioned identities and stale credentials.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyse the following IAM configuration data and identify security risks:
+
+IAM credential report / policy data:
+```
+<em>[paste IAM credential report CSV, or policy JSON, or gcloud/az CLI output]</em>
+```
+
+Cloud provider: <em>[AWS / GCP / Azure]</em>
+Organisation structure: <em>[single account / multi-account with AWS Orgs / GCP folders]</em>
+
+Please identify and categorise:
+
+1. **Overprivileged Roles/Users**
+   - Roles with AdministratorAccess or Owner that should be scoped down
+   - Wildcard permissions (Resource: "*") that can be narrowed
+   - Unused permissions (last accessed > 90 days)
+
+2. **Stale Credentials**
+   - Access keys older than <em>[90 / 180 / 365]</em> days
+   - Users with console access but no recent login
+   - Service accounts with keys that should use workload identity instead
+
+3. **Policy Anti-Patterns**
+   - Inline policies that should be managed policies
+   - NotAction/NotResource misuse that creates unintended access
+   - Missing MFA conditions on sensitive operations
+
+4. **Cross-Account / Federation Risks**
+   - Overly permissive trust policies (Principal: "*")
+   - External account access without conditions
+
+Output a prioritised remediation table: finding, severity (Critical/High/Medium/Low), affected identity, recommended fix, and estimated effort.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Service Account &amp; Workload Identity Design</h3>
+                <span class="use-tag perproject">Per Project</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When designing the identity architecture for a new project or migrating from long-lived credentials to workload identity federation.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design a service account and workload identity architecture for <em>[project/application name]</em> on <em>[AWS / GCP / Azure]</em>.
+
+Application architecture:
+- Services: <em>[list microservices and their runtime: EKS pods, Lambda functions, EC2 instances, Cloud Run, etc.]</em>
+- Cross-account needs: <em>[does any service access resources in another account/project?]</em>
+- External integrations: <em>[GitHub Actions, Terraform Cloud, third-party SaaS needing API access]</em>
+- Data stores: <em>[S3/GCS, RDS/CloudSQL, DynamoDB, Secrets Manager, etc.]</em>
+
+Design:
+1. **Service account per service** - naming convention, one service account per microservice, principle of least privilege
+2. **Workload identity federation** - eliminate long-lived keys:
+   - Kubernetes: <em>[IRSA for EKS / Workload Identity for GKE / Azure AD Pod Identity]</em>
+   - CI/CD: OIDC federation for <em>[GitHub Actions / GitLab CI]</em> with subject claim conditions
+   - External: STS AssumeRoleWithWebIdentity patterns
+3. **Cross-account access** - role chaining, trust policies with external ID, session tags
+4. **Role bindings matrix** - table mapping each service to its service account, roles, and accessible resources
+5. **Key rotation policy** - for any remaining long-lived credentials, define rotation schedule and automation
+6. **Break-glass procedure** - emergency access pattern with audit trail
+
+Include Terraform/IaC code snippets for the key configurations.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 2 : Threat Modelling & Architecture -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128737;</span> Threat Modelling &amp; Architecture</div>
+
+        <!-- Card 2-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>STRIDE Threat Model</h3>
+                <span class="use-tag perfeature">Per Feature</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When a new feature or system component needs a structured threat analysis before going to production.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Conduct a STRIDE threat model analysis for the following system:
+
+System name: <em>[feature or component name]</em>
+Description: <em>[what the system does, 2-3 sentences]</em>
+
+Architecture:
+- Components: <em>[list: web app, API gateway, microservice A, database, message queue, external API, etc.]</em>
+- Data flows: <em>[describe how data moves: user -> LB -> API -> DB, API -> queue -> worker -> S3]</em>
+- Trust boundaries: <em>[internet/DMZ, DMZ/internal, service-to-service, cross-account]</em>
+- Authentication: <em>[OAuth2, API keys, mTLS, IAM roles]</em>
+- Data classification: <em>[PII, financial, health, public, internal]</em>
+
+For each component and data flow, analyse all six STRIDE categories:
+- **S**poofing - Can an attacker impersonate a legitimate user/service?
+- **T**ampering - Can data be modified in transit or at rest?
+- **R**epudiation - Can actions be performed without an audit trail?
+- **I**nformation Disclosure - Can sensitive data leak?
+- **D**enial of Service - Can the service be overwhelmed?
+- **E**levation of Privilege - Can an attacker gain higher access?
+
+For each identified threat, provide:
+1. Threat ID (T-001, T-002, ...)
+2. STRIDE category
+3. Affected component/data flow
+4. Risk rating (Critical/High/Medium/Low) with likelihood and impact justification
+5. Existing controls (if any)
+6. Recommended mitigations with implementation priority
+7. Residual risk after mitigation
+
+Output as a structured table followed by a prioritised mitigation plan.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Feed the output into your design review document. Ask Claude to generate the architecture diagram description for draw.io/Lucidchart showing trust boundaries.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Security Architecture Review</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When reviewing a proposed system design for security gaps before approving it for implementation.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Review this system design for security concerns:
+
+System: <em>[system name and purpose]</em>
+Design document / architecture:
+```
+<em>[paste architecture description, diagram-as-text, or design doc excerpt]</em>
+```
+
+Cloud provider: <em>[AWS / GCP / Azure / multi-cloud]</em>
+Compliance requirements: <em>[SOC2 / ISO27001 / HIPAA / PCI-DSS / FedRAMP / none specific]</em>
+Data sensitivity: <em>[PII, financial, health records, intellectual property, public]</em>
+
+Review against these security domains:
+1. **Network Security** - segmentation, private subnets, WAF, DDoS protection, VPC endpoints
+2. **Encryption** - TLS version and cipher suites in transit, encryption at rest (KMS key management, envelope encryption), certificate management
+3. **Authentication & Authorisation** - identity provider, token handling, session management, RBAC/ABAC design
+4. **Data Protection** - classification, retention, backup encryption, cross-region replication security, data masking
+5. **Logging & Monitoring** - audit trail completeness, SIEM integration, anomaly detection, log tampering protection
+6. **Secrets Management** - how secrets are stored, rotated, injected (no hardcoded credentials)
+7. **Supply Chain** - dependency scanning, container image provenance, SBOM generation
+8. **Resilience** - failure modes that could become security incidents, blast radius containment
+
+For each finding, provide: severity, specific concern, recommended fix, and reference to the relevant security standard or best practice.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Zero Trust Network Design</h3>
+                <span class="use-tag perproject">Per Project</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When designing or migrating to a zero-trust architecture where no network location is inherently trusted.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design a zero-trust architecture for <em>[environment/application name]</em> on <em>[AWS / GCP / Azure]</em>.
+
+Current state:
+- Network: <em>[traditional VPC with public/private subnets, VPN for remote access, peered VPCs, etc.]</em>
+- Identity: <em>[Active Directory, Okta, Google Workspace, AWS SSO]</em>
+- Workloads: <em>[Kubernetes, VMs, serverless, SaaS integrations]</em>
+- Remote access: <em>[VPN, SSH bastion, RDP, current pain points]</em>
+- Users: <em>[number of users, roles: developers, ops, contractors, third-party vendors]</em>
+
+Design a zero-trust architecture covering:
+1. **Identity-Aware Proxy** - replace VPN with <em>[BeyondCorp / Zscaler / Cloudflare Access / Azure AD App Proxy]</em>, context-aware access policies (device posture, location, risk score)
+2. **Micro-Segmentation** - network policies per workload, service mesh with mTLS (<em>[Istio / Linkerd / Cilium]</em>), deny-all default with explicit allow rules
+3. **Mutual TLS (mTLS)** - certificate authority design, SPIFFE/SPIRE for workload identity, certificate rotation automation
+4. **Continuous Verification** - re-authentication triggers (time-based, anomaly-based), step-up authentication for sensitive operations, session duration limits
+5. **Device Trust** - endpoint compliance checks, managed vs. unmanaged device policies, certificate-based device identity
+6. **Data-Centric Security** - encryption tied to identity, DLP policies at egress points, field-level encryption for sensitive data
+
+Include a migration plan (phases, quick wins, dependencies) and the policy engine decision flow for access requests.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Start with one high-value application as a pilot, then expand. Ask Claude to create the phased rollout plan with success metrics for each phase.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 3 : Compliance & Governance         -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128203;</span> Compliance &amp; Governance</div>
+
+        <!-- Card 3-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Compliance Gap Analysis</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When preparing for an audit or assessing your current security posture against a compliance framework.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Perform a compliance gap analysis mapping our current security controls against <em>[SOC 2 Type II / ISO 27001 / NIST 800-53 / CIS Benchmarks / PCI-DSS v4.0 / HIPAA]</em>.
+
+Our current controls:
+```
+<em>[paste a summary of existing security controls, policies, tools in use, or a previous audit report excerpt]</em>
+```
+
+Cloud environment: <em>[AWS / GCP / Azure]</em> with <em>[list key services: EKS, RDS, S3, CloudTrail, GuardDuty, etc.]</em>
+Organisation size: <em>[employees, engineering team size]</em>
+Current certifications: <em>[list any existing certifications]</em>
+
+For each framework control domain, provide:
+1. **Control requirement** (ID and description from the framework)
+2. **Current state** (Implemented / Partially Implemented / Not Implemented / Not Applicable)
+3. **Existing evidence** (what tool/process satisfies this today)
+4. **Gap description** (what is missing or insufficient)
+5. **Remediation action** (specific steps to close the gap)
+6. **Priority** (Critical / High / Medium / Low based on audit risk)
+7. **Estimated effort** (days/weeks and team responsible)
+
+Output as a table, then provide an executive summary with the top 10 gaps to address before the next audit cycle.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Security Policy Writer</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need to draft or update a formal security policy that meets industry standards and is actually usable by your team.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft a <em>[Data Classification / Acceptable Use / Incident Response / Access Management / Encryption / Vulnerability Management / Change Management]</em> policy for our organisation.
+
+Context:
+- Industry: <em>[technology, finance, healthcare, government, etc.]</em>
+- Compliance frameworks: <em>[SOC2, ISO27001, NIST, HIPAA, PCI-DSS]</em>
+- Organisation size: <em>[approximate headcount]</em>
+- Cloud provider(s): <em>[AWS / GCP / Azure / hybrid]</em>
+- Existing related policies: <em>[list any policies this should align with]</em>
+
+The policy must include:
+1. **Purpose and Scope** - what this policy covers and who it applies to
+2. **Definitions** - key terms used in the policy
+3. **Policy Statements** - clear, actionable requirements (not vague aspirational language)
+4. **Roles and Responsibilities** - who is accountable for what (RACI where appropriate)
+5. **Standards and Procedures** - specific technical requirements (minimum password length, encryption algorithms, retention periods, etc.)
+6. **Exceptions Process** - how to request and document policy exceptions
+7. **Enforcement** - consequences of non-compliance
+8. **Review Cycle** - how often this policy is reviewed and by whom
+9. **References** - mapped to specific framework controls (e.g., SOC2 CC6.1, ISO 27001 A.9.2)
+
+Tone: authoritative but readable. Avoid legalese. Each requirement should be testable/auditable.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> After generating the policy, ask Claude to create a one-page summary for employee training and a compliance checklist for auditors.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Audit Evidence Collector</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When an audit is approaching and you need to systematically gather evidence for each control requirement.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate an evidence collection checklist for our upcoming <em>[SOC 2 Type II / ISO 27001 / PCI-DSS / HIPAA / FedRAMP]</em> audit.
+
+Audit details:
+- Audit period: <em>[start date]</em> to <em>[end date]</em>
+- Scope: <em>[systems, services, and processes in scope]</em>
+- Cloud environment: <em>[AWS / GCP / Azure]</em>
+- Previous audit findings: <em>[list any open items from last audit]</em>
+
+For each control domain in scope, provide:
+1. **Control ID and Name** (from the framework)
+2. **Evidence Required** (specific artifacts: screenshots, exports, configurations, logs)
+3. **Source** (where to obtain the evidence: AWS Console, Terraform state, Jira, Confluence, HR system)
+4. **CLI Command or Export Steps** (exact commands to extract the evidence, e.g., aws cloudtrail describe-trails, kubectl get networkpolicies -A)
+5. **Control Narrative** (a 2-3 sentence description of how we satisfy this control, written in audit-ready language)
+6. **Evidence Owner** (which team is responsible for collecting this)
+7. **Status** (placeholder for tracking: Not Started / In Progress / Collected / Reviewed)
+
+Group by control domain and include a timeline suggesting when to start collecting each category of evidence. Flag any controls where evidence collection is typically difficult or time-consuming.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- CATEGORY 4 : Vulnerability Mgmt & Incident Response -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128680;</span> Vulnerability Management &amp; Incident Response</div>
+
+        <!-- Card 4-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Vulnerability Assessment Report</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When processing vulnerability scan output and you need a prioritised, actionable remediation plan instead of a raw findings dump.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyse this vulnerability scan output and create a prioritised remediation plan:
+
+Scan source: <em>[Qualys / Nessus / Trivy / Snyk / AWS Inspector / Dependabot]</em>
+Scan scope: <em>[production containers / EC2 fleet / application dependencies / cloud infrastructure]</em>
+
+Scan results:
+```
+<em>[paste vulnerability scan output: CVE IDs, severity, affected packages, CVSS scores]</em>
+```
+
+Environment context:
+- Internet-facing: <em>[yes/no, which components]</em>
+- Data sensitivity: <em>[PII, financial, health, internal only]</em>
+- Compensating controls: <em>[WAF, network segmentation, runtime protection]</em>
+
+For each vulnerability, assess:
+1. **CVE ID and Description**
+2. **CVSS Score** and your **adjusted risk rating** (considering exploitability, exposure, and compensating controls)
+3. **Affected assets** (which services/images/hosts)
+4. **Exploitability** - is there a known exploit in the wild? Is it in CISA KEV?
+5. **Remediation** - specific package upgrade, patch, or configuration change with the exact command
+6. **SLA** - Critical: 48hrs, High: 7 days, Medium: 30 days, Low: 90 days (adjust based on context)
+7. **Workaround** - if an immediate patch is not available, what mitigates the risk?
+
+Output:
+- Executive summary (total findings by severity, trend vs. last scan)
+- Prioritised remediation table sorted by adjusted risk
+- Exceptions list (vulnerabilities accepted with justification)
+- Metrics: mean time to remediate by severity, ageing vulnerabilities</div>
+            </div>
+        </div>
+
+        <!-- Card 4-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Security Incident Response Plan</h3>
+                <span class="use-tag perincident">Per Incident</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need to create or update an incident response plan for a specific threat scenario your organisation faces.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a security incident response plan for the following threat scenario:
+
+Scenario: <em>[data breach via compromised API key / compromised developer credentials / ransomware on build server / cryptominer in Kubernetes / supply chain attack via malicious dependency / insider threat / DDoS attack]</em>
+
+Environment:
+- Cloud: <em>[AWS / GCP / Azure]</em>
+- Infrastructure: <em>[Kubernetes, serverless, VMs]</em>
+- Sensitive data: <em>[types of data at risk: PII, credentials, source code, financial]</em>
+- Team size: <em>[security team size, on-call structure]</em>
+- Existing tools: <em>[SIEM, EDR, SOAR, cloud-native security tools]</em>
+
+Structure the plan as:
+1. **Detection & Identification** - What alerts/indicators signal this scenario? (GuardDuty findings, CloudTrail anomalies, SIEM rules)
+2. **Severity Classification** - Criteria for P1/P2/P3, escalation thresholds
+3. **Containment (Immediate - first 30 minutes)**
+   - Short-term containment actions (isolate, revoke, block) with exact commands
+   - Evidence preservation steps (snapshot, log export, memory dump)
+   - Do NOT list (actions that could destroy evidence or worsen the situation)
+4. **Eradication** - Remove the threat actor/malware, patch the entry point, rotate all potentially compromised credentials
+5. **Recovery** - Restore from known-good state, staged reconnection, enhanced monitoring period
+6. **Communication Plan**
+   - Internal: who to notify at each severity level (RACI matrix)
+   - External: customer notification templates, regulatory reporting requirements (<em>[GDPR 72-hour rule / state breach laws / PCI]</em>)
+   - Legal: when to engage legal counsel
+7. **Post-Incident** - forensic analysis, lessons learned, control improvements
+8. **Tabletop Exercise** - scenario script to rehearse this plan with the team</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Run a tabletop exercise with the generated scenario quarterly. Ask Claude to play the role of the attacker and inject realistic curveballs during the exercise.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Cloud Security Posture Review</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you have security tool output (Security Hub, Prowler, ScoutSuite) and need to turn it into a prioritised action plan.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Audit the following cloud security posture findings and create a prioritised remediation backlog:
+
+Source: <em>[AWS Security Hub / Prowler / ScoutSuite / Azure Defender / GCP Security Command Center]</em>
+
+Findings:
+```
+<em>[paste security findings: finding ID, severity, resource, description, compliance standard]</em>
+```
+
+Environment:
+- Accounts/projects in scope: <em>[list account IDs or project names]</em>
+- Workload types: <em>[production, staging, development, sandbox]</em>
+- Previous review date: <em>[date of last review]</em>
+
+Analyse and provide:
+1. **Executive Dashboard**
+   - Total findings by severity (Critical/High/Medium/Low/Informational)
+   - Trend comparison with previous review (new, resolved, unchanged)
+   - Compliance score by framework (CIS, AWS FSBP, PCI)
+
+2. **Critical & High Findings (Detailed)**
+   - For each: finding, affected resource, risk explanation in business terms, exact remediation steps (CLI commands or Terraform code), owner assignment
+   - Flag any findings that indicate active compromise or immediate data exposure risk
+
+3. **Categorised Backlog**
+   - Group by domain: IAM, Network, Encryption, Logging, Storage, Compute
+   - For each group: count, effort estimate, recommended sprint allocation
+
+4. **Quick Wins** - findings fixable in under 1 hour with high security impact (e.g., enable S3 block public access, enable CloudTrail log validation, restrict security group)
+
+5. **Exceptions & Accepted Risks** - findings that should be suppressed with documented justification
+
+6. **Automation Recommendations** - findings that should be auto-remediated via <em>[AWS Config Rules / Cloud Custodian / Azure Policy / GCP Organisation Policy]</em></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="devops-engineer.html">&larr; DevOps Engineer</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <br><br>
+    Deltek Cloud AI Learning Community | <strong>Cloud Security Engineer Cheat Sheet</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

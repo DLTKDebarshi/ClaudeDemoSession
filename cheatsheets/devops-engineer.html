@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Engineer Prompt Cheat Sheet | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --accent: #0097A7;
+            --accent-dark: #006064;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Sticky Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--accent-dark); color: white;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 28px; font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .topnav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        .topnav a:hover { color: #FFFFFF; }
+        .topnav .brand { font-weight: 700; font-size: 15px; color: #FFFFFF; letter-spacing: 0.3px; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #0097A7, #006064);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 56px; margin-bottom: 12px; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 19px; opacity: 0.93; max-width: 700px; margin: 0 auto; line-height: 1.7; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 28px 60px; }
+
+        /* ── Category Section ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 24px; font-weight: 700; color: var(--accent-dark);
+            margin-bottom: 24px; padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Card ── */
+        .prompt-card {
+            background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .prompt-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 20px rgba(0,151,167,0.10);
+        }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; color: var(--text-main); }
+        .use-tag {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap;
+        }
+        .use-tag.daily      { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly      { background: rgba(66,133,244,0.12); color: #4285F4; }
+        .use-tag.monthly     { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded    { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.quarterly   { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perincident { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perservice  { background: rgba(234,67,53,0.12);  color: #EA4335; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when { font-size: 14px; color: var(--text-subtle); margin-bottom: 14px; line-height: 1.6; }
+
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 20px 56px 20px 20px;
+            font-family: 'Roboto Mono', 'Consolas', 'Courier New', monospace;
+            font-size: 13.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.12); color: #FFFFFF; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px;
+            font-weight: 600; cursor: pointer; transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: #34A853; }
+
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: var(--radius-md);
+            background: rgba(0,151,167,0.06); border-left: 4px solid var(--accent);
+            font-size: 13.5px; color: var(--text-subtle); line-height: 1.6;
+        }
+        .pro-tip strong { color: var(--accent-dark); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px 28px; font-size: 14px;
+            color: var(--text-subtle); border-top: 1px solid #E2E8F0; margin-top: 20px;
+        }
+        .footer a { color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 12px; }
+        .footer a:hover { text-decoration: underline; }
+        .footer strong { color: var(--text-main); }
+
+        @media (max-width: 640px) {
+            .hero { padding: 48px 20px 36px; }
+            .hero h1 { font-size: 32px; }
+            .container { padding: 0 14px 40px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<div class="topnav">
+    <a href="iac-engineer.html">&larr; IAC Engineer</a>
+    <span class="brand">DevOps Engineer</span>
+    <a href="cloud-security.html">Cloud Security &rarr;</a>
+</div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="icon">&#9881;</div>
+    <h1>DevOps Engineer</h1>
+    <p>Build, ship, and run. Prompts for CI/CD, containers, monitoring, incidents, and the automation that keeps everything alive.</p>
+</div>
+
+<div class="container">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 1 : CI/CD & Pipelines              -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128640;</span> CI/CD &amp; Pipelines</div>
+
+        <!-- Card 1-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>CI/CD Pipeline Builder</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you are setting up a new service or migrating an existing pipeline and need a production-ready configuration with all stages wired correctly.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a complete CI/CD pipeline configuration for <em>[GitHub Actions / GitLab CI / Jenkins]</em> that builds, tests, scans, and deploys <em>[service name]</em> written in <em>[language/framework]</em>.
+
+Requirements:
+- Source repo: <em>[repo URL or mono-repo path]</em>
+- Environments: <em>[dev, staging, production]</em>
+- Build: compile/package the application and produce a Docker image tagged with git SHA
+- Test: run unit tests, integration tests, and report coverage (fail if below <em>[coverage threshold, e.g. 80%]</em>)
+- Scan: include SAST (Semgrep/SonarQube) and container image scanning (Trivy/Snyk)
+- Deploy: deploy to <em>[EKS / GKE / ECS / Azure AKS]</em> with environment promotion gates
+- Notifications: send results to <em>[Slack channel / Teams webhook]</em>
+
+Include caching for dependencies, parallelised stages where possible, and environment-specific variable handling. Add comments explaining each stage.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Ask Claude to also generate the branch protection rules and required status checks that complement this pipeline.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Deployment Strategy Designer</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need to choose and implement a deployment strategy that minimises risk for a critical service release.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design a <em>[blue-green / canary / rolling]</em> deployment strategy for <em>[service name]</em> running on <em>[Kubernetes / ECS / Lambda / VMs]</em>.
+
+Context:
+- Current traffic: <em>[requests per second]</em>
+- SLA requirement: <em>[e.g. 99.95% uptime]</em>
+- Deployment frequency: <em>[e.g. 3x per week]</em>
+- Database changes involved: <em>[yes/no, describe migration approach]</em>
+
+Please include:
+1. Step-by-step deployment sequence with traffic shifting percentages and timing
+2. Health check endpoints and success criteria (HTTP status, latency thresholds, error rate)
+3. Automated rollback triggers (what metrics/conditions trigger rollback)
+4. Rollback procedure with estimated recovery time
+5. Smoke test suite to run at each traffic shift stage
+6. Communication plan (who gets notified at each stage)
+
+Output as a runbook with commands/configurations I can implement directly.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Pipeline Troubleshooter</h3>
+                <span class="use-tag daily">Daily</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When a CI/CD pipeline has failed and you need to quickly diagnose the root cause from error logs.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>My CI/CD pipeline for <em>[service name]</em> on <em>[GitHub Actions / GitLab CI / Jenkins]</em> is failing. Help me diagnose the issue.
+
+Failed stage: <em>[build / test / scan / deploy]</em>
+Error log (last 50 lines):
+```
+<em>[paste error log output here]</em>
+```
+
+Recent changes:
+- <em>[describe recent code/config changes, dependency updates, or infra changes]</em>
+
+Environment: <em>[OS, runtime version, container base image]</em>
+
+Please:
+1. Identify the root cause from the error output
+2. Explain WHY this error occurred (not just what it means)
+3. Provide the exact fix with code/config changes
+4. Suggest a preventive measure (linting rule, pre-commit hook, or pipeline guard) so this class of error does not recur
+5. If this could be a flaky/intermittent issue, explain how to confirm and add retry logic</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Paste the full log output, not just the error line. Context around the failure often reveals the real cause.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 2 : Containers & Orchestration      -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128230;</span> Containers &amp; Orchestration</div>
+
+        <!-- Card 2-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Dockerfile Optimiser</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you have a working Dockerfile but want to reduce image size, improve build speed, and harden it for production.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Review and optimise this Dockerfile for production readiness:
+
+```dockerfile
+<em>[paste your Dockerfile here]</em>
+```
+
+Application details:
+- Language/Runtime: <em>[e.g. Node 20, Python 3.12, Go 1.22, Java 21]</em>
+- Current image size: <em>[e.g. 1.2 GB]</em>
+- Build time: <em>[e.g. ~8 minutes]</em>
+
+Please optimise for:
+1. **Image size** - multi-stage build, minimal base image (distroless/alpine), remove unnecessary files
+2. **Build cache** - order layers for maximum cache reuse, separate dependency install from code copy
+3. **Security** - non-root user, no secrets in layers, minimal packages, specific version pins
+4. **Best practices** - .dockerignore recommendations, HEALTHCHECK instruction, proper signal handling (tini/dumb-init)
+
+Provide the optimised Dockerfile with comments explaining each change and the expected size/build-time improvement.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Kubernetes Manifest Generator</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When deploying a new microservice to Kubernetes and you need a complete set of production-grade manifests.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate production-ready Kubernetes manifests for <em>[service name]</em>, a <em>[language/framework]</em> microservice.
+
+Specifications:
+- Container image: <em>[registry/image:tag]</em>
+- Port: <em>[e.g. 8080]</em>
+- Resource requirements: CPU <em>[request/limit, e.g. 250m/500m]</em>, Memory <em>[request/limit, e.g. 256Mi/512Mi]</em>
+- Expected replicas: <em>[min / max, e.g. 3 / 10]</em>
+- Environment variables: <em>[list key env vars or ConfigMap/Secret names]</em>
+- External access: <em>[yes/no, domain name if yes]</em>
+- Namespace: <em>[namespace name]</em>
+
+Generate these manifests with best practices:
+1. **Deployment** - rolling update strategy, pod anti-affinity, topology spread, security context (non-root, read-only rootfs)
+2. **Service** - ClusterIP with named ports
+3. **Ingress** - TLS, path routing, annotations for <em>[nginx / ALB / GCE]</em> ingress controller
+4. **HPA** - scale on CPU and custom metrics
+5. **PDB** - ensure availability during node drains
+6. **NetworkPolicy** - restrict ingress/egress to required services only
+7. **ServiceAccount** - with IAM role annotation for <em>[AWS IRSA / GCP Workload Identity]</em>
+
+Include readiness and liveness probes with sensible defaults. Output as separate YAML documents.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Feed the output into a Kustomize base, then ask Claude to generate environment-specific overlays for dev/staging/prod.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Kubernetes Troubleshooter</h3>
+                <span class="use-tag daily">Daily</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When pods are misbehaving and you need a systematic diagnosis from kubectl output.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I have a Kubernetes issue in cluster <em>[cluster name]</em>, namespace <em>[namespace]</em>.
+
+Symptom: <em>[CrashLoopBackOff / Pending pod / OOMKilled / ImagePullBackOff / Service not reachable / High latency / other]</em>
+
+Here is the kubectl output:
+
+kubectl describe pod:
+```
+<em>[paste describe output]</em>
+```
+
+kubectl logs (last 100 lines):
+```
+<em>[paste logs]</em>
+```
+
+kubectl get events --sort-by='.lastTimestamp':
+```
+<em>[paste events]</em>
+```
+
+Please:
+1. Identify the root cause from the output
+2. Walk me through the diagnosis step-by-step (what each piece of evidence tells us)
+3. Provide the exact fix (kubectl commands or manifest changes)
+4. List additional kubectl commands I should run if more info is needed
+5. Suggest preventive measures (resource limits, probes, PDB) to avoid recurrence</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 3 : Monitoring & Observability      -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128200;</span> Monitoring &amp; Observability</div>
+
+        <!-- Card 3-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Alert Rule Designer</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When setting up alerting for a service and you need well-tuned rules that catch real problems without alert fatigue.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design alerting rules for <em>[service name]</em> using <em>[Prometheus/Alertmanager / Datadog / CloudWatch / PagerDuty]</em>.
+
+Service profile:
+- Type: <em>[API / worker / database / message queue / web frontend]</em>
+- SLO targets: availability <em>[e.g. 99.9%]</em>, latency p99 <em>[e.g. &lt; 500ms]</em>
+- Traffic pattern: <em>[steady / bursty / cron-driven / business-hours only]</em>
+- Dependencies: <em>[list downstream services and data stores]</em>
+
+For each alert, provide:
+1. Alert name and severity (critical / warning / info)
+2. PromQL / query expression with appropriate aggregation window
+3. Threshold and rationale for why this threshold was chosen
+4. For/pending duration to avoid flapping
+5. Labels and annotations (summary, description, runbook_url, dashboard_url)
+6. Routing (who gets paged vs. who gets a Slack notification)
+
+Include alerts for: error rate, latency degradation, saturation (CPU/memory/disk/connections), dependency failures, and SLO burn rate. Explain which alerts should wake someone up at 3 AM vs. which can wait until morning.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Ask Claude to also generate the Alertmanager routing config or Datadog notification rules to match these alerts.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Dashboard Blueprint</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need a comprehensive monitoring dashboard for a service that tells the full story at a glance.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design a monitoring dashboard layout for <em>[service name]</em> using <em>[Grafana / Datadog / CloudWatch]</em>.
+
+Service details:
+- Type: <em>[API service / background worker / data pipeline / web app]</em>
+- Tech stack: <em>[language, framework, database, message queue, cache]</em>
+- Key business function: <em>[what does this service do for users?]</em>
+
+Create a dashboard with these sections:
+1. **Overview row** - service health status, uptime %, active instances, current deployment version
+2. **Golden Signals** - latency (p50/p95/p99), traffic (RPS), error rate (%), saturation (CPU/memory/connections)
+3. **Business Metrics** - <em>[e.g. orders processed, messages delivered, API calls by customer]</em>
+4. **Dependencies** - response time and error rate for each downstream service and data store
+5. **Infrastructure** - pod/instance count, node health, disk I/O, network throughput
+
+For each panel, specify:
+- Query/metric expression
+- Visualisation type (graph, gauge, stat, table, heatmap)
+- Appropriate time range and refresh interval
+- Threshold colours (green/yellow/red) and their values</div>
+            </div>
+        </div>
+
+        <!-- Card 3-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Log Analysis &amp; Pattern Detection</h3>
+                <span class="use-tag daily">Daily</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When investigating production issues through logs or improving the logging strategy for a service.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyse these application logs and help me understand what is happening:
+
+```
+<em>[paste 50-100 lines of log output]</em>
+```
+
+Service: <em>[service name]</em>
+Time window: <em>[start time - end time]</em>
+Reported symptom: <em>[e.g. intermittent 500 errors, slow responses, data inconsistency]</em>
+
+Please:
+1. Identify error patterns and their frequency
+2. Build a timeline of events correlating entries across request IDs/trace IDs
+3. Pinpoint the root cause or the most likely contributing factor
+4. Highlight any warnings or anomalies that preceded the errors
+5. Suggest structured logging improvements:
+   - Fields that should be added (trace_id, duration_ms, user_id, etc.)
+   - Log levels that should be adjusted
+   - Sensitive data that should be redacted
+   - Format recommendations for better parseability in <em>[ELK / Loki / CloudWatch Logs / Splunk]</em></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- CATEGORY 4 : Incidents & Automation          -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header"><span class="cat-icon">&#128680;</span> Incidents &amp; Automation</div>
+
+        <!-- Card 4-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Incident Response Runbook</h3>
+                <span class="use-tag perservice">Per Service</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you need a structured, copy-pasteable runbook that any on-call engineer can follow during an outage.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create an incident response runbook for <em>[service name]</em> when <em>[failure scenario, e.g. "the database connection pool is exhausted" / "API latency exceeds 5 seconds" / "message queue consumer lag exceeds 1 million"]</em>.
+
+Service context:
+- Architecture: <em>[brief description of service and its dependencies]</em>
+- Infrastructure: <em>[AWS/GCP/Azure, Kubernetes/ECS, region]</em>
+- On-call team: <em>[team name]</em>
+
+Structure the runbook as:
+1. **Detection** - Which alerts fire? What dashboards to check first?
+2. **Severity Assessment** - How to determine if this is SEV1/SEV2/SEV3 (user impact criteria)
+3. **Immediate Triage** (first 5 minutes) - Commands to run, metrics to check, quick mitigations
+4. **Diagnosis** - Decision tree: "If X, check Y. If Y shows Z, then..."
+5. **Remediation** - Step-by-step fix procedures with exact commands
+6. **Rollback** - How to revert if remediation makes things worse
+7. **Communication** - Status page update templates, stakeholder notification messages
+8. **Post-resolution** - Verification checks, monitoring to watch for recurrence
+
+Include actual commands (kubectl, aws cli, curl) with placeholders, not just descriptions.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Store runbooks alongside the service code in a /runbooks directory and link them from your alert annotations.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Post-Incident Review (PIR)</h3>
+                <span class="use-tag perincident">Per Incident</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When an incident is resolved and you need to transform messy notes into a structured, blameless review document.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Transform these raw incident notes into a structured, blameless post-incident review.
+
+Incident ID: <em>[INC-XXXX]</em>
+Severity: <em>[SEV1 / SEV2 / SEV3]</em>
+Duration: <em>[start time]</em> to <em>[end time]</em> (<em>[total duration]</em>)
+Services affected: <em>[list services]</em>
+User impact: <em>[e.g. "15% of API requests returned 500 for 45 minutes"]</em>
+
+Raw timeline and notes:
+```
+<em>[paste Slack messages, notes, timestamps, and actions taken during the incident]</em>
+```
+
+Generate a PIR with:
+1. **Executive Summary** (3 sentences: what happened, impact, resolution)
+2. **Timeline** (clean, timestamped sequence of events: detection, escalation, diagnosis, mitigation, resolution)
+3. **Root Cause** (technical root cause with evidence)
+4. **Contributing Factors** (systemic issues: missing alerts, insufficient testing, unclear ownership, documentation gaps)
+5. **What Went Well** (things that helped resolve the incident faster)
+6. **What Could Be Improved** (process and tooling gaps)
+7. **Action Items** (table: action, owner, priority, due date) - focus on systemic fixes, not "be more careful"
+8. **Lessons Learned** (key takeaways for the wider engineering org)
+
+Tone: blameless and constructive. Focus on systems and processes, not individuals.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Automation Script Designer</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <div class="when">When you want to automate a repetitive operational task with a robust, production-quality script.</div>
+                <div class="prompt-box"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Design a <em>[Bash / Python]</em> automation script for: <em>[describe the task, e.g. "rotate database credentials and update Kubernetes secrets" / "clean up ECR images older than 30 days" / "generate a daily cost report from AWS Cost Explorer"]</em>.
+
+Requirements:
+- Environment: <em>[Linux distro, cloud provider, available CLI tools]</em>
+- Trigger: <em>[cron schedule / on-demand / event-driven]</em>
+- Inputs: <em>[parameters the script needs: account IDs, region, thresholds, etc.]</em>
+- Notifications: <em>[Slack webhook / email / SNS topic for success/failure alerts]</em>
+
+The script must include:
+1. **Argument parsing** with help text and validation
+2. **Dry-run mode** (-n/--dry-run) that shows what would happen without making changes
+3. **Idempotency** - safe to run multiple times without side effects
+4. **Error handling** - set -euo pipefail (bash) or try/except with proper exit codes
+5. **Logging** - timestamped structured output with configurable verbosity
+6. **Lock file** - prevent concurrent execution if applicable
+7. **Rollback** - undo partial changes on failure
+8. **Exit summary** - report what was done (items processed, errors, duration)
+
+Include inline comments, a usage example, and a cron entry if scheduled.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Ask Claude to also generate a unit test file and a CI pipeline step that validates the script with ShellCheck or pytest.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="iac-engineer.html">&larr; IAC Engineer</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="cloud-security.html">Cloud Security &rarr;</a>
+    <br><br>
+    Deltek Cloud AI Learning Community | <strong>DevOps Engineer Cheat Sheet</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

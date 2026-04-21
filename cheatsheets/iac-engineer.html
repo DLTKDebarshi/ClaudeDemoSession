@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAC Engineer Prompt Cheat Sheet | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --accent: #5E35B1;
+            --accent-dark: #4527A0;
+            --accent-light: #EDE7F6;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Sticky Topnav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 32px; background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #E2E8F0; backdrop-filter: blur(10px);
+        }
+        .topnav a {
+            text-decoration: none; font-size: 14px; font-weight: 600;
+            color: var(--accent); transition: opacity 0.2s;
+        }
+        .topnav a:hover { opacity: 0.7; }
+        .topnav .brand { font-size: 15px; font-weight: 700; color: var(--text-main); }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #5E35B1, #4527A0);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 64px; margin-bottom: 12px; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 19px; opacity: 0.93; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 32px 60px; }
+
+        /* ── Category Sections ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 24px; font-weight: 700; margin-bottom: 24px;
+            padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Cards ── */
+        .prompt-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .prompt-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(94,53,177,0.10);
+        }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; }
+        .use-tag {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap;
+        }
+        .use-tag.daily      { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly     { background: rgba(66,133,244,0.12);  color: #4285F4; }
+        .use-tag.monthly    { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded   { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.quarterly  { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perhire    { background: rgba(0,137,123,0.12);  color: #00897B; }
+        .use-tag.perproject { background: rgba(0,137,123,0.12);  color: #00897B; }
+        .use-tag.permodule  { background: rgba(66,133,244,0.12); color: #4285F4; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when {
+            font-size: 14px; color: var(--text-subtle); margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 20px 20px 20px 20px;
+            font-family: 'Roboto Mono', 'Courier New', monospace; font-size: 13.5px;
+            line-height: 1.75; white-space: pre-wrap; word-break: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.12); color: #FFFFFF; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: var(--accent); color: #fff; }
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+            background: rgba(94,53,177,0.06); border-left: 4px solid var(--accent);
+            font-size: 13.5px; color: var(--text-subtle);
+        }
+        .pro-tip strong { color: var(--accent); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px; color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0; margin-top: 20px;
+        }
+        .footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            margin: 0 16px;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .footer .footer-brand {
+            margin-top: 16px; font-size: 13px; color: #999;
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 48px 20px 36px; }
+            .hero h1 { font-size: 32px; }
+            .container { padding: 0 16px 40px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Topnav ── -->
+<div class="topnav">
+    <a href="team-lead.html">&larr; Team Lead</a>
+    <span class="brand">IAC Engineer</span>
+    <a href="devops-engineer.html">DevOps Engineer &rarr;</a>
+</div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="icon">&#128187;</div>
+    <h1>IAC Engineer</h1>
+    <p>Infrastructure as Code, done right. Prompts for Terraform, CloudFormation, Ansible, and everything that should be version-controlled.</p>
+</div>
+
+<div class="container">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 1: Terraform & Modules               -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128230;</span> Terraform &amp; Modules
+        </div>
+
+        <!-- Card 1-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Terraform Module Generator</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Generate a production-ready Terraform module with variables, outputs, validation rules, and usage examples for a specific resource.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a production-ready Terraform module for <em>[resource type, e.g., AWS RDS PostgreSQL instance / Azure AKS cluster / GCP Cloud Run service]</em>.
+
+Requirements:
+- Cloud provider: <em>[AWS / Azure / GCP]</em>
+- Terraform version: <em>[>= 1.5 / >= 1.8 / etc.]</em>
+- Provider version constraint: <em>[e.g., ~> 5.0 for AWS]</em>
+- Environment pattern: <em>[dev/staging/prod or workspace-based]</em>
+- Naming convention: <em>[e.g., {project}-{env}-{resource}]</em>
+- Compliance requirements: <em>[encryption at rest, VPC-only, tagging policy, etc.]</em>
+
+The module should include:
+1. main.tf - resource definitions with sensible defaults
+2. variables.tf - all inputs with descriptions, types, defaults, and validation blocks
+3. outputs.tf - useful outputs (ARN, endpoint, ID, connection string)
+4. versions.tf - required_providers and terraform version constraints
+5. locals.tf - computed values and tag merging
+6. README.md usage example showing how to call the module
+7. A tfvars.example file for each environment
+
+Follow these best practices:
+- Use variable validation blocks for input constraints
+- Add lifecycle rules where appropriate (prevent_destroy, ignore_changes)
+- Include default tags that merge with user-provided tags
+- Use data sources instead of hardcoded IDs where possible
+- Add comments explaining non-obvious decisions</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Always run `terraform fmt` and `terraform validate` on generated code before committing. Ask Claude to also generate a `.pre-commit-config.yaml` for automated checks.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Terraform State Troubleshooter</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Diagnose and resolve Terraform state issues: state drift, import planning, state surgery, and lock conflicts.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm having a Terraform state issue and need help diagnosing and resolving it.
+
+Problem:
+<em>[Describe the issue: e.g., "terraform plan shows resources to destroy that shouldn't be destroyed" / "state lock won't release" / "resource exists in AWS but not in state" / "need to move resources between state files"]</em>
+
+Current setup:
+- Backend: <em>[S3 + DynamoDB / Azure Blob / GCS / Terraform Cloud]</em>
+- State file location: <em>[bucket/path or workspace name]</em>
+- Terraform version: <em>[version]</em>
+- Number of resources in state: <em>[approximate count]</em>
+- Error message (if any): <em>[paste exact error]</em>
+
+What I've tried: <em>[any steps already attempted]</em>
+
+Help me:
+1. Diagnose the root cause of this state issue
+2. List the exact terraform CLI commands to resolve it (state mv, state rm, import, force-unlock, etc.)
+3. Explain what each command does and its risk level
+4. Provide a rollback plan if the fix goes wrong (state backup strategy)
+5. Suggest preventive measures to avoid this issue recurring
+6. If this involves state surgery, provide a step-by-step runbook with verification at each step
+
+IMPORTANT: Flag any destructive operations clearly. I want to understand the blast radius before running anything.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Always run `terraform state pull > backup-$(date +%Y%m%d-%H%M%S).tfstate` before any state surgery. A backup costs nothing; a corrupted state costs hours.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Terraform Migration Planner</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Plan a migration from manual/ClickOps infrastructure to Terraform with import strategy, resource mapping, and rollback plan.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to migrate existing manually-created infrastructure into Terraform management.
+
+Scope:
+- Cloud provider: <em>[AWS / Azure / GCP]</em>
+- Resources to import: <em>[list resources: e.g., 3 VPCs, 12 EC2 instances, 5 RDS databases, 2 ALBs, IAM roles]</em>
+- Current documentation: <em>[none / partial spreadsheet / architecture diagrams / etc.]</em>
+- Environment: <em>[production / staging / both]</em>
+- Risk tolerance: <em>[zero downtime required / maintenance window available]</em>
+- Team experience with Terraform: <em>[beginner / intermediate / advanced]</em>
+
+Create a migration plan:
+1. Discovery phase: how to inventory all existing resources (AWS CLI commands, resource explorer queries)
+2. Resource mapping: group resources into logical Terraform modules/files
+3. Import strategy: the order of operations (dependencies first), with exact `terraform import` commands
+4. Code generation: recommend tools (terraformer, aztfexport, etc.) and their limitations
+5. Drift handling: how to reconcile differences between generated code and actual state
+6. Validation: how to verify imports without making changes (plan should show zero diff)
+7. Rollback plan: what happens if something goes wrong mid-migration
+8. Timeline estimate: realistic phases with go/no-go checkpoints
+
+Flag any resources that are risky to import (stateful services, DNS, IAM) and explain why they need extra care.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 2: CloudFormation & AWS              -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#9729;</span> CloudFormation &amp; AWS
+        </div>
+
+        <!-- Card 2-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>CloudFormation Template Builder</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Generate a CloudFormation template with parameters, mappings, conditions, and outputs for a multi-resource AWS stack.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a production-ready CloudFormation template for <em>[describe the stack: e.g., "a three-tier web application with ALB, ECS Fargate, and Aurora PostgreSQL" / "a data pipeline with S3, Lambda, SQS, and DynamoDB"]</em>.
+
+Requirements:
+- Template format: <em>[YAML / JSON]</em>
+- Environment support: <em>[dev/staging/prod via parameters and conditions]</em>
+- Region: <em>[us-east-1 / multi-region / etc.]</em>
+- Networking: <em>[existing VPC ID to reference / create new VPC / etc.]</em>
+- Security requirements: <em>[encryption at rest, TLS, least-privilege IAM, VPC endpoints]</em>
+- Tagging policy: <em>[required tags: Environment, Owner, CostCenter, Project]</em>
+
+The template should include:
+1. AWSTemplateFormatVersion and Description
+2. Parameters with AllowedValues, Default, and ConstraintDescription
+3. Mappings for environment-specific values (instance sizes, CIDR ranges)
+4. Conditions for optional resources (e.g., only create WAF in prod)
+5. Resources with proper DependsOn and DeletionPolicy where needed
+6. Outputs with Export names for cross-stack references
+7. Metadata for AWS::CloudFormation::Interface (parameter grouping and labels)
+
+Follow best practices:
+- Use !Sub, !Ref, and !GetAtt instead of hardcoded values
+- Add UpdatePolicy and CreationPolicy for ASGs/instances
+- Include CloudWatch alarms for critical resources
+- Use cfn-lint compatible syntax</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Always validate with `aws cloudformation validate-template` AND `cfn-lint` before deploying. validate-template only checks syntax; cfn-lint catches logical errors.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>CloudFormation Stack Troubleshooter</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Diagnose stack creation/update failures from error messages, suggest fixes, and explain rollback behavior.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>My CloudFormation stack is failing. Help me diagnose and fix it.
+
+Stack details:
+- Stack name: <em>[stack name]</em>
+- Operation: <em>[CREATE / UPDATE / DELETE]</em>
+- Status: <em>[CREATE_FAILED / UPDATE_ROLLBACK_COMPLETE / DELETE_FAILED / etc.]</em>
+- Error message from events: <em>[paste the exact error from the CloudFormation events tab]</em>
+- Failed resource: <em>[logical ID and resource type]</em>
+- Template snippet (relevant section): <em>[paste the resource definition that's failing]</em>
+
+Additional context:
+- Was this working before? <em>[yes, broke after change X / first deployment]</em>
+- Region: <em>[region]</em>
+- Account type: <em>[org member account / standalone / GovCloud]</em>
+- IAM role used for deployment: <em>[role name or "default credentials"]</em>
+
+Help me:
+1. Explain what the error means in plain language
+2. Identify the root cause (IAM permissions, resource limits, dependency ordering, invalid property, etc.)
+3. Provide the specific fix (corrected template snippet or IAM policy)
+4. Explain the rollback behaviour: what was rolled back, what wasn't, and why
+5. If the stack is stuck in a failed state, give me exact steps to recover (continue-rollback, delete and recreate, etc.)
+6. Suggest a prevention strategy (change sets, stack policies, etc.)</div>
+            </div>
+        </div>
+
+        <!-- Card 2-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>AWS Landing Zone Blueprint</h3>
+                <span class="use-tag perproject">Per Project</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Design a multi-account AWS organization structure with SCPs, networking, shared services, and security baseline.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me design an AWS Landing Zone for our organisation.
+
+Context:
+- Organisation size: <em>[number of teams / business units]</em>
+- Current AWS footprint: <em>[greenfield / existing accounts to migrate]</em>
+- Compliance requirements: <em>[SOC2 / HIPAA / PCI-DSS / FedRAMP / none specific]</em>
+- Workload types: <em>[web apps, data analytics, ML, SaaS platform, etc.]</em>
+- Networking needs: <em>[hybrid with on-prem / cloud-only / multi-region]</em>
+- Tooling preference: <em>[AWS Control Tower / custom with CloudFormation / Terraform]</em>
+
+Design a landing zone blueprint covering:
+
+1. Account Structure:
+   - OU hierarchy (Security, Infrastructure, Workloads, Sandbox)
+   - Account types and naming convention
+   - Account vending process
+
+2. Security Baseline:
+   - SCPs for each OU (prevent region sprawl, protect guardrails, deny risky services)
+   - CloudTrail, Config, GuardDuty, Security Hub setup
+   - IAM Identity Center (SSO) configuration with permission sets
+
+3. Networking:
+   - Transit Gateway or VPC peering topology
+   - CIDR allocation strategy
+   - DNS architecture (Route53 + on-prem resolution)
+   - VPC endpoint strategy
+
+4. Shared Services:
+   - Centralised logging account setup
+   - Container registry, artifact storage
+   - CI/CD account and cross-account deployment roles
+
+5. IAC Structure:
+   - Repository layout for managing all of this
+   - Pipeline for account vending and baseline deployment
+
+Provide this as infrastructure-as-code pseudocode or actual CloudFormation/Terraform where possible.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Start with AWS Control Tower if you can. It gives you guardrails, account factory, and SSO out of the box. Customise on top rather than building from scratch.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 3: Configuration Management          -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128295;</span> Configuration Management
+        </div>
+
+        <!-- Card 3-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Ansible Playbook Generator</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create an Ansible playbook with roles, handlers, templates, and idempotent tasks for a server configuration scenario.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a production-ready Ansible playbook for <em>[scenario: e.g., "configuring Nginx as a reverse proxy with TLS" / "hardening Ubuntu 22.04 servers per CIS benchmarks" / "deploying a Java application with Tomcat"]</em>.
+
+Environment:
+- Target OS: <em>[Ubuntu 22.04 / RHEL 9 / Amazon Linux 2023 / etc.]</em>
+- Ansible version: <em>[>= 2.14 / >= 2.16]</em>
+- Inventory pattern: <em>[static INI / dynamic AWS EC2 / etc.]</em>
+- Connection method: <em>[SSH key / SSM / etc.]</em>
+- Secrets management: <em>[Ansible Vault / external lookup from AWS SSM / HashiCorp Vault]</em>
+
+Generate the following file structure:
+1. site.yml - main playbook with role includes
+2. roles/<em>[role_name]</em>/tasks/main.yml - idempotent tasks with proper check mode support
+3. roles/<em>[role_name]</em>/handlers/main.yml - service restart/reload handlers
+4. roles/<em>[role_name]</em>/templates/ - Jinja2 templates with sensible defaults
+5. roles/<em>[role_name]</em>/defaults/main.yml - default variables
+6. roles/<em>[role_name]</em>/vars/main.yml - platform-specific variables
+7. roles/<em>[role_name]</em>/molecule/default/ - test scenario for molecule
+
+Best practices to follow:
+- Every task must be idempotent (no shell/command without creates/removes)
+- Use handlers for service restarts, not inline restarts
+- Tag every task for selective execution
+- Use `ansible.builtin.` FQCN for all modules
+- Include a `--check` compatible mode (no changes in dry run)</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Run `ansible-lint` on generated playbooks before committing. It catches non-idempotent patterns, missing FQCN, and deprecated modules.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Configuration Drift Detector</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Design a drift detection and remediation workflow comparing desired state vs actual state across environments.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me design a configuration drift detection and remediation system for my infrastructure.
+
+Current setup:
+- IAC tools in use: <em>[Terraform / CloudFormation / Ansible / mix]</em>
+- Environments: <em>[dev / staging / prod -- list all]</em>
+- Cloud provider(s): <em>[AWS / Azure / GCP / multi-cloud]</em>
+- Resource types to monitor: <em>[EC2, security groups, IAM policies, S3 buckets, RDS, etc.]</em>
+- Current drift detection: <em>[none / manual terraform plan / AWS Config rules]</em>
+- CI/CD platform: <em>[GitHub Actions / GitLab CI / Jenkins / etc.]</em>
+
+Design a drift detection system:
+1. Detection mechanism:
+   - Scheduled `terraform plan` / `cfn-drift-detection` jobs
+   - AWS Config rules for resource-level compliance
+   - Custom scripts for resources not in IAC
+
+2. Alerting:
+   - How to classify drift severity (critical: security groups, IAM; low: tags, descriptions)
+   - Notification channels and escalation paths
+   - Alert format with enough context to act on
+
+3. Remediation workflow:
+   - Auto-remediate vs manual approval matrix
+   - Runbook for each drift type
+   - How to handle intentional drift (emergency changes)
+
+4. Pipeline integration:
+   - CI/CD job definitions (GitHub Actions / GitLab CI YAML)
+   - Scheduling (cron expressions)
+   - State locking during drift checks
+
+5. Reporting:
+   - Weekly drift summary dashboard
+   - Trend tracking: is drift increasing or decreasing?
+   - Compliance score per environment
+
+Provide actual CI/CD pipeline YAML and script snippets, not just descriptions.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Secret Management Strategy</h3>
+                <span class="use-tag perproject">Per Project</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Design a secrets management approach using Vault/SOPS/AWS Secrets Manager with rotation policies and access patterns.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me design a secrets management strategy for our infrastructure-as-code workflows.
+
+Current state:
+- How secrets are stored today: <em>[hardcoded in code / .env files / encrypted in git / parameter store / etc.]</em>
+- IAC tools: <em>[Terraform / CloudFormation / Ansible]</em>
+- CI/CD platform: <em>[GitHub Actions / GitLab CI / Jenkins]</em>
+- Cloud provider: <em>[AWS / Azure / GCP]</em>
+- Compliance requirements: <em>[rotation frequency, audit logging, encryption standard]</em>
+- Types of secrets: <em>[DB passwords, API keys, TLS certs, SSH keys, service account tokens]</em>
+
+Design a secrets management system covering:
+
+1. Tool selection: recommend the right tool for our stack
+   - Evaluate: HashiCorp Vault vs SOPS vs AWS Secrets Manager vs Azure Key Vault
+   - Justify the recommendation with pros/cons for our use case
+
+2. Architecture:
+   - Where secrets are stored (source of truth)
+   - How IAC references secrets (data sources, env vars, dynamic providers)
+   - How CI/CD pipelines access secrets without storing them
+
+3. Rotation strategy:
+   - Automated rotation for each secret type
+   - Zero-downtime rotation pattern (dual-credential approach)
+   - Rotation schedule and alerting for expiring secrets
+
+4. Access control:
+   - Least-privilege policies per team/service
+   - Audit logging and alerting on unusual access
+   - Break-glass procedure for emergencies
+
+5. Migration plan:
+   - Step-by-step to move from current state to target state
+   - How to handle secrets already in Terraform state files
+
+Provide actual configuration snippets (Vault policies, IAM policies, Terraform code) not just architecture diagrams.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Scan your repos with `trufflehog` or `gitleaks` before designing the new system. You need to know what's already leaked before you can secure the future.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 4: Testing & Documentation           -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128203;</span> Testing &amp; Documentation
+        </div>
+
+        <!-- Card 4-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Infrastructure Test Suite</h3>
+                <span class="use-tag permodule">Per Module</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Write test cases for IAC modules using Terratest/Kitchen-Terraform/cfn-lint with plan validation and integration scenarios.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a comprehensive test suite for my <em>[Terraform module / CloudFormation template]</em> that provisions <em>[describe what it creates: e.g., "an ECS Fargate service with ALB and auto-scaling"]</em>.
+
+Module details:
+- IAC tool: <em>[Terraform / CloudFormation]</em>
+- Testing framework preference: <em>[Terratest (Go) / pytest + boto3 / Kitchen-Terraform / cfn-lint + taskcat]</em>
+- Module inputs: <em>[list key variables/parameters]</em>
+- Module outputs: <em>[list key outputs]</em>
+- CI/CD platform: <em>[GitHub Actions / GitLab CI -- for pipeline integration]</em>
+
+Generate test cases covering:
+
+1. Static analysis:
+   - Linting (terraform validate, cfn-lint)
+   - Security scanning (tfsec, checkov, cfn-nag)
+   - Cost estimation (infracost)
+
+2. Unit tests (plan-level, no real resources):
+   - Validate the plan creates expected resources
+   - Validate resource configurations match inputs
+   - Test variable validation rules (invalid inputs should fail)
+   - Test conditional logic (resources created/skipped based on flags)
+
+3. Integration tests (real infrastructure):
+   - Deploy to a test account/workspace
+   - Verify resources exist and are configured correctly
+   - Test connectivity and functionality
+   - Destroy and verify clean teardown
+
+4. Contract tests:
+   - Outputs match expected types and formats
+   - Module works with minimum required inputs
+   - Module works with all inputs specified
+
+5. CI pipeline:
+   - Pipeline YAML that runs static + unit on every PR
+   - Nightly integration test job
+   - Test result reporting and badge generation
+
+Include actual test code, not pseudocode.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>IAC Documentation Generator</h3>
+                <span class="use-tag permodule">Per Module</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Generate comprehensive documentation for an IAC module covering inputs, outputs, architecture diagram description, and usage examples.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate comprehensive documentation for my <em>[Terraform module / CloudFormation template]</em>.
+
+Module code (paste or describe):
+<em>[Paste your variables.tf + outputs.tf, or describe the module's purpose and interface]</em>
+
+Module context:
+- What it provisions: <em>[high-level description]</em>
+- Target audience: <em>[team members who will use this module]</em>
+- Part of a larger system: <em>[how this fits into the overall architecture]</em>
+
+Generate documentation with:
+
+1. README.md:
+   - Overview: what the module does and when to use it
+   - Architecture: text description of the infrastructure it creates (suitable for a Mermaid or ASCII diagram)
+   - Prerequisites: required providers, permissions, existing resources
+   - Usage examples: basic, advanced, and multi-environment
+   - Inputs table: name, type, default, required, description
+   - Outputs table: name, description
+   - Important notes / gotchas
+
+2. CHANGELOG template for tracking module versions
+
+3. examples/ directory structure:
+   - examples/basic/main.tf - minimal working example
+   - examples/complete/main.tf - all options configured
+   - examples/multi-env/main.tf - workspace or directory-based environments
+
+4. ADR (Architecture Decision Record):
+   - Why key design decisions were made
+   - Alternatives considered and why they were rejected
+
+Format compatible with terraform-docs for auto-generation of the inputs/outputs tables.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Add `terraform-docs` to your pre-commit hooks so documentation stays in sync with code automatically. Never maintain docs manually if a tool can do it.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Change Management Runbook</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a step-by-step runbook for a high-risk infrastructure change with pre-checks, execution steps, verification, and rollback procedures.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a detailed change management runbook for: <em>[describe the change: e.g., "migrating RDS from MySQL 5.7 to 8.0" / "replacing NAT Gateways with NAT instances" / "upgrading EKS cluster from 1.28 to 1.29" / "migrating Terraform state backend from S3 to Terraform Cloud"]</em>
+
+Change context:
+- Environment: <em>[production / staging / all]</em>
+- Maintenance window: <em>[date, time, duration available]</em>
+- Expected downtime: <em>[zero / X minutes / degraded performance]</em>
+- Stakeholders to notify: <em>[teams, customers, on-call]</em>
+- Rollback feasibility: <em>[easy / partial / impossible -- explain constraints]</em>
+
+Generate a runbook with:
+
+1. Change Summary:
+   - What's changing and why (1 paragraph)
+   - Blast radius: what services/users are affected
+   - Risk level: low / medium / high / critical
+
+2. Pre-Change Checklist:
+   - Backups verified (specific commands to verify)
+   - Monitoring baseline captured
+   - Communication sent to stakeholders
+   - Rollback plan reviewed by second engineer
+   - Go/no-go criteria
+
+3. Execution Steps:
+   - Numbered steps with exact commands
+   - Expected output after each step
+   - Checkpoint: verify before proceeding to next step
+   - Estimated time per step
+
+4. Verification:
+   - Health checks to run immediately after
+   - Functional tests to validate the change
+   - Monitoring dashboards to watch for 30 minutes post-change
+
+5. Rollback Procedure:
+   - Trigger criteria: when to roll back
+   - Step-by-step rollback commands
+   - Verification that rollback was successful
+
+6. Post-Change:
+   - Documentation updates needed
+   - Monitoring adjustments
+   - Stakeholder communication (success or rollback)
+   - Lessons learned template
+
+Format as a checklist I can print and follow step-by-step during the maintenance window.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Do a dry run of the entire runbook in staging first. Time each step. The maintenance window estimate should come from the dry run, not from guessing.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="team-lead.html">&larr; Team Lead</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="devops-engineer.html">DevOps Engineer &rarr;</a>
+    <div class="footer-brand">Deltek Cloud AI Learning Community | <strong>IAC Engineer Cheat Sheet</strong> | #AIforALL</div>
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

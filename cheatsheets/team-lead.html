@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Lead Prompt Cheat Sheet | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --accent: #34A853;
+            --accent-dark: #0D652D;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Sticky Topnav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 32px; background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #E2E8F0; backdrop-filter: blur(10px);
+        }
+        .topnav a {
+            text-decoration: none; font-size: 14px; font-weight: 600;
+            color: var(--accent); transition: opacity 0.2s;
+        }
+        .topnav a:hover { opacity: 0.7; }
+        .topnav .brand { font-size: 15px; font-weight: 700; color: var(--text-main); }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #34A853, #0D652D);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 64px; margin-bottom: 12px; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 19px; opacity: 0.93; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 32px 60px; }
+
+        /* ── Category Sections ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 24px; font-weight: 700; margin-bottom: 24px;
+            padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Cards ── */
+        .prompt-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .prompt-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(52,168,83,0.10);
+        }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; }
+        .use-tag {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap;
+        }
+        .use-tag.daily     { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly    { background: rgba(66,133,244,0.12);  color: #4285F4; }
+        .use-tag.monthly   { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded  { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.quarterly { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perhire   { background: rgba(0,137,123,0.12);  color: #00897B; }
+        .use-tag.perteam   { background: rgba(0,137,123,0.12);  color: #00897B; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when {
+            font-size: 14px; color: var(--text-subtle); margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 20px 20px 20px 20px;
+            font-family: 'Roboto Mono', 'Courier New', monospace; font-size: 13.5px;
+            line-height: 1.75; white-space: pre-wrap; word-break: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.12); color: #FFFFFF; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: var(--accent); color: #fff; }
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+            background: rgba(52,168,83,0.06); border-left: 4px solid var(--accent);
+            font-size: 13.5px; color: var(--text-subtle);
+        }
+        .pro-tip strong { color: var(--accent); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px; color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0; margin-top: 20px;
+        }
+        .footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            margin: 0 16px;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .footer .footer-brand {
+            margin-top: 16px; font-size: 13px; color: #999;
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 48px 20px 36px; }
+            .hero h1 { font-size: 32px; }
+            .container { padding: 0 16px 40px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Topnav ── -->
+<div class="topnav">
+    <a href="technical-lead.html">&larr; Tech Lead</a>
+    <span class="brand">Team Lead</span>
+    <a href="iac-engineer.html">IAC Engineer &rarr;</a>
+</div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="icon">&#129309;</div>
+    <h1>Team Lead</h1>
+    <p>Lead your people, not just your projects. Prompts for 1:1s, hiring, performance, team health, and the human side of engineering.</p>
+</div>
+
+<div class="container">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 1: 1:1 Meetings & Coaching          -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128172;</span> 1:1 Meetings &amp; Coaching
+        </div>
+
+        <!-- Card 1-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>1:1 Meeting Prep &amp; Questions</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Generate a structured 1:1 agenda with context-aware questions based on the person's current situation, recent work, and career goals.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm preparing for a 1:1 with <em>[person's name]</em>, a <em>[role/title]</em> on my team. Here's their context:
+
+- Currently working on: <em>[project or initiative]</em>
+- Recent wins: <em>[specific accomplishment or milestone]</em>
+- Current challenges: <em>[blockers, frustrations, or concerns you've noticed]</em>
+- Career goal: <em>[what they've expressed wanting to grow toward]</em>
+- Last 1:1 action items: <em>[any follow-ups from previous meeting]</em>
+
+Generate a structured 1:1 agenda with:
+1. An opening check-in question (not "how are you?")
+2. 2-3 questions about their current work and blockers
+3. 1 question connecting their work to their career growth
+4. A follow-up on last meeting's action items
+5. A closing question that surfaces anything I might be missing
+
+Keep the tone supportive and coaching-oriented, not status-report-driven.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Keep a running doc per person. Paste their previous 1:1 notes into context for even more personalised questions over time.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Difficult Conversation Prep</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Plan and script a sensitive conversation (underperformance, conflict, unwanted news) with empathetic framing and clear expectations.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to have a difficult conversation with <em>[person's name]</em> (<em>[their role]</em>) about <em>[topic: e.g., missed deadlines / interpersonal conflict / role change / PIP]</em>.
+
+Context:
+- Specific examples of the issue: <em>[2-3 concrete, dated instances]</em>
+- Impact on team/project: <em>[how this is affecting others or delivery]</em>
+- Previous feedback given: <em>[any prior conversations or written feedback]</em>
+- Desired outcome: <em>[what good looks like going forward]</em>
+- Their likely perspective: <em>[how they might see the situation]</em>
+
+Help me prepare:
+1. An opening statement that is direct but empathetic (no "sandwich" feedback)
+2. A clear description of the issue using specific examples
+3. Active listening prompts to understand their perspective
+4. A collaborative section where we agree on next steps together
+5. A summary of expectations and a timeline for follow-up
+6. Contingency responses if they become defensive or emotional
+
+Keep the tone respectful, factual, and forward-looking.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Practice reading the script aloud. If any sentence feels unnatural, rewrite it in your own words -- authenticity matters more than polish.</div>
+            </div>
+        </div>
+
+        <!-- Card 1-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Career Development Discussion</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Structure a career growth conversation covering current skills, aspirations, gap analysis, and a concrete action plan.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm preparing a career development discussion with <em>[person's name]</em>, currently a <em>[current role/level]</em> on my team.
+
+Their profile:
+- Time in current role: <em>[duration]</em>
+- Key strengths: <em>[2-3 demonstrated strengths]</em>
+- Areas for growth: <em>[skills or behaviours to develop]</em>
+- Expressed career interest: <em>[where they want to go -- e.g., senior IC, management, specialisation]</em>
+- Company level framework: <em>[link or description of your engineering ladder, if applicable]</em>
+
+Create a structured career conversation plan:
+1. Opening: reflection questions for them to self-assess where they are
+2. Gap analysis: map their current skills against the next level's expectations
+3. Opportunities: 3-5 specific stretch assignments, projects, or learning paths that close the gaps
+4. Timeline: a realistic quarter-by-quarter roadmap
+5. Support: what I can do as their manager to unblock their growth
+6. Success metrics: how we'll both know they're making progress
+
+Frame everything as collaborative -- this is their career, I'm the enabler.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 2: Hiring & Onboarding              -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128269;</span> Hiring &amp; Onboarding
+        </div>
+
+        <!-- Card 2-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Hiring Scorecard &amp; Interview Plan</h3>
+                <span class="use-tag perhire">Per Hire</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Design a structured interview process with competency-based scorecards for a specific role on your team.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I'm hiring a <em>[role title]</em> for my team. Here's the context:
+
+- Team focus: <em>[what the team builds/owns]</em>
+- Key technologies: <em>[tech stack the person will work with]</em>
+- Seniority level: <em>[junior / mid / senior / staff]</em>
+- Must-have skills: <em>[3-5 non-negotiable competencies]</em>
+- Nice-to-have skills: <em>[2-3 bonus areas]</em>
+- Team culture values: <em>[e.g., ownership, collaboration, candour]</em>
+
+Design a complete interview plan:
+1. A hiring scorecard with 6-8 competencies, each with a 1-5 rating scale and behavioral anchors
+2. Interview stages (screen, technical, system design, team fit) with who should run each
+3. 2-3 specific questions per stage tied to scorecard competencies
+4. A take-home or live exercise option with clear evaluation criteria
+5. Red flags and green flags to watch for at each stage
+6. A debrief template for the hiring panel to fill out
+
+Optimise for consistency and reducing unconscious bias.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Share the scorecard with all interviewers before the loop starts. Calibration upfront eliminates "gut feel" debates in the debrief.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>New Team Member Onboarding Plan</h3>
+                <span class="use-tag perhire">Per Hire</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a week-by-week onboarding plan tailored to the role, including buddy assignments, learning milestones, and first deliverable.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>A new <em>[role title]</em> is joining my team on <em>[start date]</em>. Help me build their onboarding plan.
+
+Context:
+- Their background: <em>[relevant experience, where they're coming from]</em>
+- Team they're joining: <em>[team name, size, what you own]</em>
+- Key systems they'll work with: <em>[repos, services, tools]</em>
+- Their first project: <em>[the initial deliverable or area of focus]</em>
+- Assigned buddy: <em>[name and role of their onboarding buddy]</em>
+
+Create a 30-60-90 day onboarding plan:
+
+Week 1-2 (Orientation):
+- Day-by-day schedule with meetings, reading, and setup tasks
+- Key people to meet and why
+
+Week 3-4 (Learning):
+- First small contributions (e.g., bug fix, documentation)
+- Systems deep-dives to attend or shadow
+
+Month 2 (Contributing):
+- First meaningful deliverable with clear scope
+- Checkpoint: what "on track" looks like at day 60
+
+Month 3 (Owning):
+- Independent ownership of an area
+- 90-day review criteria
+
+Include a checklist format I can share with them on day one.</div>
+            </div>
+        </div>
+
+        <!-- Card 2-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Headcount Justification</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Build a data-backed proposal for adding headcount with workload analysis, impact projection, and hiring timeline.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to justify adding <em>[number]</em> headcount to my team for <em>[quarter/half/year]</em>. Help me build a compelling business case.
+
+Current state:
+- Team size: <em>[current number]</em> engineers
+- Current workload: <em>[list active projects and maintenance areas]</em>
+- Utilisation signals: <em>[overtime trends, sprint spillover %, on-call burden, etc.]</em>
+- What's being dropped or delayed: <em>[projects on hold, tech debt accumulating, SLA risks]</em>
+
+Future demand:
+- Upcoming commitments: <em>[roadmap items, new product features, migrations]</em>
+- Strategic initiatives: <em>[things leadership wants that you can't staff today]</em>
+
+Build a headcount proposal with:
+1. Executive summary (3 sentences max)
+2. Workload analysis: current capacity vs demand, with data
+3. Risk of NOT hiring: concrete impacts on delivery, reliability, retention
+4. Role specifications: what each new hire would own
+5. Expected ROI: what becomes possible with additional capacity
+6. Hiring timeline: realistic ramp-up and time-to-productivity
+7. Alternative considered: why contractors, re-org, or tooling alone won't solve this
+
+Format for a VP-level audience -- concise, data-driven, no fluff.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Anchor your ask to revenue or reliability metrics your VP already tracks. "We need help" is a feeling; "we'll miss the Q3 launch" is a business risk.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 3: Performance & Growth              -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128200;</span> Performance &amp; Growth
+        </div>
+
+        <!-- Card 3-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Performance Review Writer</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Synthesise feedback from multiple sources into a balanced, actionable performance review with clear ratings and growth areas.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me write a performance review for <em>[person's name]</em>, <em>[role/level]</em>, for the <em>[Q1 2026 / H2 2025 / etc.]</em> review cycle.
+
+Input data:
+- Self-assessment summary: <em>[paste or summarise their self-review]</em>
+- Peer feedback themes: <em>[key points from 2-3 peer reviews]</em>
+- My observations: <em>[specific examples of impact, both positive and developmental]</em>
+- Key deliverables this period: <em>[what they shipped or accomplished]</em>
+- Goals from last review: <em>[what they committed to and progress made]</em>
+- Level expectations: <em>[what's expected at their current level]</em>
+
+Write a performance review with:
+1. Overall rating recommendation with justification (1 paragraph)
+2. Strengths (2-3) with specific evidence and impact
+3. Growth areas (1-2) with specific examples and concrete suggestions
+4. Progress on previous goals (met / partially met / not met with context)
+5. Goals for next period (2-3 SMART goals)
+6. Summary statement suitable for the official review record
+
+Tone: honest, specific, supportive. Avoid generic praise ("great team player") -- always tie to observable behaviour and outcomes.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Team Skills Matrix</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Map team capabilities against required competencies, identify gaps, and plan cross-training or hiring to fill them.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me build a skills matrix for my team to identify capability gaps and plan development.
+
+Team members and their primary strengths:
+<em>[Name 1]</em> - <em>[key skills, e.g., backend Java, system design, mentoring]</em>
+<em>[Name 2]</em> - <em>[key skills]</em>
+<em>[Name 3]</em> - <em>[key skills]</em>
+<em>[... add all team members]</em>
+
+Competencies we need to cover:
+<em>[List required skills: e.g., Kubernetes, CI/CD, frontend React, database tuning, incident response, security, technical writing]</em>
+
+Create:
+1. A skills matrix table (team members as rows, competencies as columns) with ratings: Expert / Proficient / Learning / Gap
+2. Bus factor analysis: competencies where only 1 person is proficient or above
+3. Critical gaps: competencies with no one at proficient level
+4. A cross-training plan: who should learn what from whom, with suggested format (pairing, shadowing, courses)
+5. Hiring implications: gaps that are better filled by hiring than training
+6. A quarterly check-in template to reassess progress
+
+Output the matrix in a format I can paste into a spreadsheet.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Let team members self-rate first, then calibrate together. The conversation about the matrix is often more valuable than the matrix itself.</div>
+            </div>
+        </div>
+
+        <!-- Card 3-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Recognition &amp; Shout-Outs</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Draft specific, meaningful recognition messages that highlight impact rather than just activity.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me write a recognition message for <em>[person's name]</em> to share in <em>[Slack channel / team meeting / email to leadership / review doc]</em>.
+
+What they did: <em>[specific action or contribution]</em>
+Context that makes it impressive: <em>[why this was hard, what constraints they overcame]</em>
+Impact: <em>[measurable outcome, unblocked team, improved reliability, etc.]</em>
+Values demonstrated: <em>[e.g., ownership, collaboration, going above and beyond]</em>
+
+Write 3 versions:
+1. A short Slack shout-out (2-3 sentences, team channel appropriate)
+2. A more detailed message suitable for sharing with their skip-level or in a review doc (1 paragraph)
+3. A nomination-style write-up if I wanted to put them forward for a company award (3-4 sentences with clear impact statement)
+
+Make each version specific to what THEY did -- avoid generic praise. Highlight impact over effort.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Timely recognition beats perfect recognition. Send the Slack version today; save the detailed version for their review file.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Category 4: Team Health & Culture             -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#127793;</span> Team Health &amp; Culture
+        </div>
+
+        <!-- Card 4-1 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Team Health Assessment</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Design and analyse a team health survey covering psychological safety, workload, collaboration, and clarity of direction.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me create and analyse a team health check for my <em>[team name]</em> team (<em>[team size]</em> people).
+
+Current context:
+- Recent events: <em>[reorg, launch, attrition, new members, etc.]</em>
+- Known concerns: <em>[anything you've heard informally]</em>
+- Last health check results (if any): <em>[previous scores or themes]</em>
+
+Create:
+1. A team health survey with 8-10 statements rated on Strongly Disagree to Strongly Agree, covering:
+   - Psychological safety ("I feel safe raising concerns")
+   - Workload sustainability
+   - Clarity of goals and priorities
+   - Collaboration and communication
+   - Manager support and feedback
+   - Growth and learning opportunities
+   - Tooling and process efficiency
+   - Overall team morale
+
+2. 2-3 open-ended questions to surface qualitative insights
+
+3. An analysis framework: how to interpret results, identify patterns, and prioritise action
+
+4. An action plan template: for each low-scoring area, suggest a concrete intervention
+
+5. A communication template for sharing results transparently with the team
+
+Keep the survey anonymous-friendly and under 5 minutes to complete.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-2 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Conflict Resolution Framework</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Structure an approach to resolve interpersonal or cross-team conflict with mediation steps and documented agreements.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>I need to mediate a conflict on my team. Help me structure my approach.
+
+Situation:
+- People involved: <em>[Person A role]</em> and <em>[Person B role]</em>
+- Nature of conflict: <em>[technical disagreement / communication style clash / workload dispute / role boundary confusion]</em>
+- Specific incidents: <em>[1-2 concrete examples of the friction]</em>
+- Impact on team: <em>[how this is affecting collaboration, delivery, or morale]</em>
+- What I've tried so far: <em>[any previous interventions]</em>
+
+Create a conflict resolution plan:
+1. Pre-mediation: individual conversations with each person (questions to ask, what to listen for)
+2. Joint session structure: ground rules, agenda, and facilitation guide
+3. Root cause exploration: questions that surface underlying needs, not just positions
+4. Agreement framework: a template for documenting what both parties commit to
+5. Follow-up cadence: how and when to check that the resolution is holding
+6. Escalation criteria: when to involve HR, skip-level, or consider team changes
+
+Keep the approach neutral, focused on behaviour not personality, and solution-oriented.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Talk to each person individually first. Never ambush someone with a mediation session they didn't know was coming.</div>
+            </div>
+        </div>
+
+        <!-- Card 4-3 -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Team Charter / Working Agreement</h3>
+                <span class="use-tag perteam">Per Team</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Facilitate creation of a team charter covering values, communication norms, decision-making process, and meeting cadence.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me facilitate the creation of a team charter for my <em>[team name]</em> team.
+
+Team context:
+- Team size: <em>[number]</em> people
+- Distribution: <em>[co-located / hybrid / fully remote, time zones]</em>
+- Team maturity: <em>[newly formed / recently changed / stable and established]</em>
+- Primary tools: <em>[Slack, Jira, Confluence, GitHub, etc.]</em>
+- Pain points to address: <em>[e.g., unclear ownership, meeting overload, slow decisions]</em>
+
+Create a team charter template and facilitation guide covering:
+
+1. Team Mission: a 1-2 sentence purpose statement (draft 3 options for the team to vote on)
+
+2. Communication Norms:
+   - When to use Slack vs email vs meeting
+   - Expected response times by channel
+   - Core overlap hours for the team
+
+3. Decision-Making:
+   - Who decides what (RACI-style)
+   - How to handle disagreements (e.g., disagree-and-commit, escalation path)
+
+4. Meeting Cadence:
+   - Required vs optional meetings
+   - Meeting hygiene rules (agendas, notes, no-meeting blocks)
+
+5. Code of Conduct:
+   - How we give feedback
+   - How we handle mistakes
+   - How we celebrate wins
+
+6. A facilitation agenda for a 60-minute workshop where the team co-creates this charter together
+
+Format as a living document the team can iterate on quarterly.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Don't write this alone and present it. The charter only works if the team co-creates it. Use the facilitation guide to run the session together.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="technical-lead.html">&larr; Tech Lead</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="iac-engineer.html">IAC Engineer &rarr;</a>
+    <div class="footer-brand">Deltek Cloud AI Learning Community | <strong>Team Lead Cheat Sheet</strong> | #AIforALL</div>
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

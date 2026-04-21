@@ -10,6 +10,10 @@
             --g-yellow: #FBBC05;
             --g-green: #34A853;
             --purple: #5E35B1;
+            --teal: #00897B;
+            --orange: #F4511E;
+            --cyan: #0097A7;
+            --indigo: #3949AB;
             --text-main: #202124;
             --text-subtle: #5F6368;
             --bg-light: #F8F9FA;
@@ -22,12 +26,12 @@
             background: #FFFFFF; color: var(--text-main); line-height: 1.6;
         }
         .hero {
-            background: linear-gradient(135deg, #F59E0B, var(--g-red));
+            background: linear-gradient(135deg, #1A73E8, #0D47A1);
             color: white; text-align: center; padding: 72px 40px 56px;
         }
         .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
         .hero p  { font-size: 20px; opacity: 0.95; max-width: 680px; margin: 0 auto; }
-        .container { max-width: 1100px; margin: -36px auto 60px; padding: 0 40px; }
+        .container { max-width: 1200px; margin: -36px auto 60px; padding: 0 40px; }
 
         .cs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
         .cs-card {
@@ -57,14 +61,23 @@
             font-weight: 600; color: var(--g-blue); font-size: 15px;
         }
 
-        .cs-banner.accounting { background: linear-gradient(135deg, var(--g-green), #0D652D); }
-        .cs-banner.leadership { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
-        .cs-banner.sales      { background: linear-gradient(135deg, #F59E0B, #D97706); }
-        .cs-banner.hr         { background: linear-gradient(135deg, var(--purple), #7B1FA2); }
-        .cs-card.accounting:hover { border-color: var(--g-green); }
-        .cs-card.leadership:hover { border-color: var(--g-blue); }
-        .cs-card.sales:hover      { border-color: #D97706; }
-        .cs-card.hr:hover         { border-color: var(--purple); }
+        .cs-banner.pm         { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
+        .cs-banner.sm         { background: linear-gradient(135deg, var(--teal), #00695C); }
+        .cs-banner.director   { background: linear-gradient(135deg, var(--orange), #BF360C); }
+        .cs-banner.techlead   { background: linear-gradient(135deg, var(--indigo), #1A237E); }
+        .cs-banner.teamlead   { background: linear-gradient(135deg, var(--g-green), #0D652D); }
+        .cs-banner.iac        { background: linear-gradient(135deg, var(--purple), #4527A0); }
+        .cs-banner.devops     { background: linear-gradient(135deg, var(--cyan), #006064); }
+        .cs-banner.cloudsec   { background: linear-gradient(135deg, var(--g-red), #B71C1C); }
+
+        .cs-card.pm:hover         { border-color: var(--g-blue); }
+        .cs-card.sm:hover         { border-color: var(--teal); }
+        .cs-card.director:hover   { border-color: var(--orange); }
+        .cs-card.techlead:hover   { border-color: var(--indigo); }
+        .cs-card.teamlead:hover   { border-color: var(--g-green); }
+        .cs-card.iac:hover        { border-color: var(--purple); }
+        .cs-card.devops:hover     { border-color: var(--cyan); }
+        .cs-card.cloudsec:hover   { border-color: var(--g-red); }
 
         .how-box {
             margin-top: 48px; padding: 32px; border-radius: var(--radius-lg);
@@ -101,73 +114,145 @@
 <div class="container">
 
     <div class="cs-grid">
-        <a href="accounting.html" class="cs-card accounting">
-            <div class="cs-banner accounting">
-                <div class="cs-icon">&#128200;</div>
-                <h2>Accounting &amp; Finance</h2>
+        <a href="project-manager.html" class="cs-card pm">
+            <div class="cs-banner pm">
+                <div class="cs-icon">&#128203;</div>
+                <h2>Project Manager</h2>
             </div>
             <div class="cs-body">
-                <p>P&amp;L reviews, variance analysis, audit prep, expense categorisation, budget forecasting, journal entry checks, and month-end close acceleration.</p>
+                <p>Status reports, risk registers, stakeholder updates, timeline tracking, resource allocation, scope management, and project post-mortems.</p>
                 <div class="cs-tags">
-                    <span class="cs-tag">P&amp;L</span>
-                    <span class="cs-tag">Variance</span>
-                    <span class="cs-tag">Audit</span>
-                    <span class="cs-tag">Forecasting</span>
-                    <span class="cs-tag">Month-End</span>
+                    <span class="cs-tag">Status Reports</span>
+                    <span class="cs-tag">Risk Management</span>
+                    <span class="cs-tag">Timeline</span>
+                    <span class="cs-tag">Scope</span>
+                    <span class="cs-tag">Stakeholders</span>
                 </div>
                 <span class="cs-cta">Open Cheat Sheet &rarr;</span>
             </div>
         </a>
 
-        <a href="leadership.html" class="cs-card leadership">
-            <div class="cs-banner leadership">
-                <div class="cs-icon">&#127942;</div>
-                <h2>Leadership &amp; Strategy</h2>
+        <a href="scrum-master.html" class="cs-card sm">
+            <div class="cs-banner sm">
+                <div class="cs-icon">&#128260;</div>
+                <h2>Scrum Master</h2>
             </div>
             <div class="cs-body">
-                <p>Executive summaries, meeting-to-memo, decision frameworks, stakeholder comms, OKR drafting, board prep, resource planning, and strategic analysis.</p>
+                <p>Sprint planning, retrospectives, velocity tracking, impediment logs, daily standup facilitation, backlog refinement, and agile coaching.</p>
                 <div class="cs-tags">
-                    <span class="cs-tag">Exec Summary</span>
-                    <span class="cs-tag">Decision Memo</span>
-                    <span class="cs-tag">OKRs</span>
-                    <span class="cs-tag">Board Prep</span>
-                    <span class="cs-tag">Comms</span>
+                    <span class="cs-tag">Sprint Planning</span>
+                    <span class="cs-tag">Retros</span>
+                    <span class="cs-tag">Velocity</span>
+                    <span class="cs-tag">Backlog</span>
+                    <span class="cs-tag">Coaching</span>
                 </div>
                 <span class="cs-cta">Open Cheat Sheet &rarr;</span>
             </div>
         </a>
 
-        <a href="sales.html" class="cs-card sales">
-            <div class="cs-banner sales">
-                <div class="cs-icon">&#128640;</div>
-                <h2>Sales &amp; Business Development</h2>
+        <a href="devops-director.html" class="cs-card director">
+            <div class="cs-banner director">
+                <div class="cs-icon">&#127959;</div>
+                <h2>Senior DevOps / Infra / Network Director</h2>
             </div>
             <div class="cs-body">
-                <p>Prospecting emails, deal analysis, proposal drafts, competitive positioning, pipeline reviews, objection handling, and account planning.</p>
+                <p>Infrastructure strategy, capacity planning, vendor evaluations, budget proposals, team scaling, SLA reviews, and executive-level technical reporting.</p>
                 <div class="cs-tags">
-                    <span class="cs-tag">Outreach</span>
-                    <span class="cs-tag">Proposals</span>
-                    <span class="cs-tag">Pipeline</span>
-                    <span class="cs-tag">Competitive</span>
-                    <span class="cs-tag">Forecasting</span>
+                    <span class="cs-tag">Strategy</span>
+                    <span class="cs-tag">Capacity</span>
+                    <span class="cs-tag">Budgets</span>
+                    <span class="cs-tag">SLAs</span>
+                    <span class="cs-tag">Vendor Mgmt</span>
                 </div>
                 <span class="cs-cta">Open Cheat Sheet &rarr;</span>
             </div>
         </a>
 
-        <a href="hr.html" class="cs-card hr">
-            <div class="cs-banner hr">
+        <a href="technical-lead.html" class="cs-card techlead">
+            <div class="cs-banner techlead">
+                <div class="cs-icon">&#128736;</div>
+                <h2>Technical Lead</h2>
+            </div>
+            <div class="cs-body">
+                <p>Architecture decisions, code review guidelines, tech debt prioritisation, RFC/design docs, system design, performance analysis, and technical mentoring.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">Architecture</span>
+                    <span class="cs-tag">Design Docs</span>
+                    <span class="cs-tag">Tech Debt</span>
+                    <span class="cs-tag">Code Review</span>
+                    <span class="cs-tag">Mentoring</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="team-lead.html" class="cs-card teamlead">
+            <div class="cs-banner teamlead">
                 <div class="cs-icon">&#129309;</div>
-                <h2>HR &amp; People Operations</h2>
+                <h2>Team Lead</h2>
             </div>
             <div class="cs-body">
-                <p>Job descriptions, interview questions, performance reviews, onboarding plans, policy drafts, employee comms, DE&amp;I reporting, and exit analysis.</p>
+                <p>1:1 meetings, team health checks, hiring interview prep, performance reviews, onboarding plans, conflict resolution, and cross-team collaboration.</p>
                 <div class="cs-tags">
-                    <span class="cs-tag">Recruiting</span>
+                    <span class="cs-tag">1:1s</span>
+                    <span class="cs-tag">Hiring</span>
                     <span class="cs-tag">Reviews</span>
+                    <span class="cs-tag">Team Health</span>
                     <span class="cs-tag">Onboarding</span>
-                    <span class="cs-tag">Policy</span>
-                    <span class="cs-tag">Comms</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="iac-engineer.html" class="cs-card iac">
+            <div class="cs-banner iac">
+                <div class="cs-icon">&#128187;</div>
+                <h2>IAC Engineer</h2>
+            </div>
+            <div class="cs-body">
+                <p>Terraform modules, CloudFormation templates, Ansible playbooks, state management, drift detection, module testing, and infrastructure documentation.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">Terraform</span>
+                    <span class="cs-tag">CloudFormation</span>
+                    <span class="cs-tag">Ansible</span>
+                    <span class="cs-tag">State Mgmt</span>
+                    <span class="cs-tag">Modules</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="devops-engineer.html" class="cs-card devops">
+            <div class="cs-banner devops">
+                <div class="cs-icon">&#9881;</div>
+                <h2>DevOps Engineer</h2>
+            </div>
+            <div class="cs-body">
+                <p>CI/CD pipelines, container orchestration, monitoring &amp; alerting, incident response, deployment strategies, log analysis, and automation scripts.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">CI/CD</span>
+                    <span class="cs-tag">Kubernetes</span>
+                    <span class="cs-tag">Monitoring</span>
+                    <span class="cs-tag">Incidents</span>
+                    <span class="cs-tag">Automation</span>
+                </div>
+                <span class="cs-cta">Open Cheat Sheet &rarr;</span>
+            </div>
+        </a>
+
+        <a href="cloud-security.html" class="cs-card cloudsec">
+            <div class="cs-banner cloudsec">
+                <div class="cs-icon">&#128274;</div>
+                <h2>Cloud Security Engineer</h2>
+            </div>
+            <div class="cs-body">
+                <p>IAM policies, compliance audits, vulnerability assessments, security architecture reviews, incident response plans, and threat modelling.</p>
+                <div class="cs-tags">
+                    <span class="cs-tag">IAM</span>
+                    <span class="cs-tag">Compliance</span>
+                    <span class="cs-tag">Threat Model</span>
+                    <span class="cs-tag">Vuln Mgmt</span>
+                    <span class="cs-tag">Zero Trust</span>
                 </div>
                 <span class="cs-cta">Open Cheat Sheet &rarr;</span>
             </div>
@@ -199,7 +284,7 @@
 
 <div class="footer">
     <a href="../index.html">&larr; Back to Home</a><br><br>
-    Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
 </div>
 
 </body></html>

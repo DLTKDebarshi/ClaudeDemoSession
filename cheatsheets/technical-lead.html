@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Lead | Prompt Cheat Sheet</title>
+    <style>
+        :root {
+            --accent: #3949AB;
+            --accent-dark: #1A237E;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 28px; background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #E2E8F0; backdrop-filter: blur(8px);
+        }
+        .topnav a {
+            text-decoration: none; font-size: 14px; font-weight: 600;
+            color: var(--accent); white-space: nowrap;
+        }
+        .topnav .brand { font-size: 15px; font-weight: 700; color: var(--text-main); }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #3949AB, #1A237E);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 56px; margin-bottom: 12px; }
+        .hero h1 { font-size: 40px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .hero p  { font-size: 18px; opacity: 0.93; max-width: 700px; margin: 0 auto; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 28px 60px; }
+
+        /* ── Category Sections ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 24px; font-weight: 700; margin-bottom: 24px;
+            padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Cards ── */
+        .prompt-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.2s;
+        }
+        .prompt-card:hover { border-color: var(--accent); }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; }
+        .use-tag {
+            font-size: 12px; font-weight: 700; padding: 4px 14px;
+            border-radius: 20px; white-space: nowrap;
+        }
+        .use-tag.daily      { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly      { background: rgba(66,133,244,0.12); color: #4285F4; }
+        .use-tag.monthly     { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded    { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.persprint   { background: rgba(0,137,123,0.12);  color: #00897B; }
+        .use-tag.quarterly   { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perproject  { background: rgba(57,73,171,0.12);  color: #3949AB; }
+        .use-tag.perhire     { background: rgba(0,137,123,0.12);  color: #00897B; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when {
+            font-size: 14px; color: var(--text-subtle); margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 18px 20px 18px 20px;
+            font-size: 14px; line-height: 1.75; white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.15); color: #CCC; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); color: #FFF; }
+        .copy-btn.copied { background: var(--accent); color: white; }
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+            background: rgba(57,73,171,0.06); border-left: 4px solid var(--accent);
+            font-size: 13px; color: var(--text-subtle);
+        }
+        .pro-tip strong { color: var(--accent); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px 28px; font-size: 14px;
+            color: var(--text-subtle); border-top: 1px solid #E2E8F0;
+        }
+        .footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            margin: 0 12px;
+        }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 28px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div class="topnav">
+    <a href="devops-director.html">&larr; Director</a>
+    <span class="brand">Technical Lead</span>
+    <a href="team-lead.html">Team Lead &rarr;</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="icon">&#128736;</div>
+    <h1>Technical Lead</h1>
+    <p>Make better architecture decisions, write clearer design docs, and mentor your team. Prompts for the engineer who also has to lead.</p>
+</div>
+
+<div class="container">
+
+    <!-- ═══════════════════ 1. Architecture & Design ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128736;</span> Architecture &amp; Design
+        </div>
+
+        <!-- 1-1 Architecture Decision Record -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Architecture Decision Record (ADR)</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Draft an ADR with context, decision, consequences, and alternatives considered for a technical choice.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write an Architecture Decision Record (ADR) for the following technical decision.
+
+Title: <em>[e.g. ADR-042: Adopt GraphQL Federation for API Gateway]</em>
+
+Context:
+- Problem: <em>[e.g. Our 12 microservices each expose REST APIs; clients make 4-7 calls per page load, causing latency and tight coupling]</em>
+- Current state: <em>[e.g. REST APIs behind Kong gateway, BFF pattern partially implemented]</em>
+- Constraints: <em>[e.g. must support existing mobile clients during migration, team has limited GraphQL experience]</em>
+- Stakeholders consulted: <em>[e.g. frontend team, platform team, security]</em>
+
+Alternatives considered:
+1. <em>[e.g. Keep REST + expand BFF layer]</em>
+2. <em>[e.g. Adopt GraphQL monolithic gateway]</em>
+3. <em>[e.g. Adopt GraphQL Federation (Apollo)]</em>
+
+Format the ADR as:
+1. Status (proposed/accepted/deprecated)
+2. Context (the problem and why we need to decide now)
+3. Decision (what we chose and why)
+4. Alternatives considered (with pros/cons for each)
+5. Consequences (positive, negative, and neutral)
+6. Migration plan (high-level steps)
+7. Review date (when we'll revisit this decision)
+
+Follow the Michael Nygard ADR format. Keep each section concise.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Store ADRs in your repo under docs/adr/ and number them sequentially for a searchable decision log.</div>
+            </div>
+        </div>
+
+        <!-- 1-2 System Design Document (RFC) -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>System Design Document (RFC)</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a structured RFC/design doc for a new feature or system with diagrams description, trade-offs, and migration plan.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a technical design document (RFC) for the following system/feature.
+
+Title: <em>[e.g. Real-time Notification Service]</em>
+Author: <em>[your name]</em>
+Reviewers: <em>[list of reviewers]</em>
+
+Problem statement:
+<em>[e.g. Users currently discover status changes only on page refresh. We need real-time push notifications for order updates, mentions, and system alerts across web and mobile.]</em>
+
+Requirements:
+- Functional: <em>[e.g. deliver notifications within 2 seconds, support web push + mobile push + in-app, user preference management]</em>
+- Non-functional: <em>[e.g. 99.9% delivery rate, support 50K concurrent connections, &lt;100ms server-side processing]</em>
+- Out of scope: <em>[e.g. email notifications, SMS, notification analytics]</em>
+
+Current system context: <em>[e.g. monolithic Django app, PostgreSQL, Redis for caching, deployed on EKS]</em>
+
+Structure the RFC as:
+1. Summary (1 paragraph)
+2. Motivation and goals
+3. Proposed architecture (describe components, data flow, and interactions so a diagram could be drawn)
+4. API design (key endpoints/events with request/response shapes)
+5. Data model (key entities and storage choices)
+6. Trade-offs and alternatives rejected
+7. Security considerations
+8. Observability and monitoring plan
+9. Migration / rollout strategy (feature flags, canary, etc.)
+10. Open questions for reviewers
+11. Timeline estimate (phases with milestones)</div>
+            </div>
+        </div>
+
+        <!-- 1-3 Technical Debt Assessment -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Technical Debt Assessment</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Audit codebase/system areas for tech debt, categorise by severity, estimate remediation effort, and prioritise.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Conduct a technical debt assessment for our <em>[service name / codebase / system area]</em>.
+
+Known debt items (paste what you have, I'll help structure them):
+<em>[e.g.
+- Auth service still uses deprecated JWT library (security risk)
+- Order processing has no retry logic (causes silent failures)
+- Test coverage for payment module is 23% (regression risk)
+- Database queries in user service are N+1 (performance)
+- Deployment takes 45 minutes due to monolithic build (velocity)]</em>
+
+Additional context:
+- Team size working on this area: <em>[e.g. 4 engineers]</em>
+- Upcoming feature work that may be affected: <em>[e.g. payment provider migration in Q3]</em>
+- Recent incidents caused by debt: <em>[e.g. 2 outages in last quarter from retry logic gaps]</em>
+
+For each debt item, provide:
+1. Category (security, reliability, performance, maintainability, developer experience)
+2. Severity (critical / high / medium / low) with justification
+3. Business risk if left unaddressed
+4. Estimated remediation effort (T-shirt size + approximate days)
+5. Dependencies and prerequisites
+
+Then produce:
+- Prioritised remediation backlog (ordered by risk-adjusted ROI)
+- Recommended allocation: what % of sprint capacity to dedicate to debt
+- Quick wins (can be done in &lt;2 days) vs strategic investments
+- Suggested pitch to product stakeholders for the top 3 items</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Pair this with static analysis reports (SonarQube, CodeClimate) for a data-backed assessment.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 2. Code Quality & Reviews ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128269;</span> Code Quality &amp; Reviews
+        </div>
+
+        <!-- 2-1 Code Review Checklist Generator -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Code Review Checklist Generator</h3>
+                <span class="use-tag perproject">Per Project</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a tailored code review checklist based on the project's tech stack, known problem areas, and team standards.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a code review checklist tailored to our project.
+
+Tech stack: <em>[e.g. TypeScript, React 18, Node.js, PostgreSQL, GraphQL, deployed on AWS ECS]</em>
+Testing framework: <em>[e.g. Jest + React Testing Library + Playwright for E2E]</em>
+Known problem areas: <em>[e.g. inconsistent error handling, missing input validation on API layer, memory leaks in WebSocket connections]</em>
+Team standards: <em>[e.g. all public APIs must have OpenAPI spec, minimum 80% test coverage on new code, no direct DB queries outside repository layer]</em>
+
+Create a checklist organised by:
+1. Correctness (logic errors, edge cases, error handling)
+2. Security (injection, auth, data exposure, input validation)
+3. Performance (N+1 queries, unnecessary re-renders, memory leaks, bundle size)
+4. Maintainability (naming, complexity, DRY, single responsibility)
+5. Testing (coverage, edge cases, mocking strategy, test readability)
+6. Documentation (inline comments for complex logic, API docs, changelog)
+7. Project-specific items (based on our known problem areas above)
+
+Format each item as a yes/no checklist question. Include "why it matters" for non-obvious items. Mark items as [MUST] vs [SHOULD] priority.</div>
+            </div>
+        </div>
+
+        <!-- 2-2 Pull Request Review Summary -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Pull Request Review Summary</h3>
+                <span class="use-tag daily">Daily</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Analyse a PR diff and provide a structured review: correctness concerns, performance implications, security issues, and style notes.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Review the following pull request diff and provide structured feedback.
+
+PR Title: <em>[e.g. Add rate limiting middleware to API gateway]</em>
+PR Description: <em>[paste the PR description]</em>
+Files changed: <em>[number]</em>
+
+Diff:
+<em>[Paste the git diff or key changed files here]</em>
+
+Context:
+- This PR is for: <em>[e.g. production API service handling 10K req/min]</em>
+- Related ticket: <em>[e.g. JIRA-1234]</em>
+
+Provide review organised as:
+1. Summary: What this PR does in 2-3 sentences
+2. Correctness: Logic issues, edge cases not handled, potential bugs
+3. Security: Injection risks, auth gaps, data exposure, input validation
+4. Performance: Scaling concerns, query efficiency, memory usage, caching opportunities
+5. Style & maintainability: Naming, complexity, duplication, readability
+6. Testing gaps: What tests are missing or insufficient
+7. Approval recommendation: Approve / Request Changes / Needs Discussion
+
+For each finding, reference the specific file and line. Classify as: [BLOCKER] [CONCERN] [NIT] [PRAISE]</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Use <code>git diff main...feature-branch</code> to get the full diff and paste it directly.</div>
+            </div>
+        </div>
+
+        <!-- 2-3 Production Bug Root Cause Analysis -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Production Bug Root Cause Analysis</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Guide a structured RCA for a production issue: timeline reconstruction, root cause identification, and prevention measures.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Help me conduct a root cause analysis for a production bug.
+
+Bug summary: <em>[e.g. Intermittent 500 errors on /api/orders endpoint, affecting ~5% of requests during peak hours]</em>
+
+What we know so far:
+- First reported: <em>[date/time]</em>
+- Affected services: <em>[e.g. order-service, payment-service]</em>
+- Error messages/logs: <em>[paste relevant log snippets]</em>
+- Recent changes: <em>[e.g. deployed v2.4.1 two days ago, added connection pooling config change]</em>
+- Workaround applied: <em>[e.g. increased replica count from 3 to 6, which reduced error rate]</em>
+- What we've ruled out: <em>[e.g. database is healthy, network latency is normal]</em>
+
+Guide me through:
+1. Timeline reconstruction (key events in chronological order)
+2. 5 Whys analysis (drill from symptom to root cause)
+3. Contributing factors (what conditions made this possible)
+4. Hypotheses ranked by likelihood with evidence for/against each
+5. Verification steps to confirm the root cause
+6. Immediate fix vs proper fix (with trade-offs)
+7. Prevention measures (code, process, monitoring) to stop recurrence
+8. Detection improvements (what alerts/monitors should we add)
+
+Format as a formal RCA document that can be shared with the team.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 3. Technical Communication ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128203;</span> Technical Communication
+        </div>
+
+        <!-- 3-1 Technical Spike Summary -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Technical Spike Summary</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Synthesise research findings from a technical spike into a recommendation with evidence, risks, and next steps.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Synthesise my technical spike findings into a clear recommendation document.
+
+Spike objective: <em>[e.g. Evaluate whether we should migrate from REST to gRPC for inter-service communication]</em>
+Time spent: <em>[e.g. 3 days]</em>
+
+What I investigated:
+<em>[e.g.
+- Benchmarked gRPC vs REST for our top 5 inter-service call patterns
+- Prototyped gRPC implementation for order-service to inventory-service
+- Evaluated team learning curve (surveyed 4 engineers)
+- Reviewed gRPC ecosystem maturity for our stack (Node.js + Python)]</em>
+
+Raw findings:
+<em>[Paste your notes, benchmark results, pros/cons lists, etc.]</em>
+
+Structure as:
+1. Executive summary (1 paragraph: question asked, answer found)
+2. Background (why we investigated this)
+3. Methodology (what we tested and how)
+4. Key findings (with data/evidence, not just opinions)
+5. Recommendation (go / no-go / defer, with clear reasoning)
+6. Risks and mitigations if we proceed
+7. Estimated effort to implement
+8. Next steps and decision needed from the team
+
+Keep it factual and concise. Flag where findings are based on limited data vs strong evidence.</div>
+            </div>
+        </div>
+
+        <!-- 3-2 Non-Technical Stakeholder Explanation -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Non-Technical Stakeholder Explanation</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Translate a complex technical decision or trade-off into plain language for PMs, leadership, or business stakeholders.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Translate the following technical concept into plain language for non-technical stakeholders.
+
+Technical topic: <em>[e.g. Why we need to migrate from a monolithic database to a distributed database architecture]</em>
+
+Technical details:
+<em>[e.g. Our single PostgreSQL instance is hitting connection limits at 500 concurrent connections. Write throughput is capped at 15K TPS. We need to shard the database, which means splitting data across multiple database servers. This requires changing how we write queries and adding a routing layer.]</em>
+
+Audience: <em>[e.g. VP of Product, CFO, non-technical project managers]</em>
+Key decision they need to make: <em>[e.g. approve 6 weeks of engineering time and $30K additional infra cost]</em>
+
+Produce:
+1. Plain-language explanation (use analogies, avoid all jargon)
+2. Why this matters to the business (in their terms: revenue, customers, speed)
+3. What happens if we do this (benefits, timeline, cost)
+4. What happens if we don't (risks, timeline to failure)
+5. The trade-offs in simple terms
+6. The specific ask (decision, budget, timeline approval)
+
+Rules: No acronyms without explanation. No technical terms. Use analogies from everyday business. Max 1 page.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Ask Claude to role-play as the stakeholder and poke holes in the explanation before you send it.</div>
+            </div>
+        </div>
+
+        <!-- 3-3 Engineering Blog Post / Knowledge Share -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Engineering Blog Post / Knowledge Share</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Draft an internal knowledge-sharing post about a technical challenge, solution, and lessons for the wider engineering org.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft an internal engineering blog post / knowledge share article.
+
+Topic: <em>[e.g. How we reduced API latency by 60% by fixing our caching strategy]</em>
+
+Details:
+- The problem we faced: <em>[e.g. p95 latency on product listing API climbed from 200ms to 800ms over 3 months]</em>
+- What we tried that didn't work: <em>[e.g. added more replicas, optimised DB queries, both helped marginally]</em>
+- The root cause we discovered: <em>[e.g. cache stampede during TTL expiry on popular items]</em>
+- The solution: <em>[e.g. implemented stale-while-revalidate pattern with probabilistic early expiration]</em>
+- The results: <em>[e.g. p95 dropped to 150ms, cache hit rate improved from 72% to 94%]</em>
+
+Structure as:
+1. Catchy title and TL;DR (3 bullet points)
+2. The problem (with metrics and why it mattered)
+3. Investigation journey (what we tried, what we learned)
+4. The solution (with enough technical detail for others to replicate)
+5. Results (before/after metrics, graphs description)
+6. Lessons learned (what we'd do differently)
+7. When to apply this pattern (and when not to)
+
+Tone: conversational, educational, honest about mistakes. Target audience: mid-level engineers across the org. Length: 800-1200 words.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 4. Mentoring & Standards ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128170;</span> Mentoring &amp; Standards
+        </div>
+
+        <!-- 4-1 Engineering Standards Guide -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Engineering Standards Guide</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Draft or update team engineering standards covering coding conventions, testing requirements, CI/CD expectations, and documentation norms.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft (or update) our team's engineering standards guide.
+
+Team context:
+- Tech stack: <em>[e.g. TypeScript/Node.js backend, React frontend, PostgreSQL, Redis, AWS]</em>
+- Team size: <em>[e.g. 12 engineers, mix of mid and senior]</em>
+- Current pain points: <em>[e.g. inconsistent error handling patterns, PRs with no tests getting merged, deploy rollbacks due to missing feature flags]</em>
+- Existing standards (if updating): <em>[paste current doc or summarise what exists]</em>
+
+Cover these areas:
+1. Code conventions (naming, file structure, error handling patterns, logging standards)
+2. Testing requirements (minimum coverage, what must be tested, testing pyramid expectations)
+3. PR standards (size limits, description template, review turnaround SLA, approval requirements)
+4. CI/CD expectations (what must pass before merge, feature flag requirements, rollback procedures)
+5. API design standards (versioning, error response format, pagination, auth patterns)
+6. Documentation norms (what needs docs, where they live, when to update)
+7. Observability standards (what to log, metric naming conventions, alert thresholds)
+8. Security baseline (dependency scanning, secret management, input validation)
+
+For each standard:
+- State the rule clearly
+- Explain the "why" behind it (not just the "what")
+- Provide a good and bad example where applicable
+- Note any exceptions or escape hatches
+
+Tone: authoritative but pragmatic. These are guardrails, not bureaucracy.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Turn each section into a PR template checklist item so standards are enforced at review time.</div>
+            </div>
+        </div>
+
+        <!-- 4-2 Technical Interview Question Bank -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Technical Interview Question Bank</h3>
+                <span class="use-tag perhire">Per Hire</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Generate role-specific technical interview questions with scoring rubrics for system design, coding, and architecture rounds.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Generate a technical interview question bank for a <em>[role, e.g. Senior Backend Engineer]</em> position.
+
+Role details:
+- Level: <em>[e.g. Senior / Staff / Principal]</em>
+- Primary tech stack: <em>[e.g. Python, Django, PostgreSQL, AWS, Kubernetes]</em>
+- Key responsibilities: <em>[e.g. design and build core platform services, mentor 2-3 junior engineers, own system reliability]</em>
+- Team they're joining: <em>[e.g. Payments team, handling $2M daily transaction volume]</em>
+
+Generate questions for each interview round:
+
+1. System Design (45 min):
+   - 2 design questions relevant to our domain with follow-up probes
+   - Scoring rubric: what good/great/exceptional answers look like
+
+2. Coding (45 min):
+   - 2 coding problems (one algorithmic, one practical/domain-relevant)
+   - Expected approach, optimal solution, and common pitfalls
+   - Scoring rubric with signal indicators
+
+3. Architecture Deep-Dive (30 min):
+   - 3 questions about past experience with architectural decisions
+   - Red flags and green flags to listen for
+
+4. Technical Communication (15 min):
+   - 2 questions testing ability to explain complex concepts simply
+
+For each question include:
+- The question text
+- What signal you're testing for
+- Scoring rubric (1-4 scale with descriptions)
+- Follow-up questions to probe deeper
+- Time allocation</div>
+            </div>
+        </div>
+
+        <!-- 4-3 Developer Onboarding Technical Guide -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Developer Onboarding Technical Guide</h3>
+                <span class="use-tag perhire">Per Hire</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a technical onboarding guide covering codebase architecture, local dev setup, key services, and common debugging workflows.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a technical onboarding guide for a new engineer joining our team.
+
+System overview:
+- Product: <em>[e.g. B2B SaaS platform for project management]</em>
+- Architecture: <em>[e.g. 15 microservices, event-driven, deployed on EKS]</em>
+- Key services: <em>[list main services and their responsibilities]</em>
+- Tech stack: <em>[e.g. TypeScript, React, Node.js, PostgreSQL, Redis, Kafka, AWS]</em>
+- Repo structure: <em>[e.g. monorepo / polyrepo, key repo names]</em>
+
+Local dev requirements:
+- OS: <em>[e.g. macOS, supported versions]</em>
+- Required tools: <em>[e.g. Docker, Node 20, pnpm, AWS CLI, kubectl]</em>
+- Key config: <em>[e.g. env vars needed, VPN setup, SSO access]</em>
+
+Structure the guide as:
+
+1. Week 1: Getting Set Up
+   - Local environment setup (step-by-step with verification commands)
+   - Access requests checklist (repos, AWS, monitoring, CI/CD, Slack channels)
+   - Run the app locally and verify end-to-end
+   - First PR: fix a "good first issue" to learn the workflow
+
+2. Week 2: Understanding the System
+   - Architecture overview (service map with data flow)
+   - Key databases and their schemas
+   - How requests flow from user to backend and back
+   - Important design patterns used in the codebase
+
+3. Week 3-4: Going Deeper
+   - Common debugging workflows (how to trace a request, read logs, check metrics)
+   - Deployment process (how code gets to production)
+   - On-call expectations and runbooks location
+   - Key domain concepts the engineer needs to understand
+
+4. Reference section
+   - Glossary of team-specific terms
+   - Key contacts (who owns what)
+   - Useful links (dashboards, docs, runbooks, architecture diagrams)
+
+Write it as if explaining to a strong engineer who is new to the codebase, not new to engineering.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Have a recent hire review the guide and flag anything confusing before publishing.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <a href="devops-director.html">&larr; Director</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="team-lead.html">Team Lead &rarr;</a>
+    <br><br>
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

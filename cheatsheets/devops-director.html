@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior DevOps / Infra / Network Director | Prompt Cheat Sheet</title>
+    <style>
+        :root {
+            --accent: #F4511E;
+            --accent-dark: #BF360C;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 28px; background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #E2E8F0; backdrop-filter: blur(8px);
+        }
+        .topnav a {
+            text-decoration: none; font-size: 14px; font-weight: 600;
+            color: var(--accent); white-space: nowrap;
+        }
+        .topnav .brand { font-size: 15px; font-weight: 700; color: var(--text-main); }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #F4511E, #BF360C);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 56px; margin-bottom: 12px; }
+        .hero h1 { font-size: 40px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .hero p  { font-size: 18px; opacity: 0.93; max-width: 700px; margin: 0 auto; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 28px 60px; }
+
+        /* ── Category Sections ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 24px; font-weight: 700; margin-bottom: 24px;
+            padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Cards ── */
+        .prompt-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.2s;
+        }
+        .prompt-card:hover { border-color: var(--accent); }
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; }
+        .use-tag {
+            font-size: 12px; font-weight: 700; padding: 4px 14px;
+            border-radius: 20px; white-space: nowrap;
+        }
+        .use-tag.daily      { background: rgba(52,168,83,0.12);  color: #34A853; }
+        .use-tag.weekly      { background: rgba(66,133,244,0.12); color: #4285F4; }
+        .use-tag.monthly     { background: rgba(251,188,5,0.15);  color: #B8860B; }
+        .use-tag.asneeded    { background: rgba(94,53,177,0.12);  color: #5E35B1; }
+        .use-tag.persprint   { background: rgba(0,137,123,0.12);  color: #00897B; }
+        .use-tag.quarterly   { background: rgba(234,67,53,0.12);  color: #EA4335; }
+        .use-tag.perproject  { background: rgba(57,73,171,0.12);  color: #3949AB; }
+
+        .prompt-card-body { padding: 20px 24px; }
+        .when {
+            font-size: 14px; color: var(--text-subtle); margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .prompt-box {
+            position: relative; background: #1E1E1E; color: #D4D4D4;
+            border-radius: var(--radius-md); padding: 18px 20px 18px 20px;
+            font-size: 14px; line-height: 1.75; white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .prompt-box em { color: #FBBC05; font-style: normal; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.15); color: #CCC; border: none;
+            padding: 5px 14px; border-radius: 6px; font-size: 12px;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.25); color: #FFF; }
+        .copy-btn.copied { background: var(--accent); color: white; }
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+            background: rgba(244,81,30,0.06); border-left: 4px solid var(--accent);
+            font-size: 13px; color: var(--text-subtle);
+        }
+        .pro-tip strong { color: var(--accent); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px 28px; font-size: 14px;
+            color: var(--text-subtle); border-top: 1px solid #E2E8F0;
+        }
+        .footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            margin: 0 12px;
+        }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 28px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div class="topnav">
+    <a href="scrum-master.html">&larr; Scrum Master</a>
+    <span class="brand">DevOps / Infra Director</span>
+    <a href="technical-lead.html">Tech Lead &rarr;</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="icon">&#127959;</div>
+    <h1>Senior DevOps / Infra / Network Director</h1>
+    <p>Think strategically, communicate upward, and drive infrastructure decisions with data. Prompts built for director-level delivery.</p>
+</div>
+
+<div class="container">
+
+    <!-- ═══════════════════ 1. Strategic Planning ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#127919;</span> Strategic Planning
+        </div>
+
+        <!-- 1-1 Infrastructure Roadmap -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Infrastructure Roadmap</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Build a multi-quarter infrastructure roadmap aligned with business objectives, migration milestones, and budget cycles.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>You are an infrastructure strategy advisor. Build a <em>[3-quarter / 4-quarter]</em> infrastructure roadmap for our organisation.
+
+Context:
+- Current environment: <em>[on-prem / hybrid / multi-cloud]</em> running <em>[key workloads, e.g. 120 VMs on VMware, 40 services on AWS EKS]</em>
+- Business priorities for the year: <em>[e.g. expand to APAC region, achieve SOC 2 Type II, reduce hosting costs by 20%]</em>
+- Planned product launches or migrations: <em>[e.g. migrate data warehouse to BigQuery by Q3, launch new SaaS tier in Q2]</em>
+- Annual infrastructure budget: <em>[$X]</em>
+
+For each quarter, provide:
+1. Key initiatives (max 3) with clear deliverables
+2. Dependencies and prerequisites
+3. Estimated budget allocation
+4. Risk factors and mitigations
+5. Success metrics / KPIs
+
+End with a summary timeline view and a list of decisions that need to be made in the next 30 days.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Attach your current asset inventory or cloud billing CSV for more precise recommendations.</div>
+            </div>
+        </div>
+
+        <!-- 1-2 Technology Vendor Evaluation -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Technology Vendor Evaluation</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Create a weighted scoring matrix comparing vendors (cloud providers, tooling, networking) with TCO analysis.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a vendor evaluation matrix for <em>[category, e.g. observability platforms / CDN providers / container registries]</em>.
+
+Vendors to compare: <em>[Vendor A, Vendor B, Vendor C]</em>
+
+Our requirements (rank by priority):
+1. <em>[e.g. Must support multi-region with &lt;50ms latency]</em>
+2. <em>[e.g. SSO/SAML integration, RBAC, audit logging]</em>
+3. <em>[e.g. Terraform provider maturity]</em>
+4. <em>[e.g. Pricing predictability at our scale: ~X requests/month]</em>
+5. <em>[e.g. Vendor support SLA and escalation process]</em>
+
+For each vendor provide:
+- Weighted score (1-5) per requirement with justification
+- 3-year TCO estimate at our projected scale: <em>[current usage + growth rate]</em>
+- Integration complexity with our stack: <em>[list key systems]</em>
+- Lock-in risk assessment
+- Summary recommendation with a clear winner and rationale</div>
+            </div>
+        </div>
+
+        <!-- 1-3 Build vs Buy Decision Memo -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Build vs Buy Decision Memo</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Structure a build-vs-buy analysis for an infrastructure capability with cost projections, risk assessment, and recommendation.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a build-vs-buy decision memo for <em>[capability, e.g. internal developer platform / secrets management / log aggregation pipeline]</em>.
+
+Context:
+- Problem statement: <em>[what gap are we solving and why now]</em>
+- Current workaround: <em>[how the team handles this today]</em>
+- Team capacity: <em>[e.g. 2 senior SREs could dedicate 40% time for 2 quarters]</em>
+- Buy candidates: <em>[e.g. HashiCorp Vault Enterprise, AWS Secrets Manager, CyberArk]</em>
+
+Structure the memo as:
+1. Executive Summary (1 paragraph recommendation)
+2. Build Option: scope, timeline, staffing, estimated cost (build + maintain over 3 years)
+3. Buy Option(s): licensing, implementation cost, ongoing cost over 3 years
+4. Comparison table: cost, time-to-value, maintenance burden, customisability, risk
+5. Risk assessment for each path (technical, operational, organisational)
+6. Recommendation with conditions (e.g. "Buy if budget is approved by Q2; build if not")
+
+Keep the tone executive-friendly. Max 2 pages equivalent.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Include your internal engineering hourly cost rate for more accurate build-side estimates.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 2. Budget & Capacity ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128176;</span> Budget &amp; Capacity
+        </div>
+
+        <!-- 2-1 Cloud Cost Optimisation Report -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Cloud Cost Optimisation Report</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Analyse cloud spend data, identify waste, recommend right-sizing/reservations, project savings.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyse the following cloud cost data and produce a monthly optimisation report.
+
+Cloud provider: <em>[AWS / Azure / GCP]</em>
+Total spend this month: <em>[$X]</em> vs last month: <em>[$Y]</em> vs budget: <em>[$Z]</em>
+Top 5 cost centres/accounts: <em>[list with spend amounts]</em>
+Known changes this month: <em>[e.g. launched new staging env, migrated DB to RDS]</em>
+
+Produce:
+1. Executive summary: month-over-month trend, budget variance, top driver of change
+2. Top 10 waste items (idle resources, oversized instances, unattached volumes, unused IPs) with estimated monthly savings each
+3. Right-sizing recommendations for compute and database with specific instance type changes
+4. Reserved Instance / Savings Plan opportunities with break-even analysis
+5. Cost anomalies that need investigation
+6. 90-day savings forecast if all recommendations are implemented
+
+Format as a report I can forward to my VP with a summary table at the top.</div>
+            </div>
+        </div>
+
+        <!-- 2-2 Capacity Planning Forecast -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Capacity Planning Forecast</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Project infrastructure capacity needs based on growth trends, planned launches, and seasonal patterns.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Create a capacity planning forecast for the next <em>[2 / 3 / 4]</em> quarters.
+
+Current infrastructure footprint:
+- Compute: <em>[e.g. 85 EC2 instances, average 62% CPU utilisation]</em>
+- Storage: <em>[e.g. 40TB S3, 12TB EBS, growing 8% monthly]</em>
+- Database: <em>[e.g. 3x RDS instances at 70% capacity, 1x DynamoDB table at 40K RCU]</em>
+- Network: <em>[e.g. 2Gbps average egress, peaking at 5Gbps during releases]</em>
+
+Growth drivers:
+- User growth rate: <em>[e.g. 15% QoQ]</em>
+- Planned launches: <em>[e.g. new mobile app in Q2, expansion to EU region in Q3]</em>
+- Seasonal patterns: <em>[e.g. 2x traffic during November-December]</em>
+
+For each resource category, provide:
+1. Current utilisation vs capacity ceiling
+2. Projected demand curve per quarter
+3. When we hit 80% threshold (action trigger)
+4. Recommended scaling actions with timeline and cost
+5. Risks if we under-provision
+
+Include a summary table with RAG status (Red/Amber/Green) per resource category per quarter.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Paste in CloudWatch or Datadog utilisation exports for data-driven projections.</div>
+            </div>
+        </div>
+
+        <!-- 2-3 Budget Proposal for Leadership -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Budget Proposal for Leadership</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Draft an executive-ready budget request for infrastructure investment with ROI justification.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Draft an executive budget proposal for infrastructure investment in <em>[FY year / quarter]</em>.
+
+Request summary:
+- Total additional budget requested: <em>[$X]</em>
+- Breakdown by category: <em>[e.g. Cloud compute: $A, Security tooling: $B, Staffing: $C, Licensing: $D]</em>
+
+Business justification:
+- Problems being solved: <em>[e.g. current outage frequency, scaling limits, compliance gaps]</em>
+- Business initiatives this enables: <em>[e.g. EU expansion, new product tier, SOC 2 certification]</em>
+- What happens if we don't invest: <em>[e.g. expected downtime costs, inability to launch on time]</em>
+
+Structure as:
+1. Executive summary (3-4 sentences, lead with business impact)
+2. Current state and gap analysis
+3. Proposed investment breakdown with line items
+4. Expected ROI / payback period for each major item
+5. Implementation timeline
+6. Risk of inaction (quantified where possible)
+7. Approval ask and next steps
+
+Keep it under 2 pages. Tone: confident, data-driven, business-first.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 3. Operations & SLAs ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128200;</span> Operations &amp; SLAs
+        </div>
+
+        <!-- 3-1 SLA/SLO Review & Recommendation -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>SLA/SLO Review &amp; Recommendation</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Review current SLA performance data, identify at-risk services, and propose target adjustments.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Conduct an SLA/SLO review based on the following performance data.
+
+Services and their current targets vs actuals:
+<em>[Service A: SLO 99.95% uptime, actual 99.91%, error budget remaining: 12%]</em>
+<em>[Service B: SLO p99 latency &lt;200ms, actual p99 285ms]</em>
+<em>[Service C: SLO 99.9% uptime, actual 99.97%, error budget remaining: 78%]</em>
+
+Reporting period: <em>[e.g. March 2026]</em>
+Notable incidents: <em>[brief list of major incidents and durations]</em>
+
+Produce:
+1. RAG-status dashboard summary for each service
+2. Services breaching or at risk of breaching SLO, with root cause patterns
+3. Error budget burn rate analysis: which services will exhaust budget at current rate
+4. Recommended SLO adjustments (tighten where over-performing, relax where unrealistic)
+5. Action items: what engineering work is needed to bring at-risk services back to green
+6. Suggested talking points for the next ops review meeting</div>
+            </div>
+        </div>
+
+        <!-- 3-2 Incident Trend Analysis -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Incident Trend Analysis</h3>
+                <span class="use-tag monthly">Monthly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Analyse incident data over a period to identify systemic patterns, MTTR trends, and recommend structural improvements.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Analyse the following incident data and identify systemic trends.
+
+Period: <em>[e.g. Q1 2026]</em>
+Incident data:
+<em>[Paste incident list: date, severity, service affected, duration, root cause category, MTTR]</em>
+
+Provide:
+1. Summary statistics: total incidents by severity, average MTTR by severity, trend vs previous period
+2. Top 3 recurring root cause categories with frequency and cumulative downtime
+3. Services with highest incident density and whether they share common infrastructure
+4. MTTR trend analysis: are we getting faster or slower at resolution? Why?
+5. Correlation analysis: time-of-day patterns, deployment correlation, on-call fatigue indicators
+6. Top 5 structural recommendations to reduce incident volume (not just firefighting)
+7. Proposed investment areas ranked by expected incident reduction impact
+
+Format for presentation to engineering leadership. Include a suggested slide structure.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Export incident data from PagerDuty, Opsgenie, or your ITSM tool as CSV and paste it directly.</div>
+            </div>
+        </div>
+
+        <!-- 3-3 Disaster Recovery Plan Review -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Disaster Recovery Plan Review</h3>
+                <span class="use-tag quarterly">Quarterly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Audit DR plan against current architecture, identify gaps, and create a remediation roadmap.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Review our Disaster Recovery plan against current architecture and identify gaps.
+
+Current DR targets:
+- RTO: <em>[e.g. 4 hours for Tier 1, 24 hours for Tier 2]</em>
+- RPO: <em>[e.g. 1 hour for databases, 24 hours for file storage]</em>
+
+Architecture summary:
+- Primary region: <em>[e.g. AWS us-east-1]</em>, DR region: <em>[e.g. AWS us-west-2]</em>
+- Critical services: <em>[list with their replication strategy]</em>
+- Backup schedule: <em>[e.g. daily snapshots, hourly WAL shipping for Postgres]</em>
+- Last DR test date and result: <em>[e.g. tested Jan 2026, achieved RTO 6 hours (missed target)]</em>
+
+Produce:
+1. Gap analysis: where current capabilities fall short of RTO/RPO targets
+2. Single points of failure not covered by DR plan
+3. Services added since last DR review that lack DR coverage
+4. DR test findings remediation status
+5. Updated DR runbook checklist (step-by-step failover procedure)
+6. Remediation roadmap with effort estimates and priority ranking
+7. Recommended DR test schedule and scenario design for next quarter</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ 4. Team & Communication ═══════════════════ -->
+    <div class="cat">
+        <div class="cat-header">
+            <span class="cat-icon">&#128172;</span> Team &amp; Communication
+        </div>
+
+        <!-- 4-1 Team Scaling Proposal -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Team Scaling Proposal</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Build a headcount request with role definitions, skills gap analysis, and phased hiring plan.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Build a team scaling proposal for my infrastructure/DevOps organisation.
+
+Current team:
+- Size: <em>[e.g. 8 engineers]</em>, structure: <em>[e.g. 2 SREs, 3 DevOps, 2 Network, 1 Security]</em>
+- Current workload pressure points: <em>[e.g. on-call rotation too thin, backlog growing in IaC migration, no dedicated capacity for security initiatives]</em>
+
+Growth drivers:
+- Upcoming projects: <em>[e.g. Kubernetes migration, multi-region expansion, new compliance requirements]</em>
+- Expected timeline: <em>[e.g. all must be delivered within 12 months]</em>
+- Business context: <em>[e.g. company growing from 200 to 350 engineers, 3 new product teams being formed]</em>
+
+Produce:
+1. Skills gap analysis: what capabilities we lack vs what we need
+2. Proposed new roles (title, level, key responsibilities, must-have skills)
+3. Phased hiring plan across <em>[3 / 4]</em> quarters with justification for sequencing
+4. Cost estimate per role (salary band + tooling/overhead)
+5. Alternative to hiring: what could we outsource or automate instead
+6. Impact analysis: what we can deliver with vs without additional headcount
+7. Org chart: proposed team structure after scaling
+
+Format as an executive-ready proposal I can present to VP of Engineering.</div>
+            </div>
+        </div>
+
+        <!-- 4-2 Executive Infrastructure Brief -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Executive Infrastructure Brief</h3>
+                <span class="use-tag weekly">Weekly</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Summarise infrastructure health, ongoing projects, and risk items for C-suite consumption.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Write a weekly executive infrastructure brief for C-suite distribution.
+
+This week's data:
+- Uptime: <em>[e.g. 99.98% across production services]</em>
+- Incidents: <em>[e.g. 2 SEV-3 incidents, 0 SEV-1/2, details: ...]</em>
+- Active projects status:
+  <em>[Project A: on track, 60% complete, ETA Q2]</em>
+  <em>[Project B: at risk, blocked on vendor contract, need decision by Friday]</em>
+  <em>[Project C: completed this week, now in monitoring phase]</em>
+- Cost: <em>[e.g. $X MTD, tracking 5% under budget]</em>
+- Security: <em>[e.g. 0 critical vulnerabilities, patch compliance at 94%]</em>
+
+Format as:
+1. TL;DR (3 bullet points max, biggest wins and risks)
+2. Health dashboard (RAG status for: Availability, Performance, Security, Cost, Projects)
+3. Key accomplishments this week
+4. Risks and blockers needing leadership attention (with specific asks)
+5. Next week priorities
+
+Keep it to one screen length. No jargon. Lead with what matters to the business.</div>
+                <div class="pro-tip"><strong>Pro Tip:</strong> Create a template version once, then each week just update the raw data and re-run.</div>
+            </div>
+        </div>
+
+        <!-- 4-3 Post-Incident Executive Summary -->
+        <div class="prompt-card">
+            <div class="prompt-card-header">
+                <h3>Post-Incident Executive Summary</h3>
+                <span class="use-tag asneeded">As Needed</span>
+            </div>
+            <div class="prompt-card-body">
+                <p class="when">Transform a technical post-mortem into a non-technical executive summary with business impact and prevention plan.</p>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>Transform this technical post-mortem into an executive-ready incident summary.
+
+Technical post-mortem:
+<em>[Paste the full technical post-mortem document here, including timeline, root cause, and action items]</em>
+
+Additional context:
+- Customer-facing impact: <em>[e.g. 12,000 users affected, checkout flow unavailable for 47 minutes]</em>
+- Revenue impact: <em>[e.g. estimated $X in lost transactions]</em>
+- SLA implications: <em>[e.g. this consumed 60% of our remaining monthly error budget]</em>
+- Media/customer complaints: <em>[e.g. 3 enterprise customer escalations, 45 support tickets]</em>
+
+Produce:
+1. Executive summary (5 sentences max: what happened, who was affected, how we fixed it)
+2. Business impact (quantified: users, revenue, reputation)
+3. Root cause in plain language (no technical jargon)
+4. What we're doing to prevent recurrence (max 5 action items with owners and dates)
+5. What leadership needs to know or decide
+6. Confidence level that this won't recur (and why)
+
+Tone: accountable, transparent, forward-looking. No blame. Max 1 page.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <a href="scrum-master.html">&larr; Scrum Master</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="technical-lead.html">Tech Lead &rarr;</a>
+    <br><br>
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>

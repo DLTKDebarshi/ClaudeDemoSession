@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrum Master Prompt Cheat Sheet | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --accent: #00897B;
+            --accent-dark: #00695C;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF; color: var(--text-main); line-height: 1.6;
+        }
+
+        /* ── Sticky Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            background: #FFFFFF; border-bottom: 1px solid #E2E8F0;
+            padding: 12px 40px; font-size: 14px;
+        }
+        .topnav a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+        }
+        .topnav a:hover { text-decoration: underline; }
+        .topnav .brand { font-weight: 700; color: var(--text-main); font-size: 15px; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #00897B, #00695C);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .hero .icon { font-size: 56px; margin-bottom: 12px; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 20px; opacity: 0.92; max-width: 700px; margin: 0 auto; }
+
+        /* ── Container ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+        /* ── Category Section ── */
+        .cat { margin-top: 52px; }
+        .cat-header {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 24px; font-weight: 700; margin-bottom: 24px;
+            padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+        }
+        .cat-header .cat-icon { font-size: 28px; }
+
+        /* ── Prompt Card ── */
+        .prompt-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-lg);
+            margin-bottom: 20px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: border-color 0.2s;
+        }
+        .prompt-card:hover { border-color: var(--accent); }
+
+        .prompt-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; background: var(--bg-light); border-bottom: 1px solid #E2E8F0;
+        }
+        .prompt-card-header h3 { font-size: 17px; font-weight: 700; color: var(--text-main); }
+        .use-tag {
+            display: inline-block; padding: 3px 12px; border-radius: 16px;
+            font-size: 12px; font-weight: 600; background: var(--accent); color: white;
+            white-space: nowrap;
+        }
+
+        .prompt-card-body { padding: 20px 24px; }
+
+        .when {
+            font-size: 14px; color: var(--text-subtle); margin-bottom: 14px;
+            font-style: italic;
+        }
+
+        .prompt-box {
+            position: relative; background: #F1F3F4; border-radius: var(--radius-md);
+            padding: 18px 20px; padding-right: 80px; font-size: 14px;
+            line-height: 1.75; color: var(--text-main); white-space: pre-wrap;
+        }
+        .prompt-box em {
+            font-style: normal; background: #FFF3CD; padding: 1px 4px; border-radius: 4px;
+        }
+        .prompt-box .copy-btn {
+            position: absolute; top: 12px; right: 12px;
+            background: var(--accent); color: white; border: none; border-radius: 8px;
+            padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .prompt-box .copy-btn:hover { background: var(--accent-dark); }
+        .prompt-box .copy-btn.copied { background: #34A853; }
+
+        .pro-tip {
+            margin-top: 14px; padding: 12px 16px; border-radius: var(--radius-md);
+            background: #E8F5E9; font-size: 13px; color: #1B5E20;
+        }
+        .pro-tip strong { font-weight: 700; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px; color: var(--text-subtle);
+            border-top: 1px solid #E2E8F0; margin-top: 40px;
+        }
+        .footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 12px;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .footer strong { color: var(--text-main); }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 32px; }
+            .topnav { padding: 12px 16px; font-size: 13px; }
+            .container { padding: 0 16px 40px; }
+            .prompt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<nav class="topnav">
+    <a href="project-manager.html">&larr; Project Manager</a>
+    <span class="brand">Scrum Master</span>
+    <a href="devops-director.html">Director &rarr;</a>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="icon">&#128260;</div>
+    <h1>Scrum Master</h1>
+    <p>Facilitate better. Coach smarter. Every prompt designed to make your ceremonies valuable and your team self-organising.</p>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════
+     1. SPRINT CEREMONIES
+     ═══════════════════════════════════════════════ -->
+<section class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128260;</span> Sprint Ceremonies
+    </div>
+
+    <!-- Card 1 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Sprint Planning Facilitator</h3>
+            <span class="use-tag">Per Sprint</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you're preparing for sprint planning and need to structure the session around capacity, velocity, and the prioritised backlog.</p>
+            <div class="prompt-box">Help me structure sprint planning for my Scrum team.
+
+Team: <em>[e.g. Platform Engineering - 6 developers, 1 QA]</em>
+Sprint duration: <em>[e.g. 2 weeks, starting 21 Apr 2026]</em>
+Team capacity this sprint: <em>[e.g. 52 story points (1 dev on PTO for 3 days, 1 half-allocated to production support)]</em>
+Average velocity (last 3 sprints): <em>[e.g. 48, 55, 51 = avg 51 SP]</em>
+
+Prioritised backlog for consideration:
+<em>[e.g.
+- US-401: Implement OAuth2 token refresh (8 SP, Priority: P1)
+- US-402: Add bulk export to CSV for admin dashboard (5 SP, Priority: P1)
+- US-403: Database connection pool optimisation (13 SP, Priority: P1)
+- US-410: User notification preferences page (8 SP, Priority: P2)
+- US-411: API rate limiting middleware (8 SP, Priority: P2)
+- US-415: Fix intermittent login timeout bug (3 SP, Priority: P1)
+- US-420: Add audit logging for user actions (13 SP, Priority: P2)
+- BUG-88: Cart total miscalculation on discount codes (2 SP, Priority: P1)]</em>
+
+Carry-over from last sprint:
+<em>[e.g. US-395: Search indexing service refactor (5 SP remaining of original 13 SP)]</em>
+
+Please generate:
+1. Recommended sprint backlog based on capacity and priority (show total SP committed vs capacity)
+2. Sprint goal statement (one sentence)
+3. Suggested time-boxed agenda for the planning session (2 hours)
+4. Risks or concerns to raise during planning
+5. Dependencies to flag between stories
+6. Suggested task breakdown for the top 3 stories<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Export your Jira backlog as a list and paste it directly. Claude can parse story IDs, points, and priorities to give more precise planning recommendations.</div>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Sprint Retrospective Designer</h3>
+            <span class="use-tag">Per Sprint</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you want to keep retros fresh and engaging, then need to synthesise the team's feedback into actionable themes.</p>
+            <div class="prompt-box">I need to facilitate a sprint retrospective. First, suggest a creative format, then help me synthesise the results.
+
+Team: <em>[e.g. 7 people, been together 6 months, generally positive but energy is low lately]</em>
+Sprint just completed: <em>[e.g. Sprint 14 - delivered 45 of 51 planned SP, missed sprint goal by 1 story]</em>
+Recent context: <em>[e.g. Team had a production incident mid-sprint that consumed 2 days. New team member joined last sprint. Team has been doing "Start/Stop/Continue" for the last 4 retros and it feels stale.]</em>
+
+Previous retro action items (and status):
+<em>[e.g.
+- "Pair program on complex stories" - Partially adopted (2 of 5 complex stories)
+- "Add spike stories for unknowns" - Done, helped with estimation
+- "Reduce WIP limit to 3" - Not enforced, keeps creeping to 5]</em>
+
+Please:
+1. Suggest 3 creative retrospective formats that would work for this team's current situation (not Start/Stop/Continue). For each, explain setup, timing, and what it surfaces.
+2. Recommend one format and provide the full facilitation script with:
+   - Icebreaker (5 min)
+   - Data gathering activity (15 min)
+   - Generate insights (15 min)
+   - Decide what to do (10 min)
+   - Close and commitments (5 min)
+3. After the retro, I'll paste the team's raw notes and need you to synthesise them into themes, root causes, and 3 specific action items with owners.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Sprint Review Prep</h3>
+            <span class="use-tag">Per Sprint</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you need to prepare a compelling sprint review that showcases value delivered to stakeholders.</p>
+            <div class="prompt-box">Help me prepare a sprint review presentation for stakeholders.
+
+Team: <em>[e.g. Payments Team]</em>
+Sprint: <em>[e.g. Sprint 14, Apr 7-18 2026]</em>
+Sprint goal: <em>[e.g. Enable recurring payment scheduling for enterprise clients]</em>
+Sprint goal met: <em>[e.g. Yes, with one story deferred to next sprint]</em>
+
+Completed stories:
+<em>[e.g.
+- US-401: Recurring payment scheduling API (13 SP) - DONE
+- US-402: Payment schedule management UI (8 SP) - DONE
+- US-403: Email notification for upcoming payments (5 SP) - DONE
+- US-405: Admin override for failed recurring payments (5 SP) - DONE
+- BUG-92: Fix timezone handling in payment timestamps (3 SP) - DONE
+- US-410: Payment analytics dashboard filters (8 SP) - DEFERRED (blocked by data team)]</em>
+
+Key metrics:
+<em>[e.g. Velocity: 34 SP completed (target 42), 1 story deferred, 0 bugs escaped to production, cycle time avg 3.2 days]</em>
+
+Please generate:
+1. Sprint review agenda (45 min time-boxed)
+2. Demo script: what to show, in what order, with talking points for each story (focus on business value, not technical details)
+3. Metrics summary slide content (velocity, quality, predictability)
+4. Stakeholder discussion prompts (what feedback to solicit)
+5. Product backlog update recommendations based on this sprint's learnings
+6. Prepared answers for likely stakeholder questions<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Share this prep doc with the Product Owner before the review. It helps them narrate the story of value delivery rather than just listing features.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     2. BACKLOG & ESTIMATION
+     ═══════════════════════════════════════════════ -->
+<section class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128203;</span> Backlog &amp; Estimation
+    </div>
+
+    <!-- Card 4 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>User Story Writer</h3>
+            <span class="use-tag">Daily</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When the Product Owner gives you rough requirements and you need well-formed stories ready for refinement.</p>
+            <div class="prompt-box">Transform the following rough requirement into well-formed user stories with acceptance criteria.
+
+Product area: <em>[e.g. Client Reporting Module]</em>
+Rough requirement from stakeholder:
+<em>[e.g. "Clients want to be able to schedule reports to be emailed to them automatically. They should be able to pick which reports, set the frequency (daily/weekly/monthly), choose the format (PDF or Excel), and add multiple email recipients. Oh, and managers should be able to see what reports their team members have scheduled."]</em>
+
+Team's Definition of Done:
+<em>[e.g. Code reviewed, unit tests >80% coverage, integration tested, documentation updated, deployed to staging]</em>
+
+For each user story, please provide:
+1. User story in standard format: "As a [role], I want [capability], so that [benefit]"
+2. Acceptance criteria (Given/When/Then format, 3-5 per story)
+3. Definition of Done checklist
+4. Suggested story point estimate (using Fibonacci: 1, 2, 3, 5, 8, 13) with reasoning
+5. Technical notes or implementation hints
+6. Dependencies on other stories
+7. Edge cases to consider during development
+
+Split into appropriately sized stories (no story larger than 8 SP). Flag any ambiguities that need Product Owner clarification before development.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Backlog Refinement Prep</h3>
+            <span class="use-tag">Weekly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you're preparing for refinement and need to pre-analyse backlog items so the session is focused and efficient.</p>
+            <div class="prompt-box">Analyse the following backlog items for our upcoming refinement session. Flag issues and suggest improvements.
+
+Team context: <em>[e.g. Full-stack team, 2-week sprints, average velocity 48 SP, tech stack: React + Node.js + PostgreSQL]</em>
+
+Backlog items to refine:
+<em>[e.g.
+US-501: "Build reporting dashboard" (No points, Priority P1)
+  AC: Reports should be viewable. Dashboard should load fast.
+
+US-502: "As a user, I want to export data so I can analyse it offline" (Est: 13 SP, Priority P1)
+  AC: 1) User can click export button 2) Data downloads as CSV
+
+US-503: "Implement caching layer" (Est: 8 SP, Priority P2)
+  AC: None yet
+
+US-504: "As an admin, I want to manage user roles so that access is controlled appropriately" (Est: 5 SP, Priority P1)
+  AC: 1) Admin can assign roles 2) Admin can remove roles 3) Changes take effect immediately 4) Audit log records changes
+
+US-505: "Fix performance issues" (No points, Priority P1)
+  AC: "It should be faster"]</em>
+
+For each item, please:
+1. Rate readiness (Ready / Needs Work / Not Ready) with justification
+2. Flag missing or vague acceptance criteria
+3. Identify ambiguities that need PO clarification (list as questions)
+4. Suggest if the story should be split (and how)
+5. Estimate relative complexity and suggest story points
+6. Note any technical dependencies or risks
+
+Also provide a suggested refinement session agenda that prioritises the least-ready items.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Share Claude's analysis with the Product Owner 24 hours before refinement. It gives them time to clarify ambiguities, making the actual session dramatically more productive.</div>
+        </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Velocity &amp; Burndown Analysis</h3>
+            <span class="use-tag">Per Sprint</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you need to analyse sprint data to understand trends, predict delivery, and identify systemic issues.</p>
+            <div class="prompt-box">Analyse our sprint velocity and burndown data to identify trends and predict future delivery.
+
+Team: <em>[e.g. Checkout Experience Team, 5 developers]</em>
+
+Historical velocity (last 8 sprints):
+<em>[e.g.
+Sprint 7:  Committed 45 SP, Completed 42 SP (93%)
+Sprint 8:  Committed 50 SP, Completed 38 SP (76%)
+Sprint 9:  Committed 48 SP, Completed 47 SP (98%)
+Sprint 10: Committed 52 SP, Completed 44 SP (85%)
+Sprint 11: Committed 48 SP, Completed 49 SP (102%)
+Sprint 12: Committed 55 SP, Completed 40 SP (73%)
+Sprint 13: Committed 50 SP, Completed 48 SP (96%)
+Sprint 14: Committed 48 SP, Completed 45 SP (94%)]</em>
+
+Current sprint burndown (Sprint 15, 48 SP committed):
+<em>[e.g.
+Day 1: 48 SP remaining
+Day 3: 45 SP remaining (3 SP done)
+Day 5: 38 SP remaining (10 SP done)
+Day 7: 32 SP remaining (16 SP done)
+Day 8: 30 SP remaining (18 SP done) - today]</em>
+
+Remaining work in current release (beyond this sprint): <em>[e.g. 120 SP in backlog, release target: end of Sprint 18]</em>
+
+Please provide:
+1. Velocity trend analysis (average, median, standard deviation, trend direction)
+2. Commitment accuracy analysis (are we over-committing?)
+3. Current sprint burndown health (on track / at risk / off track) with projection
+4. Release burnup prediction: can we hit 120 SP in 4 remaining sprints? Show best/worst/likely scenarios
+5. Patterns to investigate (e.g., sprints with low completion - what happened?)
+6. Specific recommendations for improving predictability<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     3. TEAM HEALTH & COACHING
+     ═══════════════════════════════════════════════ -->
+<section class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128170;</span> Team Health &amp; Coaching
+    </div>
+
+    <!-- Card 7 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Team Health Check Survey</h3>
+            <span class="use-tag">Monthly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you want to run a structured health check to surface how the team really feels about their work and processes.</p>
+            <div class="prompt-box">Generate a Spotify-model team health check customised for my team's current situation.
+
+Team: <em>[e.g. 7-person backend engineering team, been together 8 months]</em>
+Current challenges: <em>[e.g. Recently migrated to microservices architecture, dealing with increased on-call burden, two new team members joined last month, sprint commitments consistently missed by 15-20%]</em>
+Previous health check results (if any): <em>[e.g. Last quarter: "Delivering Value" was green, "Teamwork" was green, "Speed" was amber, "Learning" was red, "Fun" was amber]</em>
+Scrum maturity: <em>[e.g. Intermediate - team has been doing Scrum for 1 year, ceremonies are regular but refinement is inconsistent]</em>
+
+Please generate:
+1. 10-12 health check dimensions tailored to this team's context (not just generic ones)
+2. For each dimension:
+   - A clear description of what "Awesome" (green) looks like
+   - A clear description of what "Crappy" (red) looks like
+   - 2-3 targeted discussion questions to facilitate conversation
+3. A facilitation guide: how to run the session (timing, voting method, discussion protocol)
+4. A template for recording results and tracking trends over time
+5. Suggested follow-up actions based on common patterns (if X is red, consider Y)
+
+Make the language approachable and psychologically safe. Avoid corporate jargon.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Impediment Resolution Tracker</h3>
+            <span class="use-tag">Daily</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When impediments are piling up from standups and you need to categorise, prioritise, and create resolution plans.</p>
+            <div class="prompt-box">Help me manage and resolve the impediments my team has raised. Categorise them, analyse root causes, and create resolution plans.
+
+Team: <em>[e.g. Mobile Development Team]</em>
+Sprint: <em>[e.g. Sprint 14, Day 6 of 10]</em>
+
+Current impediments:
+<em>[e.g.
+1. "CI/CD pipeline takes 45 minutes, blocking developers from merging" - Raised by Dev A, Day 2
+2. "No access to staging environment for 3 days, IT ticket pending" - Raised by QA Lead, Day 3
+3. "Product Owner unavailable for clarification on US-302 acceptance criteria" - Raised by Dev B, Day 4
+4. "Shared library team hasn't merged our PR with the fix we need" - Raised by Dev C, Day 4
+5. "Flaky integration tests causing false failures, team losing trust in test suite" - Raised by Dev A, Day 5
+6. "Design specs incomplete for the settings page, can't start development" - Raised by Dev D, Day 6]</em>
+
+Previously resolved this sprint:
+<em>[e.g. "VPN access for remote contractor" - Resolved Day 3 via IT escalation]</em>
+
+For each impediment, please:
+1. Categorise (Technical, Process, People, External Dependency, Tooling)
+2. Assess impact on sprint goal (High/Medium/Low)
+3. Determine root cause (not just the symptom)
+4. Create a resolution plan with specific next steps
+5. Identify who needs to act (and whether it needs escalation)
+6. Estimate time to resolution
+
+Prioritise by sprint impact. Flag anything that needs immediate escalation to management.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Keep a running impediment log across sprints and periodically ask Claude to identify patterns. Recurring impediment categories reveal systemic issues worth raising to leadership.</div>
+        </div>
+    </div>
+
+    <!-- Card 9 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Agile Maturity Assessment</h3>
+            <span class="use-tag">Quarterly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When you need to assess where your team stands on the agile journey and build a focused coaching plan.</p>
+            <div class="prompt-box">Conduct an agile maturity assessment for my team and create a coaching plan.
+
+Team: <em>[e.g. Cloud Infrastructure Team, 8 people, practicing Scrum for 14 months]</em>
+
+Current practices:
+<em>[e.g.
+- Sprint Planning: Done every 2 weeks, PO attends, takes about 3 hours (feels long), team commits but often misses by 20%
+- Daily Standup: 15 min, some people give status updates to SM instead of talking to each other, occasionally runs to 25 min
+- Sprint Review: Done with stakeholders, mostly a demo, not much feedback solicited
+- Retrospective: Done every sprint but action items from retros rarely get completed
+- Refinement: Inconsistent, sometimes skipped when sprint is busy, stories enter sprint without proper AC
+- Backlog: PO maintains it, roughly prioritised, but items at the top are often not refined enough
+- Metrics: Track velocity only, no burndown/burnup charts actively used
+- CI/CD: Have it, but deployments are still batched at end of sprint
+- Testing: Manual QA at end of sprint, no TDD, limited automation]</em>
+
+Team dynamics:
+<em>[e.g. Team is collaborative but defers too much to the senior developer. Two junior members rarely speak up in ceremonies. Cross-functional skills are limited - only 1 person can do DevOps work.]</em>
+
+Please provide:
+1. Maturity assessment across 8-10 dimensions (rate each 1-5 with evidence-based justification)
+2. Overall maturity level (Beginner / Practicing / Maturing / Advanced)
+3. Top 3 areas for improvement (highest impact, most achievable)
+4. A 90-day coaching plan with specific, time-bound actions for each area
+5. Facilitation techniques to address the specific team dynamics issues
+6. Metrics to track improvement over the next quarter
+7. Anti-patterns identified with suggested countermeasures<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     4. METRICS & CONTINUOUS IMPROVEMENT
+     ═══════════════════════════════════════════════ -->
+<section class="cat">
+    <div class="cat-header">
+        <span class="cat-icon">&#128200;</span> Metrics &amp; Continuous Improvement
+    </div>
+
+    <!-- Card 10 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Sprint Metrics Dashboard</h3>
+            <span class="use-tag">Per Sprint</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When the sprint ends and you need a comprehensive metrics report to share with the team and stakeholders.</p>
+            <div class="prompt-box">Generate a comprehensive sprint metrics report from the following raw data.
+
+Team: <em>[e.g. Order Management Team]</em>
+Sprint: <em>[e.g. Sprint 14, Apr 7-18 2026 (10 working days)]</em>
+
+Sprint data:
+<em>[e.g.
+Committed at planning: 48 SP across 9 stories
+Completed: 42 SP across 7 stories
+Carried over: 2 stories (US-310: 3 SP, US-315: 3 SP)
+Stories added mid-sprint: 1 (BUG-201: 2 SP, added Day 4, completed Day 6)
+Stories removed mid-sprint: 0
+
+Story completion timeline:
+- US-301 (8 SP): Started Day 1, Done Day 4 (cycle time: 4d)
+- US-302 (5 SP): Started Day 1, Done Day 3 (cycle time: 3d)
+- US-303 (8 SP): Started Day 2, Done Day 7 (cycle time: 6d)
+- US-305 (3 SP): Started Day 3, Done Day 5 (cycle time: 3d)
+- US-308 (5 SP): Started Day 4, Done Day 8 (cycle time: 5d)
+- BUG-201 (2 SP): Started Day 4, Done Day 6 (cycle time: 3d)
+- US-309 (13 SP): Started Day 1, Done Day 10 (cycle time: 10d)
+
+Bugs found in sprint: 3 (1 critical, 2 minor)
+Bugs escaped to production: 0
+Team member PTO: 1 person, 2 days]</em>
+
+Previous sprint velocities: <em>[e.g. S11: 44, S12: 40, S13: 48]</em>
+
+Please generate a metrics dashboard with:
+1. Velocity: completed vs committed, trend over last 4 sprints
+2. Commitment reliability: % of committed work completed
+3. Scope change index: work added/removed as % of original commitment
+4. Average cycle time and distribution analysis
+5. Carry-over rate and analysis
+6. Defect metrics: found, escaped, defect density
+7. Sprint goal achievement: Met / Partially Met / Missed
+8. Recommendations based on the data
+9. Trends to watch for next sprint
+
+Format as a report suitable for screen-sharing in a sprint review.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+        </div>
+    </div>
+
+    <!-- Card 11 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Process Improvement Proposal</h3>
+            <span class="use-tag">As Needed</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When retro action items or observations suggest a process change, and you need a structured proposal to get buy-in.</p>
+            <div class="prompt-box">Help me build a data-backed proposal for a process change on my Scrum team.
+
+Proposed change: <em>[e.g. Implement Work-In-Progress (WIP) limits of 2 items per developer, enforced on the Jira board]</em>
+
+Current problem:
+<em>[e.g. Developers regularly work on 3-5 stories simultaneously. Context switching is high. Stories take 5-7 days cycle time when they should take 2-3 days. Carry-over rate is 25% per sprint. The team raised this in 3 consecutive retros but hasn't taken action.]</em>
+
+Supporting data:
+<em>[e.g.
+- Average WIP per developer: 3.4 items
+- Average cycle time: 5.8 days (target: 3 days)
+- Carry-over rate last 6 sprints: 30%, 20%, 25%, 35%, 20%, 25%
+- Stories blocked waiting for review: avg 1.5 days
+- Developer survey: 5/7 devs say context switching is their #1 frustration]</em>
+
+Team context: <em>[e.g. Team of 7, some resistance from 2 senior devs who prefer working on multiple things. Manager is supportive but wants data before changing process.]</em>
+
+Please create a proposal with:
+1. Problem statement with quantified impact
+2. Proposed solution with specific implementation details
+3. Expected benefits with before/after predictions (quantified where possible)
+4. Implementation plan (phased rollout over 2-3 sprints)
+5. Success metrics: how we'll measure if it's working
+6. Risk mitigation: what if it doesn't work? (include rollback plan)
+7. Addressing likely objections (especially from the resistant team members)
+8. References to industry data supporting this approach
+
+Keep it concise (1-2 pages) and persuasive.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Use this proposal format for any process experiment. The rollback plan makes it a "safe to try" experiment rather than a permanent mandate, which reduces resistance significantly.</div>
+        </div>
+    </div>
+
+    <!-- Card 12 -->
+    <div class="prompt-card">
+        <div class="prompt-card-header">
+            <h3>Standup Anti-Pattern Detector</h3>
+            <span class="use-tag">Weekly</span>
+        </div>
+        <div class="prompt-card-body">
+            <p class="when">When standups feel off but you can't pinpoint why, or when you want to proactively assess standup health.</p>
+            <div class="prompt-box">Analyse our standup patterns and identify anti-patterns or signs of dysfunction. Suggest facilitation improvements.
+
+Team: <em>[e.g. 7-person cross-functional team, daily 15-min standup at 9:30 AM]</em>
+
+Standup observations from this week:
+<em>[e.g.
+Monday (14 min):
+- Dev A: Detailed 5-min technical explanation of a database issue to the whole team. SM didn't intervene.
+- Dev B, C, D: Quick updates, 1-2 min each. Mentioned no blockers.
+- QA Lead: "Same as yesterday, still testing." No details.
+- Dev E: Absent (no notification).
+
+Tuesday (22 min):
+- Turned into a 10-min problem-solving session between Dev A and Tech Lead about the DB issue.
+- Dev F: Mentioned being blocked waiting for design specs since Friday. No one followed up.
+- PO jumped in with a scope question that derailed for 5 min.
+
+Wednesday (11 min):
+- Everyone gave quick updates. Felt rushed.
+- No one mentioned the blocker Dev F raised yesterday.
+- SM asked "any blockers?" at end, everyone said no.
+
+Thursday (18 min):
+- Dev A started reporting to SM instead of the team.
+- 3 people checked phones during others' updates.
+- Carry-over story US-310 not mentioned by anyone despite being in sprint for 8 days.]</em>
+
+Please:
+1. Identify specific anti-patterns observed (name each one)
+2. Rate standup health (Healthy / Needs Attention / Dysfunctional) with justification
+3. Root cause analysis for each anti-pattern
+4. Specific facilitation techniques to address each issue
+5. Suggested standup format change if needed (e.g., walk-the-board vs round-robin)
+6. Red flags that suggest deeper team issues beyond standup mechanics
+7. A 2-week improvement plan with daily facilitation notes<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pro-tip"><strong>Pro Tip:</strong> Try "walking the board" (discussing items right-to-left on the Kanban board) instead of going person-by-person. It shifts the focus from status reporting to flow and collaboration.</div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="project-manager.html">&larr; Project Manager</a>
+    <a href="index.html">All Cheat Sheets</a>
+    <a href="devops-director.html">Director &rarr;</a>
+    <br><br>
+    Deltek Cloud AI Learning Community | <strong>Scrum Master Cheat Sheet</strong> | #AIforALL
+</div>
+
+<script>
+function copyPrompt(btn){var b=btn.parentElement;var t=b.textContent.replace('Copy','').replace('Copied!','').trim();navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+</script>
+
+</body></html>
