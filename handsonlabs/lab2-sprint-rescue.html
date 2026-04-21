@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 2: The Sprint Rescue | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ── Sticky Top Nav ── */
+        .topnav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            background: #FFFFFF; border-bottom: 1px solid #E2E8F0;
+            padding: 12px 40px; font-size: 14px;
+        }
+        .topnav a {
+            color: #00897B; text-decoration: none; font-weight: 600;
+        }
+        .topnav a:hover { text-decoration: underline; }
+        .topnav .brand { font-weight: 700; color: var(--text-main); font-size: 15px; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #00897B, #00695C);
+            color: white; text-align: center; padding: 72px 40px 56px;
+        }
+        .lab-number {
+            display: inline-block; font-size: 13px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; opacity: 0.85;
+            margin-bottom: 12px; padding: 6px 20px;
+            border: 2px solid rgba(255,255,255,0.4); border-radius: 20px;
+        }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero p  { font-size: 20px; opacity: 0.92; max-width: 700px; margin: 0 auto; }
+
+        /* ── Content Wrap ── */
+        .content-wrap { max-width: 960px; margin: 0 auto; padding: 0 40px 60px; }
+
+        /* ── Sections ── */
+        .section { margin-top: 52px; }
+        .section-label {
+            display: inline-block; padding: 5px 16px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 16px;
+        }
+        .section-label.scenario { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .section-label.problem  { background: rgba(234,67,53,0.12); color: var(--g-red); }
+        .section-label.data     { background: rgba(251,188,5,0.15); color: #E6A800; }
+        .section-label.steps    { background: rgba(0,137,123,0.12); color: #00897B; }
+        .section-label.solution { background: rgba(126,87,194,0.12); color: #7E57C2; }
+        .section-label.takeaway { background: rgba(66,133,244,0.12); color: var(--g-blue); }
+        .section h2 {
+            font-size: 28px; font-weight: 700; margin-bottom: 16px; color: var(--text-main);
+        }
+        .section p, .section li {
+            font-size: 16px; line-height: 1.8; color: var(--text-subtle);
+        }
+        .section ul, .section ol {
+            padding-left: 24px; margin-top: 12px;
+        }
+        .section li { margin-bottom: 8px; }
+
+        /* ── Highlight Boxes ── */
+        .highlight-box {
+            border-radius: var(--radius-md); padding: 20px 24px;
+            margin: 20px 0; font-size: 15px; line-height: 1.75;
+        }
+        .highlight-box strong { display: block; margin-bottom: 4px; }
+        .highlight-box.blue   { background: #E8F0FE; border-left: 4px solid var(--g-blue); color: #1A47A0; }
+        .highlight-box.green  { background: #E6F4EA; border-left: 4px solid var(--g-green); color: #137333; }
+        .highlight-box.yellow { background: #FEF7E0; border-left: 4px solid var(--g-yellow); color: #8A6D00; }
+        .highlight-box.red    { background: #FDE7E7; border-left: 4px solid var(--g-red); color: #A50E0E; }
+        .highlight-box.purple { background: #F3E8FD; border-left: 4px solid #7E57C2; color: #4A148C; }
+
+        /* ── Prompt Blocks ── */
+        .prompt-block {
+            background: #1a1a2e; border-left: 4px solid #00897B;
+            border-radius: var(--radius-sm); padding: 24px 28px;
+            margin: 20px 0; font-family: 'Roboto Mono', 'SF Mono', 'Consolas', monospace;
+            font-size: 13.5px; line-height: 1.8; color: #E0E0E0;
+            white-space: pre-wrap; overflow-x: auto; position: relative;
+        }
+        .prompt-block .label {
+            display: block; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: #00897B; margin-bottom: 12px;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+        .prompt-block em {
+            font-style: normal; color: #FBBC05;
+        }
+
+        /* ── Step Rows ── */
+        .step-row {
+            display: flex; gap: 20px; margin: 28px 0;
+            align-items: flex-start;
+        }
+        .step-num {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #00897B; color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700;
+        }
+        .step-body { flex: 1; }
+        .step-body h3 {
+            font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-main);
+        }
+        .step-body p {
+            font-size: 15px; line-height: 1.75; color: var(--text-subtle);
+        }
+
+        /* ── Download Button ── */
+        .download-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #00897B; color: white; border: none; border-radius: var(--radius-sm);
+            padding: 12px 24px; font-size: 14px; font-weight: 600;
+            cursor: pointer; text-decoration: none; transition: background 0.2s;
+            margin: 6px 8px 6px 0;
+        }
+        .download-btn:hover { background: #00695C; }
+
+        /* ── Data Table ── */
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+            font-size: 14px; border-radius: var(--radius-sm); overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .data-table thead th {
+            background: #00897B; color: white; padding: 12px 16px;
+            text-align: left; font-weight: 600; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .data-table tbody td {
+            padding: 10px 16px; border-bottom: 1px solid #E2E8F0;
+            color: var(--text-main);
+        }
+        .data-table tbody tr:nth-child(even) { background: var(--bg-light); }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover { background: #E0F2F1; }
+
+        /* ── Two Column Layout ── */
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+            margin: 24px 0;
+        }
+        .col-card {
+            background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-md);
+            padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .col-card h3 {
+            font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);
+        }
+        .col-card p, .col-card li {
+            font-size: 14px; line-height: 1.75; color: var(--text-subtle);
+        }
+        .col-card ul { padding-left: 20px; margin-top: 8px; }
+        .col-card li { margin-bottom: 6px; }
+
+        /* ── Participant Notice ── */
+        .participant-notice {
+            background: #FFF8E1; border: 2px solid var(--g-yellow); border-radius: var(--radius-md);
+            padding: 20px 24px; margin: 40px 0 20px; text-align: center;
+            font-size: 15px; color: #8A6D00;
+        }
+        .participant-notice strong { color: #5D4600; }
+        body.is-admin .participant-notice { display: none; }
+
+        /* ── Solution Section (Admin Only) ── */
+        .section-solution-wrap {
+            display: none; margin-top: 40px;
+        }
+        body.is-admin .section-solution-wrap { display: block; }
+
+        .section-solution-wrap details {
+            border: 2px solid #7E57C2; border-radius: var(--radius-md);
+            overflow: hidden; margin: 16px 0;
+        }
+        .section-solution-wrap details summary {
+            background: #F3E8FD; padding: 16px 24px;
+            font-size: 16px; font-weight: 700; color: #7E57C2;
+            cursor: pointer; list-style: none; display: flex;
+            align-items: center; gap: 10px;
+        }
+        .section-solution-wrap details summary::-webkit-details-marker { display: none; }
+        .section-solution-wrap details summary::before {
+            content: '\25B6'; font-size: 12px; transition: transform 0.2s;
+        }
+        .section-solution-wrap details[open] summary::before {
+            transform: rotate(90deg);
+        }
+        .section-solution-wrap details .solution-content {
+            padding: 24px; font-size: 15px; line-height: 1.8; color: var(--text-subtle);
+        }
+        .section-solution-wrap details .solution-content h4 {
+            font-size: 16px; font-weight: 700; color: var(--text-main);
+            margin: 16px 0 8px;
+        }
+        .section-solution-wrap details .solution-content h4:first-child { margin-top: 0; }
+        .section-solution-wrap details .solution-content ul,
+        .section-solution-wrap details .solution-content ol {
+            padding-left: 20px; margin: 8px 0;
+        }
+        .section-solution-wrap details .solution-content li { margin-bottom: 6px; }
+        .section-solution-wrap details .solution-content code {
+            background: #F1F3F4; padding: 2px 6px; border-radius: 4px;
+            font-family: 'Roboto Mono', monospace; font-size: 13px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center; padding: 40px; font-size: 14px;
+            color: var(--text-subtle); border-top: 1px solid #E2E8F0; margin-top: 40px;
+        }
+        .footer a {
+            color: #00897B; text-decoration: none; font-weight: 600; margin: 0 12px;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .footer strong { color: var(--text-main); }
+
+        /* ── Responsive ── */
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 32px; }
+            .topnav { padding: 12px 16px; font-size: 13px; }
+            .content-wrap { padding: 0 16px 40px; }
+            .two-col { grid-template-columns: 1fr; }
+            .data-table { font-size: 12px; }
+            .data-table thead th, .data-table tbody td { padding: 8px 10px; }
+            .prompt-block { font-size: 12px; padding: 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Top Navigation ── -->
+<nav class="topnav">
+    <a href="lab1-incident-war-room.html">&larr; Lab 1</a>
+    <span class="brand">Deltek Cloud AI Learning Community</span>
+    <a href="lab3-infra-migration-decision.html">Lab 3 &rarr;</a>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="lab-number">Hands-On Lab 2</div>
+    <h1>The Sprint Rescue</h1>
+    <p>Use Claude to diagnose a failing sprint, build a data-driven re-plan, and draft a stakeholder update &mdash; in 15 minutes instead of half a day.</p>
+</div>
+
+<div class="content-wrap">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SCENARIO                                   -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section">
+        <span class="section-label scenario">Scenario</span>
+        <h2>Sprint 14 Is Going Sideways</h2>
+        <p>It's Wednesday of Sprint 14 &mdash; 3 days before sprint end. Your team of 5 engineers committed to 52 story points (37 new + 15 carry-over from the disastrous Sprint 13). Only 10 points are Done. 3 stories are blocked. 4 tickets are unassigned. The Product Owner is asking "Are we going to hit our sprint goal?" and the VP of Engineering wants a status update by end of day.</p>
+        <p style="margin-top: 12px;">You need to assess the situation, make hard calls about what to cut, and communicate clearly &mdash; fast.</p>
+
+        <div class="highlight-box red">
+            <strong>The Old Way</strong>
+            Spend 2 hours in ad-hoc Slack conversations, manually calculate velocity, write a status email that takes 45 minutes to draft, and still not have a clear plan. Elapsed: half a day.
+        </div>
+
+        <div class="highlight-box green">
+            <strong>The AI Way</strong>
+            Upload your backlog export and sprint history to Claude. Get a sprint health diagnosis, a re-plan, and a stakeholder update in 15 minutes.
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- PROBLEM STATEMENT                          -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section">
+        <span class="section-label problem">Problem Statement</span>
+        <h2>What You Need to Deliver</h2>
+        <ol>
+            <li><strong>A sprint health diagnosis</strong> &mdash; is this sprint salvageable? What does the data say?</li>
+            <li><strong>A re-plan recommendation</strong> &mdash; which stories to keep, cut, or descope, with rationale</li>
+            <li><strong>A stakeholder update email</strong> &mdash; honest, clear, and constructive for the VP of Engineering</li>
+        </ol>
+
+        <div class="highlight-box blue">
+            <strong>Target Roles</strong>
+            Scrum Master &bull; Project Manager &bull; Team Lead
+        </div>
+
+        <div class="highlight-box yellow">
+            <strong>Time to Complete</strong>
+            15&ndash;20 minutes
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SAMPLE DATA                                -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section">
+        <span class="section-label data">Sample Data</span>
+        <h2>Sprint Data Files</h2>
+        <p>Download these two CSV files to use in the lab. You'll upload them to Claude in Step 2.</p>
+
+        <div style="margin: 20px 0;">
+            <a class="download-btn" href="sample-backlog.csv" download>&#11015; sample-backlog.csv</a>
+            <a class="download-btn" href="sample-sprint-history.csv" download>&#11015; sample-sprint-history.csv</a>
+        </div>
+
+        <div class="highlight-box yellow">
+            <strong>Tip</strong>
+            You can also paste the CSV content directly into Claude if you prefer not to upload files.
+        </div>
+
+        <p style="margin-top: 24px; font-weight: 700; color: var(--text-main);">Sprint History at a Glance</p>
+        <p>Here's the velocity data for the last 6 sprints so you can see the trend before you start.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Sprint</th>
+                    <th>Planned Pts</th>
+                    <th>Completed Pts</th>
+                    <th>Carry-Over Pts</th>
+                    <th>Team Size</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sprint 9</td>
+                    <td>34</td>
+                    <td>32</td>
+                    <td>2</td>
+                    <td>5</td>
+                    <td>Strong sprint. Only 1 minor story carried over.</td>
+                </tr>
+                <tr>
+                    <td>Sprint 10</td>
+                    <td>36</td>
+                    <td>33</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>On track. Carry-over was a blocked infra task.</td>
+                </tr>
+                <tr>
+                    <td>Sprint 11</td>
+                    <td>38</td>
+                    <td>30</td>
+                    <td>8</td>
+                    <td>5</td>
+                    <td>Missed target. 2 devs pulled into production incident mid-sprint.</td>
+                </tr>
+                <tr>
+                    <td>Sprint 12</td>
+                    <td>35</td>
+                    <td>34</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>Recovery sprint. Focused on fewer stories. Good execution.</td>
+                </tr>
+                <tr>
+                    <td>Sprint 13</td>
+                    <td>40</td>
+                    <td>26</td>
+                    <td>14</td>
+                    <td>5</td>
+                    <td>Bad sprint. Scope creep &mdash; 3 unplanned stories added mid-sprint.</td>
+                </tr>
+                <tr>
+                    <td>Sprint 14</td>
+                    <td>52</td>
+                    <td>??</td>
+                    <td>??</td>
+                    <td>5</td>
+                    <td>Current sprint. 37 new + 15 carry-over = 52 total. Ends in 3 days.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- STEP-BY-STEP                               -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section">
+        <span class="section-label steps">Step-by-Step</span>
+        <h2>How to Run This Lab</h2>
+
+        <!-- Step 1 -->
+        <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <h3>Open claude.ai</h3>
+                <p>Go to <a href="https://claude.ai" target="_blank" style="color:#00897B;font-weight:600;">claude.ai</a> and start a new conversation. Any Claude model will work for this lab.</p>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <h3>Upload the Data</h3>
+                <p>Upload both CSV files (<code style="background:#F1F3F4;padding:2px 6px;border-radius:4px;font-size:13px;">sample-backlog.csv</code> and <code style="background:#F1F3F4;padding:2px 6px;border-radius:4px;font-size:13px;">sample-sprint-history.csv</code>) using the attachment button in Claude, or paste their contents directly into the chat.</p>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-row">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <h3>Prompt #1 &mdash; Sprint Health Diagnosis</h3>
+                <p>Paste the following prompt to get a data-driven assessment of Sprint 14's health.</p>
+                <div class="prompt-block"><span class="label">Prompt #1 &mdash; Sprint Health Diagnosis</span>I've uploaded our Sprint 14 backlog and sprint history data. We're a 5-person engineering team, 3 days from sprint end.
+
+Analyse the sprint health and give me:
+1. VELOCITY ANALYSIS: What's our average velocity over the last 5 sprints? What's realistic to complete in the remaining 3 days?
+2. SPRINT 14 STATUS: Break down the 52 planned points by status (Done, In Progress, To Do, Blocked, Carry-Over). What percentage is complete?
+3. RISK ASSESSMENT:
+   - Which stories are at risk and why? (blocked, unassigned, high points with low progress)
+   - How does Sprint 14's plan compare to our actual velocity? Was this sprint over-committed from the start?
+4. CARRY-OVER DEBT: We're carrying over from Sprint 13. Is this becoming a pattern? What does the trend show?
+5. DIAGNOSIS: In 2-3 sentences, what's the honest assessment? Is this sprint salvageable?
+
+Be data-driven. Show your math. Don't sugarcoat it.</div>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-row">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <h3>Prompt #2 &mdash; Re-Plan Recommendation</h3>
+                <p>Once you have the diagnosis, ask Claude to build a concrete re-plan for the remaining 3 days.</p>
+                <div class="prompt-block"><span class="label">Prompt #2 &mdash; Re-Plan Recommendation</span>Based on your diagnosis, create a re-plan recommendation for the remaining 3 days of Sprint 14.
+
+For each of the 15 tickets, recommend one of:
+- KEEP: Realistic to complete in 3 days. State why.
+- CUT: Remove from sprint. State why and which sprint to move it to.
+- DESCOPE: Reduce scope to deliver partial value. State what to cut from the story.
+
+Format as a table: Ticket ID | Title | Points | Current Status | Recommendation | Rationale
+
+Then give me:
+1. REVISED SPRINT GOAL: What can we realistically commit to delivering?
+2. REVISED POINT TARGET: How many points is the new plan?
+3. ASSIGNMENT GAPS: Are any kept stories missing an assignee? Suggest reassignments based on workload.
+4. BLOCKED ITEM RESOLUTION: For PROJ-307 (blocked), suggest an unblock strategy or recommend cutting it.
+
+End with a "Sprint 14 Commitment Statement" &mdash; one paragraph the Scrum Master can read at standup tomorrow.</div>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-row">
+            <div class="step-num">5</div>
+            <div class="step-body">
+                <h3>Prompt #3 &mdash; Stakeholder Update Email</h3>
+                <p>Now draft a professional stakeholder update for the VP of Engineering.</p>
+                <div class="prompt-block"><span class="label">Prompt #3 &mdash; Stakeholder Update Email</span>Write a stakeholder update email to our VP of Engineering about Sprint 14's status. This person reads 20 emails a day &mdash; be concise and honest.
+
+Include:
+1. SUBJECT LINE: Clear and informative (not "Sprint Update" &mdash; something specific)
+2. SPRINT HEALTH: RAG status (Red/Amber/Green) with one-line justification
+3. WHAT WE COMMITTED: Original plan (52 points, 15 stories)
+4. WHERE WE ARE: Current completion rate and what's at risk
+5. WHAT WE'RE DOING: The re-plan &mdash; what we're keeping, cutting, and why
+6. ROOT CAUSE: Why is this sprint struggling? (reference the carry-over pattern from Sprint 13)
+7. WHAT WE NEED: Any asks &mdash; decisions, unblocks, or support from leadership
+8. NEXT SPRINT OUTLOOK: What we'll do differently in Sprint 15
+
+Tone: transparent, accountable, forward-looking. Not defensive. Not panicky. The VP should finish reading and think "They have this under control."
+
+Keep it under 300 words.</div>
+            </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step-row">
+            <div class="step-num">6</div>
+            <div class="step-body">
+                <h3>Review &amp; Iterate</h3>
+                <p>Compare your outputs with your lab partner. Did Claude catch the same risks? Is the re-plan realistic? Does the stakeholder email strike the right tone?</p>
+                <p style="margin-top: 8px;">Try asking Claude to adjust the tone (more formal, more casual), add more detail to a specific section, or rewrite the email for a different audience (e.g., the Product Owner instead of the VP).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- PARTICIPANT NOTICE                         -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="participant-notice">
+        <strong>You're in participant mode.</strong><br>
+        Complete the lab above using the prompts provided. The solution section is visible to facilitators only. When you're done, compare your results with your lab partner.
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SOLUTION (ADMIN ONLY)                      -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section-solution-wrap">
+        <div class="section">
+            <span class="section-label solution">Solution &amp; Evaluation</span>
+            <h2>Facilitator Guide</h2>
+            <p>These are the expected outputs and evaluation criteria. Use these to guide discussion and assess participant results.</p>
+
+            <details>
+                <summary>Expected Output &mdash; Velocity Analysis</summary>
+                <div class="solution-content">
+                    <h4>Velocity Trend (Sprints 9&ndash;13)</h4>
+                    <ul>
+                        <li>Sprint 9: 32 completed</li>
+                        <li>Sprint 10: 33 completed</li>
+                        <li>Sprint 11: 30 completed</li>
+                        <li>Sprint 12: 34 completed</li>
+                        <li>Sprint 13: 26 completed</li>
+                    </ul>
+                    <h4>Average Velocity</h4>
+                    <p><strong>~31 points</strong> over Sprints 9&ndash;13 ((32 + 33 + 30 + 34 + 26) / 5 = 31).</p>
+                    <h4>Over-Commitment</h4>
+                    <p>Sprint 14 was planned at <strong>52 points</strong> &mdash; that's <strong>68% above the average velocity</strong> of 31. This sprint was over-committed from day one, before a single story was started.</p>
+                    <h4>Remaining Capacity</h4>
+                    <p>With 3 days remaining out of a 2-week sprint (~30% of time left) and an average velocity of ~31 points, realistic remaining capacity is approximately <strong>12&ndash;15 points</strong>. Combined with the 10 points already Done, the team can likely finish <strong>22&ndash;25 total points</strong>.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>Expected Output &mdash; Current Sprint Status</summary>
+                <div class="solution-content">
+                    <h4>Points by Status</h4>
+                    <ul>
+                        <li><strong>Done:</strong> 10 points (PROJ-309 = 2pts, plus other completed work)</li>
+                        <li><strong>In Progress:</strong> 16 points (PROJ-301 = 8pts, PROJ-302 = 3pts, PROJ-304 = 5pts)</li>
+                        <li><strong>To Do:</strong> 21 points (PROJ-303 = 5pts, PROJ-305 = 3pts, PROJ-306 = 8pts, PROJ-308 = 5pts)</li>
+                        <li><strong>Blocked:</strong> 5 points (PROJ-307 = 5pts)</li>
+                        <li><strong>Carry-Over (not started):</strong> varies by how the team has progressed on carry-over items</li>
+                    </ul>
+                    <h4>Completion Rate</h4>
+                    <p>Only <strong>10/52 points Done (19%)</strong> with 3 days (approximately 30% of sprint time) remaining. The sprint is significantly behind pace.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>Expected Output &mdash; Re-Plan Recommendations</summary>
+                <div class="solution-content">
+                    <h4>KEEP (Realistic to complete)</h4>
+                    <ul>
+                        <li><strong>PROJ-301</strong> (SSO, 8pts) &mdash; Already In Progress, high priority, significant investment already made</li>
+                        <li><strong>PROJ-302</strong> (Timeout bug, 3pts) &mdash; Critical bug, In Progress, small scope remaining</li>
+                        <li><strong>PROJ-304</strong> (DB leak, 5pts) &mdash; Critical bug, In Progress, must-fix for reliability</li>
+                        <li><strong>PROJ-314</strong> (Broken notifications, 2pts) &mdash; Carry-over, In Progress, small and high priority</li>
+                        <li><strong>PROJ-309</strong> (CSV import fix, 2pts) &mdash; Already Done</li>
+                    </ul>
+                    <h4>CUT (Move to Sprint 15)</h4>
+                    <ul>
+                        <li><strong>PROJ-303</strong> (Pagination, 5pts) &mdash; Unassigned, medium priority, not started</li>
+                        <li><strong>PROJ-305</strong> (API docs, 3pts) &mdash; Low priority, unassigned, not started</li>
+                        <li><strong>PROJ-306</strong> (Dashboard views, 8pts) &mdash; 8 points, not started, too large for 3 days</li>
+                        <li><strong>PROJ-310</strong> (Onboarding walkthrough, 5pts) &mdash; Low priority, unassigned</li>
+                        <li><strong>PROJ-311</strong> (Perf test suite, 3pts) &mdash; Medium priority, unassigned, testing can wait</li>
+                        <li><strong>PROJ-313</strong> (Schema migration, 8pts) &mdash; 8-point carry-over, risky migration for 3 days</li>
+                    </ul>
+                    <h4>DESCOPE (Deliver partial value)</h4>
+                    <ul>
+                        <li><strong>PROJ-308</strong> (Rate limiting, 5pts) &mdash; Implement basic throttling only, skip advanced configuration</li>
+                        <li><strong>PROJ-312</strong> (Webhook retry, 5pts) &mdash; Implement basic retry logic, skip exponential backoff</li>
+                    </ul>
+                    <h4>CUT/UNBLOCK Decision Needed</h4>
+                    <ul>
+                        <li><strong>PROJ-307</strong> (Redis upgrade, 5pts) &mdash; Blocked. If cannot unblock today, cut to Sprint 15</li>
+                        <li><strong>PROJ-315</strong> (Terraform module, 5pts) &mdash; Carry-over, cut to Sprint 15</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Expected Output &mdash; Stakeholder Email</summary>
+                <div class="solution-content">
+                    <h4>Key Elements to Look For</h4>
+                    <ul>
+                        <li>RAG Status: <strong>Amber</strong> (not Red &mdash; because the team has a plan; not Green &mdash; because they're significantly behind)</li>
+                        <li>References the <strong>carry-over pattern</strong> from Sprint 13 as a root cause</li>
+                        <li>Does <strong>NOT blame individuals</strong> &mdash; focuses on systemic issues (over-commitment, scope creep, carry-over debt)</li>
+                        <li>Includes a <strong>concrete Sprint 15 commitment</strong> to plan at realistic velocity (~32&ndash;34 points)</li>
+                        <li>Tone is <strong>transparent, accountable, and forward-looking</strong></li>
+                        <li>Under 300 words</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>Evaluation Checklist</summary>
+                <div class="solution-content">
+                    <h4>Grade participant outputs against these criteria:</h4>
+                    <ol>
+                        <li><strong>Does the diagnosis show the math?</strong> &mdash; Velocity trend calculated, points broken down by status, percentages shown</li>
+                        <li><strong>Is the over-commitment called out clearly?</strong> &mdash; 52 points vs. ~31 average velocity should be flagged as 68% over-commitment</li>
+                        <li><strong>Is the re-plan realistic given the velocity data?</strong> &mdash; Revised target should be ~22&ndash;25 points, not an optimistic "we can still do 40"</li>
+                        <li><strong>Does the stakeholder email tell the truth without causing panic?</strong> &mdash; Amber status, honest assessment, but with a concrete recovery plan</li>
+                        <li><strong>Are Sprint 15 improvements mentioned?</strong> &mdash; Commit to realistic velocity, address carry-over debt, avoid repeating the pattern</li>
+                    </ol>
+
+                    <div class="highlight-box green" style="margin-top: 20px;">
+                        <strong>The "Wow" Moment</strong>
+                        You just transformed two CSV files into a sprint diagnosis, a data-backed re-plan, and a stakeholder-ready email in under 15 minutes. No more 2-hour sprint rescue meetings where you end up with the same "we'll try harder" conclusion.
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- KEY TAKEAWAY                               -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section">
+        <span class="section-label takeaway">Key Takeaway</span>
+        <h2>Before &amp; After</h2>
+
+        <div class="two-col">
+            <div class="col-card" style="border-top: 3px solid var(--g-red);">
+                <h3>Before: Manual Sprint Rescue</h3>
+                <p>Sprint goes sideways. Scrum Master spends half a day in ad-hoc conversations, manually calculating what to cut. The stakeholder update is vague ("we're behind, we'll adjust"). Sprint 15 starts with the same over-commitment.</p>
+            </div>
+            <div class="col-card" style="border-top: 3px solid var(--g-green);">
+                <h3>After: AI-Assisted Sprint Rescue</h3>
+                <p>Upload two files, get a data-driven diagnosis in minutes. The re-plan is based on actual velocity, the stakeholder email is specific, and the Sprint 15 plan is grounded in reality.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box blue" style="text-align: center; font-size: 17px; font-weight: 600; margin-top: 32px;">
+            AI doesn't fix broken sprints &mdash; it makes the diagnosis and communication fast enough that you can fix them the same day instead of carrying the dysfunction into the next sprint.
+        </div>
+    </div>
+
+</div><!-- /content-wrap -->
+
+<!-- ── Footer ── -->
+<div class="footer">
+    <a href="index.html">&larr; All Labs</a>
+    <a href="lab1-incident-war-room.html">Lab 1: Incident War Room</a>
+    <a href="lab3-infra-migration-decision.html">Lab 3: Infrastructure Decision</a>
+    <br><br>
+    <strong>Deltek Cloud AI Learning Community</strong> | #AIforALL
+</div>
+
+<script src="../auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function () { Auth.initPage(); });</script>
+</body></html>

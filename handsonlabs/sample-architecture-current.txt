@@ -1,0 +1,82 @@
+CURRENT ARCHITECTURE — Invoice Processing Service
+Document Owner: Infrastructure Team
+Last Updated: April 2026
+
+=== OVERVIEW ===
+
+The Invoice Processing Service handles document ingestion, OCR extraction, validation, approval workflows, and integration with the ERP system. It currently runs on-premises in the Herndon, VA data center.
+
+=== CURRENT ON-PREM SETUP ===
+
+1. APPLICATION SERVERS (2x Dell PowerEdge R740)
+   - OS: RHEL 8.6
+   - App: Java 11 / Spring Boot monolith (invoice-processor v4.8.2)
+   - Memory: 64GB RAM each
+   - CPU: 2x Intel Xeon Gold 6248 (20 cores each)
+   - Deployment: WAR file deployed to Tomcat 9, manual deployment via SSH
+   - Load balancing: F5 BIG-IP (hardware)
+
+2. DATABASE (1x Dell PowerEdge R740)
+   - Engine: PostgreSQL 13.4
+   - Storage: 2TB SAN (NetApp FAS8200)
+   - Backup: Daily full backup to tape, 30-day retention
+   - No read replicas
+   - No connection pooling (direct JDBC connections)
+   - Current size: 890GB data, ~15M invoice records
+
+3. FILE STORAGE
+   - NetApp NFS share for uploaded invoice PDFs/images
+   - Current volume: 4.2TB (~8M files)
+   - No lifecycle management — files kept forever
+   - Accessed directly by app servers via NFS mount
+
+4. OCR ENGINE
+   - ABBYY FineReader Server (on-prem license)
+   - Runs on dedicated Windows Server 2019 VM
+   - License: 500K pages/year ($45,000/year)
+   - Current usage: ~380K pages/year
+   - Processing: synchronous — app server sends document, waits for OCR result
+
+5. MESSAGE QUEUE
+   - RabbitMQ 3.9 (single node, no clustering)
+   - Used for: approval workflow notifications, ERP sync events
+   - Persistent messages, manual monitoring
+
+6. MONITORING
+   - Nagios for server health (CPU, disk, memory)
+   - No APM (no distributed tracing, no application-level metrics)
+   - Log files on local disk, no centralized logging
+   - Alert via email only — no PagerDuty, no on-call rotation for this service
+
+=== PAIN POINTS ===
+
+- Manual deployments take 2-4 hours with scheduled downtime window
+- No auto-scaling — Black Friday / quarter-end peaks cause slowdowns
+- ABBYY license renewal coming in July 2026 — $45K/year, 3-year lock-in proposed
+- No DR capability — if Herndon DC goes down, invoice processing stops
+- Compliance team flagged: no encryption at rest on NFS file storage
+- Database approaching storage limit on current SAN allocation
+- Average deploy frequency: once every 3-4 weeks (team afraid of manual process)
+
+=== TRAFFIC PATTERNS ===
+
+- Average daily: 12,000 invoice submissions, 35,000 API calls
+- Peak (quarter-end): 3x average (~36,000 submissions/day)
+- Business hours heavy: 80% of traffic between 8am-6pm ET
+- Batch processing window: 11pm-3am ET (ERP sync, report generation)
+
+=== TEAM ===
+
+- 2 backend developers (Java/Spring Boot)
+- 1 DBA (part-time, shared across 3 services)
+- 1 DevOps engineer (manages all on-prem infra, not dedicated to this service)
+- No dedicated SRE or cloud engineer
+
+=== COMPLIANCE REQUIREMENTS ===
+
+- SOC 2 Type II (annual audit in September)
+- Data must reside in the United States
+- PII handling: invoices may contain vendor bank account numbers, tax IDs
+- Retention: 7-year retention for all processed invoices and extracted data
+- Encryption: at rest and in transit (currently only in-transit via TLS is implemented)
+- Access logging: all access to invoice data must be auditable

@@ -1,0 +1,7 @@
+Sprint,Start Date,End Date,Planned Points,Completed Points,Carry-Over Points,Team Size,Notes
+Sprint 9,2026-01-06,2026-01-17,34,32,2,5,Strong sprint. Only 1 minor story carried over.
+Sprint 10,2026-01-20,2026-01-31,36,33,3,5,On track. Carry-over was a blocked infra task.
+Sprint 11,2026-02-03,2026-02-14,38,30,8,5,Missed target. 2 devs pulled into production incident mid-sprint.
+Sprint 12,2026-02-17,2026-02-28,35,34,1,5,Recovery sprint. Focused on fewer stories. Good execution.
+Sprint 13,2026-03-03,2026-03-14,40,26,14,5,Bad sprint. Scope creep — 3 unplanned stories added mid-sprint. 4 stories carried over to Sprint 14.
+Sprint 14,2026-03-17,2026-03-28,52,??,??,5,Current sprint. Planned 37 new points + 15 carry-over points = 52 total. Sprint ends in 3 days.

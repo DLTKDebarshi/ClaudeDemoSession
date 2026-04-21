@@ -1,0 +1,67 @@
+INCIDENT LOG — Production API Gateway Outage
+Incident ID: INC-2026-0417
+Severity: SEV-1 (Customer-Facing)
+Date: April 17, 2026
+
+All times in UTC.
+
+=== ALERTS ===
+
+[14:02:03] ALERT — Datadog: API Gateway p99 latency exceeded 5s threshold (current: 8.2s)
+[14:02:15] ALERT — PagerDuty: SEV-2 auto-created, paged on-call engineer (J. Martinez)
+[14:03:41] ALERT — Datadog: Error rate on /api/v2/orders spiked to 38% (baseline: 0.4%)
+[14:04:12] ALERT — CloudWatch: ELB 5xx count > 500/min in us-east-1
+[14:05:00] ALERT — Datadog: Database connection pool exhaustion on orders-db-primary (active: 200/200)
+[14:06:30] ALERT — PagerDuty: Auto-escalated to SEV-1, paged Engineering Manager (R. Singh) and VP Eng (T. Nakamura)
+[14:08:22] ALERT — StatusPage: Automated degraded status posted for "Order Management API"
+[14:12:45] ALERT — Datadog: Redis cluster orders-cache-01 memory at 98% — eviction rate 4200/sec
+[14:15:00] ALERT — CloudWatch: RDS CPU on orders-db-primary at 97%
+[14:18:33] ALERT — Datadog: Upstream service product-catalog-svc returning 503s (42% failure rate)
+
+=== ENGINEER TIMELINE / CHAT LOG ===
+
+[14:02:30] J. Martinez: Got paged. Looking at API GW metrics now. Latency is through the roof.
+[14:04:00] J. Martinez: Error rate climbing on /api/v2/orders. Checking downstream dependencies.
+[14:05:10] J. Martinez: orders-db-primary connection pool is maxed out at 200. This is the bottleneck.
+[14:05:45] J. Martinez: Checking what changed recently. Pulling deployment history.
+[14:06:15] R. Singh: I'm online. What do we know so far?
+[14:06:45] J. Martinez: DB connections saturated. Checking if we had a deployment.
+[14:07:20] J. Martinez: Found it — deploy at 13:48 UTC. order-service v2.14.0 pushed to prod. Changelog says "Added real-time inventory sync on every order read."
+[14:07:55] R. Singh: That inventory sync — does it make a new DB call per order read?
+[14:08:30] J. Martinez: Yes. Looking at the code diff now. Every GET /orders now triggers a JOIN against the inventory table plus a write to the cache. Before v2.14.0 it was cached and refreshed every 5 minutes.
+[14:09:00] R. Singh: So we went from 1 query/read to 3 queries/read in prod. That's our 3x connection spike.
+[14:09:30] J. Martinez: Confirmed. Connection count went from ~60 steady-state to 200 (maxed) right at 13:50, two minutes after deploy.
+[14:10:15] R. Singh: Can we rollback to v2.13.2?
+[14:10:45] J. Martinez: Rollback initiated. ArgoCD is reverting order-service to v2.13.2.
+[14:13:30] J. Martinez: Rollback complete. Pods are healthy. Watching metrics.
+[14:15:00] J. Martinez: DB connections dropping — now at 85/200. Latency coming down.
+[14:16:30] J. Martinez: Error rate on /orders back to 1.2%. Still elevated but improving.
+[14:18:00] R. Singh: Redis memory also dropping — evictions stopped. The cache stampede is clearing.
+[14:20:00] J. Martinez: All green. p99 latency at 320ms (normal). Error rate at 0.5%. DB connections at 55.
+[14:20:30] R. Singh: Declaring incident mitigated. Total customer impact: ~18 minutes.
+
+=== DEPLOYMENT HISTORY (Last 24 Hours) ===
+
+[04:00:00] infrastructure-configs v1.8.3 — Routine cert rotation (no service impact)
+[09:15:00] product-catalog-svc v3.2.1 — Bug fix for category search (canary deploy, no issues)
+[13:48:00] order-service v2.14.0 — "Real-time inventory sync on order reads" (full rollout, no canary)
+[14:10:45] order-service v2.13.2 — ROLLBACK
+
+=== CUSTOMER IMPACT ===
+
+- Duration: 14:02 to 14:20 UTC (~18 minutes)
+- Affected endpoint: /api/v2/orders (read and create)
+- Error rate peak: 38%
+- Estimated failed requests: ~4,200
+- Customer-reported tickets: 14 (via Zendesk)
+- Revenue impact: Orders endpoint handles ~$2.3M/hour in GMV. 18 minutes at 38% error rate = estimated $26K in delayed/failed orders (most retried successfully).
+
+=== ENVIRONMENT CONTEXT ===
+
+- Cloud: AWS us-east-1
+- Orchestration: Kubernetes (EKS) managed by ArgoCD
+- Database: RDS PostgreSQL (db.r6g.2xlarge), max_connections=200
+- Cache: ElastiCache Redis cluster (3 nodes, r6g.large)
+- Monitoring: Datadog + CloudWatch
+- Deployment: ArgoCD with GitOps, canary deployments available but not enforced
+- On-call rotation: 1 primary + 1 secondary, PagerDuty escalation

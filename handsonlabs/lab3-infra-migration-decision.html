@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3: The Infrastructure Decision | Deltek Cloud AI Learning Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --indigo: #3949AB;
+            --text-main: #202124;
+            --text-subtle: #5F6368;
+            --bg-light: #F8F9FA;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans Text', 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-main);
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation */
+        .topnav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .topnav a {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--g-blue);
+            transition: opacity 0.2s;
+        }
+
+        .topnav a:hover {
+            opacity: 0.8;
+        }
+
+        .topnav .brand {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #3949AB, #1A237E);
+            color: #fff;
+            text-align: center;
+            padding: 72px 32px 64px;
+        }
+
+        .hero .lab-number {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.92;
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Content Wrapper */
+        .content-wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+        }
+
+        /* Section Blocks */
+        .section {
+            margin-bottom: 56px;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-label.scenario {
+            background: #E8F0FE;
+            color: var(--g-blue);
+        }
+
+        .section-label.problem {
+            background: #FCE8E6;
+            color: var(--g-red);
+        }
+
+        .section-label.data {
+            background: #FEF7E0;
+            color: #E37400;
+        }
+
+        .section-label.steps {
+            background: #E8EAF6;
+            color: #3949AB;
+        }
+
+        .section-label.solution {
+            background: #F3E8FD;
+            color: #8E24AA;
+        }
+
+        .section-label.takeaway {
+            background: #E8F0FE;
+            color: var(--g-blue);
+        }
+
+        .section h2 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .section > p {
+            font-size: 16px;
+            color: var(--text-subtle);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            border-left: 4px solid;
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            margin: 20px 0;
+            background: var(--bg-light);
+        }
+
+        .highlight-box.blue {
+            border-color: var(--g-blue);
+            background: #E8F0FE;
+        }
+
+        .highlight-box.green {
+            border-color: var(--g-green);
+            background: #E6F4EA;
+        }
+
+        .highlight-box.yellow {
+            border-color: var(--g-yellow);
+            background: #FEF7E0;
+        }
+
+        .highlight-box.red {
+            border-color: var(--g-red);
+            background: #FCE8E6;
+        }
+
+        .highlight-box.purple {
+            border-color: #8E24AA;
+            background: #F3E8FD;
+        }
+
+        .highlight-box h4 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .highlight-box p {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        /* Prompt Blocks */
+        .prompt-block {
+            background: #1a1a2e;
+            border-left: 4px solid #3949AB;
+            border-radius: var(--radius-sm);
+            padding: 24px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .prompt-block .label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #3949AB;
+            margin-bottom: 12px;
+        }
+
+        .prompt-block pre {
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 13.5px;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .prompt-block pre em {
+            color: var(--g-yellow);
+            font-style: normal;
+        }
+
+        /* Step Rows */
+        .step-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--indigo);
+            color: #fff;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-body {
+            flex: 1;
+        }
+
+        .step-body h4 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .step-body p {
+            font-size: 15px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--indigo);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            margin: 8px 8px 8px 0;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #303F9F;
+            transform: translateY(-1px);
+        }
+
+        .download-btn::before {
+            content: "\2B07";
+            font-size: 16px;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .data-table thead tr {
+            background: var(--indigo);
+            color: #fff;
+        }
+
+        .data-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            color: var(--text-main);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        .data-table tbody tr:hover {
+            background: #E8EAF6;
+        }
+
+        /* Two Column Grid */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .col-card {
+            border-radius: var(--radius-md);
+            padding: 28px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .col-card.before {
+            background: #FFF8E1;
+            border-color: #FFE082;
+        }
+
+        .col-card.after {
+            background: #E8F5E9;
+            border-color: #A5D6A7;
+        }
+
+        .col-card h4 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .col-card.before h4 {
+            color: #E65100;
+        }
+
+        .col-card.after h4 {
+            color: #2E7D32;
+        }
+
+        .col-card p, .col-card ul {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.7;
+        }
+
+        .col-card ul {
+            padding-left: 18px;
+        }
+
+        .col-card ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Participant Notice */
+        .participant-notice {
+            border: 2px dashed #BDBDBD;
+            border-radius: var(--radius-md);
+            padding: 24px 28px;
+            text-align: center;
+            margin: 40px 0;
+            background: var(--bg-light);
+        }
+
+        .participant-notice h4 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .participant-notice p {
+            font-size: 14px;
+            color: var(--text-subtle);
+        }
+
+        /* Solution Wrap (Admin Only) */
+        .section-solution-wrap {
+            display: none;
+        }
+
+        body.is-admin .section-solution-wrap {
+            display: block;
+        }
+
+        details {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin: 24px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        details summary {
+            background: linear-gradient(135deg, #8E24AA, #6A1B9A);
+            color: #fff;
+            padding: 18px 24px;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary::before {
+            content: "\25B6";
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        details .solution-body {
+            padding: 28px;
+            background: #FAFAFA;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+        }
+
+        details .solution-body h4 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 24px 0 10px;
+        }
+
+        details .solution-body h4:first-child {
+            margin-top: 0;
+        }
+
+        details .solution-body p, details .solution-body li {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.7;
+        }
+
+        details .solution-body ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        details .solution-body ul li {
+            margin-bottom: 6px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+
+        .checklist li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        .checklist li::before {
+            content: "\2610";
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+            color: #8E24AA;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid #e0e0e0;
+            padding: 32px;
+            text-align: center;
+            background: var(--bg-light);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 16px;
+        }
+
+        .footer-nav a {
+            text-decoration: none;
+            color: var(--g-blue);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-subtle);
+        }
+
+        /* Ordered list styling inside sections */
+        .section ol, .section ul {
+            padding-left: 22px;
+            margin: 12px 0;
+        }
+
+        .section ol li, .section ul li {
+            font-size: 15px;
+            color: var(--text-subtle);
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .section ol li strong, .section ul li strong {
+            color: var(--text-main);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .topnav {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .topnav .brand {
+                font-size: 13px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .content-wrap {
+                padding: 32px 16px 48px;
+            }
+
+            .section h2 {
+                font-size: 26px;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .step-row {
+                gap: 14px;
+            }
+
+            .step-num {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav class="topnav">
+        <a href="lab2-sprint-rescue.html">&larr; Lab 2</a>
+        <span class="brand">Deltek Cloud AI Learning Community</span>
+        <a href="index.html">All Labs</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="lab-number">Hands-On Lab 3</div>
+        <h1>The Infrastructure Decision</h1>
+        <p>Generate an Architecture Decision Record, Terraform module, security review, and cost projection for a cloud migration &mdash; four deliverables that normally take weeks, done in 15 minutes.</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="content-wrap">
+
+        <!-- Scenario Section -->
+        <div class="section">
+            <span class="section-label scenario">Scenario</span>
+            <h2>The Migration Mandate</h2>
+            <p>Leadership has mandated: migrate the Invoice Processing Service from on-prem to AWS by Q3 2026. The ABBYY OCR license renewal ($45K/year, 3-year lock-in) is due in July &mdash; if you don't migrate before then, you're locked in for $135K. The Cloud Architecture Board meets Thursday, and they need: an Architecture Decision Record (ADR) explaining the approach, a Terraform module skeleton for the core infrastructure, a security review against the compliance requirements, and a cost projection. Four deliverables. Three days. You've been doing this math in your head &mdash; let's get it on paper.</p>
+
+            <div class="highlight-box red">
+                <h4>The Old Way</h4>
+                <p>Schedule 4 separate meetings (architecture review, security review, IAC review, cost review). Draft each document in Google Docs. Collect feedback async. <strong>Takes 2&ndash;3 weeks.</strong></p>
+            </div>
+
+            <div class="highlight-box green">
+                <h4>The AI Way</h4>
+                <p>Upload the current architecture and compliance requirements to Claude. Generate all four deliverables in <strong>15 minutes</strong>. Bring drafts to the meetings instead of blank whiteboards.</p>
+            </div>
+        </div>
+
+        <!-- Problem Statement Section -->
+        <div class="section">
+            <span class="section-label problem">Problem</span>
+            <h2>What You Need to Deliver</h2>
+            <p>Using the sample input files provided below, you will use Claude to create the following four deliverables:</p>
+
+            <ol>
+                <li><strong>An Architecture Decision Record (ADR)</strong> &mdash; documenting the migration approach with alternatives considered</li>
+                <li><strong>A Terraform module skeleton</strong> &mdash; core infrastructure: VPC, ECS, RDS, S3 with security configurations</li>
+                <li><strong>A security compliance review</strong> &mdash; mapping the proposed architecture against the compliance requirements</li>
+                <li><strong>A cost projection</strong> &mdash; estimated monthly AWS costs vs current on-prem costs</li>
+            </ol>
+        </div>
+
+        <!-- Sample Data Section -->
+        <div class="section">
+            <span class="section-label data">Data</span>
+            <h2>Input Files</h2>
+            <p>Two files are provided for this lab. Download them to your computer, then upload them to Claude in the next section.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>sample-architecture-current.txt</strong></td>
+                        <td>Current on-prem architecture: application servers, database, file storage, OCR engine, message queue, monitoring, traffic patterns, team composition, compliance requirements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>sample-compliance-requirements.txt</strong></td>
+                        <td>10 sections of mandatory security and compliance requirements for the AWS migration</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin: 20px 0;">
+                <a href="sample-architecture-current.txt" class="download-btn" download>sample-architecture-current.txt</a>
+                <a href="sample-compliance-requirements.txt" class="download-btn" download>sample-compliance-requirements.txt</a>
+            </div>
+
+            <div class="highlight-box blue">
+                <h4>Tip</h4>
+                <p>You can paste these directly into Claude or upload as files. Both approaches work.</p>
+            </div>
+        </div>
+
+        <!-- Step-by-Step Section -->
+        <div class="section">
+            <span class="section-label steps">Steps</span>
+            <h2>How to Run This Lab</h2>
+            <p>Follow these steps in order. Each step builds on the previous one, using the same Claude conversation thread throughout.</p>
+
+            <!-- Step 1 -->
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h4>Open claude.ai</h4>
+                    <p>Go to <a href="https://claude.ai" target="_blank" style="color: var(--indigo); font-weight: 500;">claude.ai</a> and start a new conversation. Make sure you're using Claude (Sonnet or Opus).</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h4>Upload the Data</h4>
+                    <p>Upload both files &mdash; <strong>sample-architecture-current.txt</strong> and <strong>sample-compliance-requirements.txt</strong> &mdash; into Claude. You can drag and drop them or use the attachment button. Alternatively, paste their contents directly into the chat.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-row">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h4>Prompt #1 &mdash; Architecture Decision Record</h4>
+                    <p>With the files uploaded, send the following prompt to Claude:</p>
+
+                    <div class="prompt-block">
+                        <span class="label">Prompt #1 &mdash; Architecture Decision Record</span>
+<pre>I've uploaded our current on-prem architecture for the Invoice Processing Service and the compliance requirements for migrating it to AWS.
+
+Write an Architecture Decision Record (ADR) for this migration. Use this structure:
+
+1. TITLE: ADR-001: Migration of Invoice Processing Service to AWS
+2. STATUS: Proposed
+3. CONTEXT: Why are we making this decision? (reference the ABBYY license deadline, current pain points, and compliance gaps)
+4. DECISION: What architecture are we proposing? Include:
+   - Compute: ECS Fargate (containerised) vs EC2 vs EKS — pick one and justify
+   - Database: RDS PostgreSQL with Multi-AZ
+   - File Storage: S3 with lifecycle policies
+   - OCR: AWS Textract (replacing ABBYY) — compare capabilities and cost
+   - Message Queue: SQS (replacing RabbitMQ)
+   - Monitoring: CloudWatch + X-Ray (replacing Nagios)
+5. ALTERNATIVES CONSIDERED: For each major component, list what else you considered and why you rejected it
+6. CONSEQUENCES: What changes for the team? What are the risks?
+7. MIGRATION APPROACH: Phased or big-bang? Recommend a phased approach with 3 phases.
+
+Keep it concise but thorough. This goes to the Cloud Architecture Board.</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-row">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h4>Prompt #2 &mdash; Terraform Module + Security Review</h4>
+                    <p>In the same conversation, send this follow-up prompt:</p>
+
+                    <div class="prompt-block">
+                        <span class="label">Prompt #2 &mdash; Terraform + Security</span>
+<pre>Now generate two deliverables:
+
+DELIVERABLE 1: Terraform Module Skeleton
+Write a Terraform module for the core infrastructure. Include:
+- VPC with public/private subnets across 2 AZs
+- ECS Fargate cluster with task definition (placeholder for container image)
+- RDS PostgreSQL instance (Multi-AZ, encrypted, private subnet)
+- S3 bucket for invoice files (encrypted with KMS CMK, versioning, lifecycle policy for 7-year retention, block public access)
+- SQS queue for async processing
+- Security groups with least-privilege rules
+- KMS key for encryption
+
+Use Terraform best practices: variables for configurable values, outputs for important resource IDs, tags for cost allocation. Include comments explaining security-relevant configurations.
+
+DELIVERABLE 2: Security Compliance Review
+Map the proposed architecture against each section of the compliance requirements document. For each of the 10 sections, provide:
+- REQUIREMENT: One-line summary
+- STATUS: Compliant / Partially Compliant / Gap
+- EVIDENCE: How the Terraform module addresses it (or what's missing)
+- ACTION NEEDED: For any gaps, what still needs to be done
+
+Format as a table. Flag any P0 gaps that would block the Architecture Board approval.</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-row">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                    <h4>Prompt #3 &mdash; Cost Projection</h4>
+                    <p>Still in the same conversation, send the final prompt:</p>
+
+                    <div class="prompt-block">
+                        <span class="label">Prompt #3 &mdash; Cost Projection</span>
+<pre>Create a cost projection comparing current on-prem costs vs the proposed AWS architecture.
+
+CURRENT ON-PREM COSTS (annual):
+- 2x Dell PowerEdge servers: amortised ~$8,000/year (3-year refresh cycle, $12K each)
+- 1x Database server: amortised ~$5,000/year
+- SAN storage (NetApp): ~$18,000/year (maintenance + capacity)
+- ABBYY OCR license: $45,000/year
+- F5 load balancer: ~$6,000/year (maintenance share)
+- RabbitMQ / Nagios: $0 (open source, but ~0.2 FTE to maintain = ~$30,000 in engineering time)
+- Data center allocation: ~$15,000/year (power, cooling, rack space share)
+- Total estimated: ~$127,000/year
+
+AWS PROJECTED COSTS:
+Estimate monthly costs for each AWS service based on the traffic patterns in the architecture doc (12K submissions/day average, 3x peaks, 890GB database, 4.2TB file storage). Use realistic us-east-1 pricing.
+
+Include:
+1. A side-by-side comparison table: Component | On-Prem Annual | AWS Annual | Difference
+2. Total Cost of Ownership for Year 1 (include migration costs: engineering time, parallel running, training)
+3. Total Cost of Ownership for Year 2+ (steady state)
+4. Break-even analysis: When does the migration pay for itself?
+5. Risk factors that could increase AWS costs (data transfer, peak scaling, storage growth)
+
+End with a one-paragraph executive summary: "The migration will cost $X in Year 1 and save $Y annually starting Year 2, paying for itself by [date]. The primary cost driver is [X]."
+
+Format for presentation to the CAB — clean tables, clear numbers.</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-row">
+                <div class="step-num">6</div>
+                <div class="step-body">
+                    <h4>Review &amp; Iterate</h4>
+                    <p>Review all four deliverables. Check the ADR for clear justification of each technology choice. Verify the Terraform follows security best practices. Confirm the security review identifies real gaps (not just blanket compliance). Validate the cost estimates against your own knowledge of AWS pricing. Ask Claude to refine anything that needs adjustment. Compare your results with your lab partner &mdash; did Claude produce similar recommendations? Where did they differ?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participant Notice -->
+        <div class="participant-notice">
+            <h4>Solution Walkthrough &mdash; Admin Only</h4>
+            <p>Complete the lab first! The facilitator will review the solution with you.</p>
+        </div>
+
+        <!-- Solution Section (Admin Only) -->
+        <div class="section-solution-wrap">
+            <div class="section">
+                <span class="section-label solution">Solution</span>
+                <h2>What Good Looks Like</h2>
+                <p>Use this evaluation guidance to assess the quality of each deliverable. The specifics below reflect what a strong response should include based on the sample data.</p>
+
+                <details>
+                    <summary>Solution Walkthrough</summary>
+                    <div class="solution-body">
+
+                        <h4>ADR Evaluation</h4>
+                        <p>The Architecture Decision Record should clearly recommend the following technology choices with justification:</p>
+                        <ul>
+                            <li><strong>ECS Fargate</strong> &mdash; recommended over EC2 (too much operational overhead for a small team) and EKS (too complex for team size; Kubernetes operational burden not justified). Fargate eliminates server management entirely.</li>
+                            <li><strong>RDS PostgreSQL Multi-AZ</strong> &mdash; managed database with automatic failover, encrypted at rest and in transit</li>
+                            <li><strong>S3 with lifecycle policies</strong> &mdash; 7-year retention for compliance, then transition to Glacier. Versioning enabled. Block all public access.</li>
+                            <li><strong>AWS Textract</strong> &mdash; replacing ABBYY. Pay-per-page pricing (no license lock-in), native AWS integration, comparable accuracy for structured invoices</li>
+                            <li><strong>SQS</strong> &mdash; replacing RabbitMQ. Fully managed, no operational overhead, native integration with ECS and Lambda</li>
+                            <li><strong>CloudWatch + X-Ray</strong> &mdash; replacing Nagios. Native AWS monitoring with distributed tracing</li>
+                        </ul>
+                        <p>The migration approach should recommend <strong>3 phases</strong>:</p>
+                        <ul>
+                            <li><strong>Phase 1:</strong> VPC, compute (ECS), database migration (RDS)</li>
+                            <li><strong>Phase 2:</strong> S3 migration (file storage), OCR switch (ABBYY to Textract)</li>
+                            <li><strong>Phase 3:</strong> Cutover, DR setup, decommission on-prem infrastructure</li>
+                        </ul>
+
+                        <h4>Terraform Evaluation</h4>
+                        <p>The Terraform module should demonstrate security best practices:</p>
+                        <ul>
+                            <li><strong>VPC</strong> &mdash; proper CIDR block, private subnets for RDS and ECS tasks, public subnets for ALB only</li>
+                            <li><strong>RDS</strong> &mdash; must include <code>storage_encrypted = true</code>, <code>publicly_accessible = false</code>, <code>multi_az = true</code></li>
+                            <li><strong>S3</strong> &mdash; must include <code>block_public_access</code> (all four settings), <code>versioning</code> enabled, <code>server_side_encryption_configuration</code> with KMS CMK</li>
+                            <li><strong>Security Groups</strong> &mdash; should demonstrate least-privilege: ALB allows 443 inbound, ECS only accepts traffic from ALB SG, RDS only accepts traffic from ECS SG</li>
+                            <li><strong>Variables</strong> &mdash; configurable values for environment, CIDR ranges, instance sizes, retention periods</li>
+                            <li><strong>Tags</strong> &mdash; cost allocation tags on all resources (project, environment, team)</li>
+                        </ul>
+
+                        <h4>Security Review Evaluation</h4>
+                        <p>Most sections should show <strong>Compliant</strong> or <strong>Partially Compliant</strong>. Key gaps that should be identified:</p>
+                        <ul>
+                            <li><strong>Section 2 &mdash; mTLS between services:</strong> Gap &mdash; mTLS between ECS services not configured in the base Terraform module. Needs App Mesh or service mesh implementation.</li>
+                            <li><strong>Section 6 &mdash; Macie for PII discovery:</strong> Gap &mdash; Amazon Macie not included for automated PII detection in S3 invoice files. Needs to be added.</li>
+                            <li><strong>Section 7 &mdash; DR runbook quarterly testing:</strong> Gap &mdash; DR infrastructure is defined but quarterly testing process and runbook are not automated. Needs operational procedure.</li>
+                            <li><strong>Section 8 &mdash; Container image scanning pipeline:</strong> Gap &mdash; ECR image scanning is available but CI/CD pipeline integration for blocking vulnerable images is not defined in the module.</li>
+                        </ul>
+                        <p>These should be flagged as <strong>action items</strong>, not blockers for the Architecture Board approval.</p>
+
+                        <h4>Cost Projection Evaluation</h4>
+                        <p>AWS annual costs should be roughly <strong>$85K&ndash;$110K</strong>, broken down approximately as:</p>
+                        <ul>
+                            <li><strong>ECS Fargate:</strong> ~$18K/year (based on task sizing for 12K submissions/day with 3x peak capacity)</li>
+                            <li><strong>RDS PostgreSQL:</strong> ~$20K/year (Multi-AZ db.r6g.xlarge for 890GB database)</li>
+                            <li><strong>S3 Storage:</strong> ~$6K/year (4.2TB with lifecycle policies transitioning to Glacier)</li>
+                            <li><strong>AWS Textract:</strong> ~$8K/year (pay-per-page for 12K invoices/day)</li>
+                            <li><strong>Networking / NAT Gateway:</strong> ~$8K/year</li>
+                            <li><strong>CloudWatch / X-Ray:</strong> ~$3K/year</li>
+                            <li><strong>Miscellaneous (SQS, KMS, data transfer):</strong> ~$10K/year</li>
+                        </ul>
+                        <p><strong>Year 1</strong> should be higher due to migration costs (~$50K in engineering time for parallel running, containerization, data migration, and training). <strong>Break-even</strong> should be around <strong>month 14&ndash;18</strong> after migration start.</p>
+
+                        <h4>Evaluation Checklist</h4>
+                        <ul class="checklist">
+                            <li>Does the ADR clearly justify each technology choice?</li>
+                            <li>Does the Terraform follow security best practices (encryption, private subnets, least-privilege SGs)?</li>
+                            <li>Does the security review identify real gaps (not just say "everything is compliant")?</li>
+                            <li>Are cost estimates reasonable and based on actual AWS pricing?</li>
+                            <li>Could you present these four documents at a real Architecture Board meeting?</li>
+                        </ul>
+
+                        <div class="highlight-box green" style="margin-top: 28px;">
+                            <h4>Wow Realization</h4>
+                            <p>You just produced an ADR, a Terraform module, a compliance review, and a cost projection &mdash; four documents that typically take 2&ndash;3 weeks of meetings and async drafting. They're not final (they shouldn't be), but they're 80% there. You're walking into the Architecture Board with draft deliverables instead of blank slides.</p>
+                        </div>
+
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Key Takeaway Section -->
+        <div class="section">
+            <span class="section-label takeaway">Takeaway</span>
+            <h2>Key Takeaway</h2>
+
+            <div class="two-col">
+                <div class="col-card before">
+                    <h4>Before AI</h4>
+                    <ul>
+                        <li>Migration planning takes 3&ndash;4 weeks</li>
+                        <li>Architecture, security, IAC, and cost are reviewed in separate silos</li>
+                        <li>Documents are inconsistent across deliverables</li>
+                        <li>By the time you have all four, the first one is already outdated</li>
+                        <li>Meetings start with blank whiteboards</li>
+                    </ul>
+                </div>
+                <div class="col-card after">
+                    <h4>After AI</h4>
+                    <ul>
+                        <li>All four deliverables generated together in one session</li>
+                        <li>Consistent, cross-referenced, and ready for review</li>
+                        <li>The Architecture Board gets a complete package, not a piecemeal drip-feed</li>
+                        <li>Terraform references the ADR decisions, security review references the Terraform</li>
+                        <li>Meetings start with draft deliverables to critique</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box blue" style="text-align: center; margin-top: 32px;">
+                <p style="font-size: 16px; color: var(--text-main); font-weight: 500;">AI doesn't make the migration decision for you &mdash; it eliminates the weeks of document preparation so you can spend your time on the decisions that matter: what to build, how to build it, and when to cut over.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-nav">
+            <a href="lab2-sprint-rescue.html">&larr; Lab 2: The Sprint Rescue</a>
+            <a href="index.html">All Labs</a>
+        </div>
+        <p>Deltek Cloud AI Learning Community &mdash; Hands-On Labs</p>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function () { Auth.initPage(); });</script>
+
+</body>
+</html>

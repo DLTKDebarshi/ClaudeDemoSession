@@ -1,0 +1,16 @@
+Ticket ID,Title,Type,Story Points,Priority,Status,Sprint,Assignee,Labels,Created Date,Updated Date
+PROJ-301,Implement SSO integration with Okta,Story,8,High,In Progress,Sprint 14,Alex Chen,auth;integration,2026-03-15,2026-04-18
+PROJ-302,Fix timeout on bulk export endpoint,Bug,3,Critical,In Progress,Sprint 14,Maria Lopez,api;performance,2026-04-01,2026-04-18
+PROJ-303,Add pagination to audit log UI,Story,5,Medium,To Do,Sprint 14,Unassigned,frontend;audit,2026-03-20,2026-04-14
+PROJ-304,Database connection leak in reporting module,Bug,5,Critical,In Progress,Sprint 14,James Park,database;reliability,2026-04-10,2026-04-18
+PROJ-305,Write API documentation for v2 endpoints,Task,3,Low,To Do,Sprint 14,Unassigned,docs;api,2026-03-28,2026-04-07
+PROJ-306,Implement role-based dashboard views,Story,8,High,To Do,Sprint 14,Alex Chen,frontend;rbac,2026-03-22,2026-04-14
+PROJ-307,Upgrade Redis from 6.x to 7.0,Task,5,Medium,Blocked,Sprint 14,Priya Sharma,infra;upgrade,2026-04-05,2026-04-17
+PROJ-308,Add rate limiting to public API,Story,5,High,To Do,Sprint 14,Maria Lopez,api;security,2026-04-02,2026-04-14
+PROJ-309,Fix CSV import failing on special characters,Bug,2,Medium,Done,Sprint 14,James Park,import;bugfix,2026-04-08,2026-04-16
+PROJ-310,Create onboarding walkthrough for new users,Story,5,Low,To Do,Sprint 14,Unassigned,frontend;ux,2026-04-01,2026-04-07
+PROJ-311,Performance test suite for order processing,Task,3,Medium,To Do,Sprint 14,Unassigned,testing;performance,2026-04-10,2026-04-14
+PROJ-312,Implement webhook retry logic with exponential backoff,Story,5,High,Carry-Over,Sprint 13 → 14,Priya Sharma,api;reliability,2026-03-10,2026-04-14
+PROJ-313,Migrate user preferences to new schema,Story,8,Medium,Carry-Over,Sprint 13 → 14,Alex Chen,database;migration,2026-03-01,2026-04-14
+PROJ-314,Fix broken notification templates for edge cases,Bug,2,High,Carry-Over,Sprint 13 → 14,Maria Lopez,notifications;bugfix,2026-03-18,2026-04-14
+PROJ-315,Add Terraform module for staging environment,Task,5,Medium,Carry-Over,Sprint 13 → 14,James Park,infra;iac,2026-03-05,2026-04-14

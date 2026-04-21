@@ -2,7 +2,7 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hands-On Labs | The AI-Powered Business Lead</title>
+    <title>Hands-On Labs | Deltek Cloud AI Learning Community</title>
     <style>
         :root {
             --g-blue: #4285F4;
@@ -24,9 +24,8 @@
             line-height: 1.6;
         }
 
-        /* Hero */
         .hero {
-            background: linear-gradient(135deg, var(--g-blue) 0%, var(--g-green) 100%);
+            background: linear-gradient(135deg, #1A73E8 0%, #0D47A1 100%);
             color: white;
             text-align: center;
             padding: 80px 40px 60px;
@@ -34,7 +33,6 @@
         .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1px; }
         .hero p { font-size: 22px; opacity: 0.95; max-width: 720px; margin: 0 auto; }
 
-        /* Cards */
         .labs-container {
             max-width: 1100px;
             margin: -40px auto 80px;
@@ -65,9 +63,9 @@
             text-align: center;
             color: white;
         }
-        .lab-card-banner.blue { background: linear-gradient(135deg, var(--g-blue), #1A73E8); }
-        .lab-card-banner.green { background: linear-gradient(135deg, var(--g-green), #0D652D); }
-        .lab-card-banner.purple { background: linear-gradient(135deg, #5E35B1, #7B1FA2); }
+        .lab-card-banner.red    { background: linear-gradient(135deg, var(--g-red), #B71C1C); }
+        .lab-card-banner.teal   { background: linear-gradient(135deg, #00897B, #00695C); }
+        .lab-card-banner.indigo { background: linear-gradient(135deg, #3949AB, #1A237E); }
         .lab-card-banner .lab-icon { font-size: 56px; margin-bottom: 12px; }
         .lab-card-banner h2 { font-size: 22px; font-weight: 700; }
         .lab-card-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
@@ -81,9 +79,12 @@
             margin-top: 20px;
             align-self: flex-start;
         }
-        .lab-tag.artifact { background: rgba(66,133,244,0.12); color: var(--g-blue); }
-        .lab-tag.project  { background: rgba(52,168,83,0.12); color: var(--g-green); }
-        .lab-tag.multi    { background: rgba(94,53,177,0.12); color: #5E35B1; }
+        .lab-tag.incident { background: rgba(234,67,53,0.12); color: var(--g-red); }
+        .lab-tag.sprint   { background: rgba(0,137,123,0.12); color: #00897B; }
+        .lab-tag.infra    { background: rgba(57,73,171,0.12); color: #3949AB; }
+        .lab-card-body .lab-roles {
+            margin-top: 12px; font-size: 13px; color: var(--text-subtle); font-style: italic;
+        }
         .lab-card-body .lab-cta {
             margin-top: 20px;
             display: inline-flex;
@@ -95,7 +96,6 @@
         }
         .lab-card:hover .lab-cta { text-decoration: underline; }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 40px;
@@ -104,6 +104,7 @@
             border-top: 1px solid #E2E8F0;
         }
         .footer strong { color: var(--text-main); }
+        .footer a { color: var(--g-blue); text-decoration: none; font-weight: 600; }
 
         @media (max-width: 900px) {
             .labs-container { grid-template-columns: 1fr; }
@@ -114,52 +115,53 @@
 
 <div class="hero">
     <h1>Hands-On Labs</h1>
-    <p>Three real-world scenarios. Each one turns a daily leadership headache into a 30-second AI-powered solution.</p>
+    <p>Three real-world scenarios for engineering and delivery teams. Each lab is 15-20 minutes, uses downloadable input files, and runs entirely in Claude.</p>
 </div>
 
 <div class="labs-container">
-    <!-- Lab 1 -->
-    <a href="lab1-interactive-war-room.html" class="lab-card">
-        <div class="lab-card-banner blue">
-            <div class="lab-icon">&#128202;</div>
-            <h2>Lab 1: The Interactive War Room</h2>
+    <a href="lab1-incident-war-room.html" class="lab-card">
+        <div class="lab-card-banner red">
+            <div class="lab-icon">&#128680;</div>
+            <h2>Lab 1: The Incident War Room</h2>
         </div>
         <div class="lab-card-body">
-            <p>A crisis hits &mdash; cloud costs spiked 15%. Build a live, interactive Decision Dashboard in 30 seconds using Claude Artifacts. Toggle between departments, run "What-If" scenarios, and make data-driven calls in real time.</p>
-            <span class="lab-tag artifact">Artifacts &bull; Data Visualization</span>
+            <p>Production is down. You have raw logs, scattered alerts, and panicked stakeholders. Use Claude to build an incident timeline, perform root cause analysis, draft a blameless post-incident review, and write an executive summary &mdash; all in under 20 minutes.</p>
+            <span class="lab-tag incident">Incidents &bull; RCA &bull; PIR</span>
+            <div class="lab-roles">DevOps Engineer &bull; Cloud Security &bull; Tech Lead &bull; DevOps Director</div>
             <span class="lab-cta">Start Lab &rarr;</span>
         </div>
     </a>
 
-    <!-- Lab 2 -->
-    <a href="lab2-cross-domain-intelligence.html" class="lab-card">
-        <div class="lab-card-banner green">
-            <div class="lab-icon">&#128373;&#65039;</div>
-            <h2>Lab 2: Cross-Domain Intelligence</h2>
+    <a href="lab2-sprint-rescue.html" class="lab-card">
+        <div class="lab-card-banner teal">
+            <div class="lab-icon">&#128260;</div>
+            <h2>Lab 2: The Sprint Rescue</h2>
         </div>
         <div class="lab-card-body">
-            <p>Approve a new vendor in minutes, not days. Use a Claude Project loaded with HR, Legal, and Finance documents. Paste one proposal &mdash; Claude cross-references everything and flags issues across all three domains.</p>
-            <span class="lab-tag project">Projects &bull; MCP &bull; Cross-Reference</span>
+            <p>Your team is mid-sprint and it's going sideways &mdash; carry-overs piling up, velocity dropping, stakeholders asking questions. Use Claude to diagnose sprint health, re-plan the remaining work, and draft a stakeholder update that tells the truth without causing panic.</p>
+            <span class="lab-tag sprint">Sprints &bull; Agile &bull; Stakeholder Comms</span>
+            <div class="lab-roles">Scrum Master &bull; Project Manager &bull; Team Lead</div>
             <span class="lab-cta">Start Lab &rarr;</span>
         </div>
     </a>
 
-    <!-- Lab 3 -->
-    <a href="lab3-voice-to-vision.html" class="lab-card">
-        <div class="lab-card-banner purple">
-            <div class="lab-icon">&#127908;</div>
-            <h2>Lab 3: Voice to Vision</h2>
+    <a href="lab3-infra-migration-decision.html" class="lab-card">
+        <div class="lab-card-banner indigo">
+            <div class="lab-icon">&#9729;&#65039;</div>
+            <h2>Lab 3: The Infrastructure Decision</h2>
         </div>
         <div class="lab-card-body">
-            <p>Turn messy whiteboard scribbles or a rambling voice memo into a polished Org Chart and a team announcement email &mdash; in your leadership tone. AI as a Thought Translator, not just a writing tool.</p>
-            <span class="lab-tag multi">Multi-Modal &bull; Image &bull; Voice</span>
+            <p>Leadership wants to migrate a legacy on-prem service to the cloud. You need an Architecture Decision Record, a Terraform module skeleton, a security review, and a cost projection &mdash; before Thursday. Use Claude to produce all four deliverables.</p>
+            <span class="lab-tag infra">IAC &bull; Architecture &bull; Security &bull; Cost</span>
+            <div class="lab-roles">IAC Engineer &bull; Tech Lead &bull; Cloud Security &bull; DevOps Director</div>
             <span class="lab-cta">Start Lab &rarr;</span>
         </div>
     </a>
 </div>
 
 <div class="footer">
-    Deltek Cloud AI Learning Community | <strong>Session 2: The AI-Powered Business Lead</strong> | #AIforALL
+    <a href="../index.html">&larr; Back to Home</a><br><br>
+    Deltek Cloud AI Learning Community | <strong>Prompt Cheat Sheets</strong> | #AIforALL
 </div>
 
 <script src="../auth.js"></script>

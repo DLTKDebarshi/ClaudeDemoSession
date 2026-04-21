@@ -1,0 +1,93 @@
+CLOUD MIGRATION — COMPLIANCE & SECURITY REQUIREMENTS
+Prepared by: Cloud Security Team
+Date: April 2026
+
+This document outlines the mandatory compliance and security requirements for migrating
+the Invoice Processing Service from on-premises to AWS.
+
+=== 1. DATA RESIDENCY & SOVEREIGNTY ===
+
+- All data must be stored in AWS regions located in the United States (us-east-1 or us-west-2)
+- No data may transit through non-US regions at any point in processing
+- S3 bucket policies must enforce region restriction via aws:RequestedRegion condition key
+- RDS instances must have Multi-AZ within the approved region only
+
+=== 2. ENCRYPTION ===
+
+- At rest: AES-256 encryption required for all data stores
+  - S3: SSE-KMS with customer-managed key (CMK)
+  - RDS: Encrypted storage with CMK
+  - EBS volumes: Encrypted with CMK
+- In transit: TLS 1.2 minimum for all connections
+  - Internal service-to-service: mTLS preferred, TLS 1.2 minimum
+  - External APIs: TLS 1.3 where supported
+- Key management: AWS KMS with automatic key rotation enabled (annual)
+- No hardcoded secrets — all credentials via AWS Secrets Manager or Parameter Store (SecureString)
+
+=== 3. IDENTITY & ACCESS MANAGEMENT ===
+
+- No long-lived IAM access keys for application workloads
+- ECS/EKS workloads must use IAM Roles for Service Accounts (IRSA) or task roles
+- Least-privilege IAM policies — no use of "Resource": "*" or "Action": "*"
+- MFA required for all human IAM console access
+- Service accounts must be scoped to specific resources using ARN-based policies
+- Cross-account access (if needed) must use IAM roles with external ID, not shared credentials
+
+=== 4. NETWORK SECURITY ===
+
+- Application must run in private subnets (no public IPs on compute)
+- Internet access for outbound calls via NAT Gateway only
+- VPC Flow Logs enabled and shipped to CloudWatch Logs (90-day retention)
+- Security Groups: deny all by default, allow only required ports/protocols
+- No SSH access to production instances — use SSM Session Manager for emergency access
+- WAF required on any public-facing ALB (OWASP Top 10 rule set minimum)
+
+=== 5. LOGGING & AUDIT ===
+
+- CloudTrail: enabled in all regions, logs to centralized S3 bucket with integrity validation
+- Application logs: structured JSON format, shipped to CloudWatch Logs or ELK
+- All access to invoice data must generate an audit log entry containing:
+  - Timestamp, user/service identity, action performed, resource accessed, source IP
+- Log retention: minimum 1 year for application logs, 2 years for CloudTrail
+- GuardDuty: enabled for threat detection
+- Security Hub: enabled with CIS AWS Foundations Benchmark and AWS Foundational Security Best Practices
+
+=== 6. DATA PROTECTION ===
+
+- PII fields (bank account numbers, tax IDs) must be classified and tagged
+- S3 buckets must block public access (account-level and bucket-level)
+- RDS must not be publicly accessible
+- Database access restricted to application security groups only
+- Macie recommended for automated PII discovery in S3
+
+=== 7. BACKUP & DISASTER RECOVERY ===
+
+- RDS: automated daily snapshots, 30-day retention, cross-region copy to us-west-2
+- S3: versioning enabled, cross-region replication to us-west-2
+- RPO (Recovery Point Objective): 1 hour
+- RTO (Recovery Time Objective): 4 hours
+- DR runbook must be documented and tested quarterly
+
+=== 8. CONTAINER SECURITY (if using ECS/EKS) ===
+
+- Base images must come from approved ECR repository (no DockerHub pulls in production)
+- ECR image scanning enabled — no critical/high CVEs in production images
+- Containers must run as non-root user
+- Read-only root filesystem where possible
+- Resource limits (CPU/memory) must be set on all containers
+- No privileged containers
+
+=== 9. COMPLIANCE FRAMEWORKS ===
+
+- SOC 2 Type II: annual audit (next: September 2026)
+- CIS AWS Foundations Benchmark: Level 1 minimum, Level 2 recommended
+- NIST 800-53 controls mapped and documented for this workload
+- 7-year data retention for all processed invoices and extracted data
+- Annual penetration test required after migration
+
+=== 10. APPROVAL PROCESS ===
+
+- Architecture review: Required before any production deployment (Cloud Architecture Board)
+- Security review: Required — submit threat model and architecture diagram to Cloud Security
+- Change Advisory Board (CAB): Must approve production cutover plan
+- Rollback plan: Required as part of migration plan — must demonstrate ability to revert to on-prem within 4 hours
