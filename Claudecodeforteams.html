@@ -438,6 +438,86 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════
+     INSTALL CLAUDE CODE (NEW USERS)
+═══════════════════════════════════════════════ -->
+<div class="section-header" style="margin-top: 60px;">
+    <div class="icon">⬇️</div>
+    <div>
+        <h2>Install Claude Code</h2>
+        <p>Never used a terminal? Follow the steps for your OS — takes ~3 minutes. Adapted from the official <a href="https://code.claude.com/docs/en/terminal-guide" target="_blank" rel="noopener" style="color: var(--dk-blue); text-decoration: none; font-weight: 600;">Claude Code terminal guide ↗</a></p>
+    </div>
+</div>
+
+<div class="demo-grid" style="grid-template-columns: 1fr 1fr;">
+
+    <!-- macOS / Linux -->
+    <div class="demo-card">
+        <div class="demo-header navy">
+            <div class="demo-num">Option A</div>
+            <h3>🍎 macOS &amp; Linux</h3>
+            <div class="duration">Requires macOS 13.0+</div>
+        </div>
+        <div class="demo-body">
+            <ol style="padding-left: 20px; line-height: 1.85;">
+                <li><strong>Open Terminal</strong> — <kbd>Cmd + Space</kbd>, type <code>Terminal</code>, press <kbd>Enter</kbd>. (Linux: <kbd>Ctrl + Alt + T</kbd>.)</li>
+                <li><strong>Install Claude Code</strong> — paste this line and press <kbd>Enter</kbd>:
+                    <div class="code-pill" style="margin: 10px 0; color: #0B1437; background: #E8F4FF; border-color: #B5D4FF; white-space: normal; word-break: break-all; font-size: 13px;">curl -fsSL https://claude.ai/install.sh | bash</div>
+                    Wait for <em>“Claude Code successfully installed!”</em>
+                </li>
+                <li><strong>Start Claude Code</strong>:
+                    <div class="code-pill" style="margin: 10px 0; color: #0B1437; background: #E8F4FF; border-color: #B5D4FF; font-size: 13px;">claude</div>
+                    A browser window opens — sign in with your Claude account.
+                </li>
+                <li><strong>You're in.</strong> Type a message and press <kbd>Enter</kbd>. Use <kbd>Esc</kbd> to interrupt, <code>/help</code> for commands, <code>exit</code> to quit.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="demo-card">
+        <div class="demo-header blue">
+            <div class="demo-num">Option B</div>
+            <h3>🪟 Windows</h3>
+            <div class="duration">Requires Windows 10 (1809)+</div>
+        </div>
+        <div class="demo-body">
+            <ol style="padding-left: 20px; line-height: 1.85;">
+                <li><strong>Install Git for Windows</strong> <em>(optional but recommended)</em> — download from <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener" style="color: var(--dk-blue);">git-scm.com/downloads/win</a> and click <em>Next</em> through every screen.</li>
+                <li><strong>Open PowerShell</strong> — press <kbd>Win + X</kbd>, choose <em>Windows PowerShell</em> (or <em>Terminal</em>). Confirm the prompt starts with <code>PS</code> — not plain CMD.</li>
+                <li><strong>Install Claude Code</strong> — paste and press <kbd>Enter</kbd>:
+                    <div class="code-pill" style="margin: 10px 0; color: #0B1437; background: #E8F4FF; border-color: #B5D4FF; font-size: 13px;">irm https://claude.ai/install.ps1 | iex</div>
+                    <small style="color: var(--text-sub);">In CMD instead? Use:
+                    <code style="display:block; margin-top:6px; padding:6px 10px; background:#F4F7FF; border-radius:6px; font-size:12px; word-break:break-all;">curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</code></small>
+                </li>
+                <li><strong>Close and reopen PowerShell</strong> so it picks up the new <code>claude</code> command, then run:
+                    <div class="code-pill" style="margin: 10px 0; color: #0B1437; background: #E8F4FF; border-color: #B5D4FF; font-size: 13px;">claude</div>
+                    Sign in via the browser window that opens.
+                </li>
+                <li><strong>You're in.</strong> Same shortcuts: <kbd>Enter</kbd> to send, <kbd>Esc</kbd> to interrupt, <code>/help</code>, <code>exit</code> to quit.</li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+
+<!-- Don't-want-terminal callout -->
+<div class="setup-banner" style="margin-top: 28px; background: linear-gradient(135deg, #00B6C3 0%, #0082A8 100%); box-shadow: 0 8px 28px rgba(0,182,195,0.25);">
+    <div class="setup-text">
+        <h3>💡 Prefer no terminal?</h3>
+        <p>Use the Claude Code <strong>desktop app</strong> or the <strong>VS Code / JetBrains</strong> extensions instead — same Claude, zero command line.</p>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect?utm_source=claude_code&utm_medium=docs" target="_blank" rel="noopener" class="code-pill" style="text-decoration: none; cursor: pointer;">⬇ macOS app</a>
+        <a href="https://claude.com/download?utm_source=claude_code&utm_medium=docs" target="_blank" rel="noopener" class="code-pill" style="text-decoration: none; cursor: pointer;">⬇ Windows app</a>
+    </div>
+</div>
+
+<!-- Troubleshooting strip -->
+<div style="margin-top: 20px; padding: 18px 24px; background: #FFF8E6; border-left: 4px solid #F5B400; border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main);">
+    <strong>🛠 Hit an error?</strong> Common fixes: re-open the terminal so <code>claude</code> is recognized · on macOS make sure you're on 13.0+ · on Windows run PowerShell (not CMD) for the <code>irm</code> command. Full guide → <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank" rel="noopener" style="color: var(--dk-blue); font-weight: 600;">troubleshoot-install</a>.
+</div>
+
+<!-- ═══════════════════════════════════════════════
      DEMO GUIDE
 ═══════════════════════════════════════════════ -->
 <div class="section-header">
