@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code for Teams | Deltek Cloud AI Learning Community</title>
+    <style>
+        :root {
+            --dk-navy:   #0B1437;
+            --dk-blue:   #1742F6;
+            --dk-teal:   #00B6C3;
+            --dk-light:  #E8F4FF;
+            --text-main: #0B1437;
+            --text-sub:  #4A5578;
+            --bg-light:  #F4F7FF;
+            --border:    #D6E0FF;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: #FFFFFF;
+            color: var(--text-main);
+            line-height: 1.65;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, var(--dk-navy) 0%, #152370 60%, #1B3A8F 100%);
+            color: white;
+            text-align: center;
+            padding: 72px 40px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 420px; height: 420px;
+            background: radial-gradient(circle, rgba(0,182,195,0.18) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px; left: -60px;
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(23,66,246,0.25) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0,182,195,0.22);
+            border: 1px solid rgba(0,182,195,0.5);
+            color: #00D4E4;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 16px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 54px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 10px;
+            position: relative; z-index: 1;
+        }
+        .hero h1 span { color: var(--dk-teal); }
+        .hero h2 {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.85;
+            margin-bottom: 28px;
+        }
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .hero-meta span {
+            font-size: 14px;
+            opacity: 0.75;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ── MAIN CONTAINER ── */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 40px 80px;
+        }
+
+        /* ── SECTION HEADERS ── */
+        .section-header {
+            margin: 56px 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .section-header .icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--dk-blue), var(--dk-teal));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        }
+        .section-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dk-navy);
+        }
+        .section-header p {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        /* ── SETUP BANNER ── */
+        .setup-banner {
+            background: linear-gradient(135deg, #0B1437 0%, #1742F6 100%);
+            border-radius: var(--radius-lg);
+            padding: 36px 44px;
+            color: white;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 12px 40px rgba(23,66,246,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .setup-banner .setup-text h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+        .setup-banner .setup-text p  { font-size: 15px; opacity: 0.85; }
+        .code-pill {
+            background: rgba(0,182,195,0.15);
+            border: 1px solid rgba(0,182,195,0.4);
+            border-radius: 10px;
+            padding: 14px 24px;
+            font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+            font-size: 15px;
+            color: #00D4E4;
+            white-space: nowrap;
+        }
+
+        /* ── DEMO CARDS ── */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .demo-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 12px rgba(11,20,55,0.06);
+        }
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(23,66,246,0.14);
+            border-color: var(--dk-blue);
+        }
+        .demo-header {
+            padding: 26px 26px 20px;
+            color: white;
+        }
+        .demo-header.blue  { background: linear-gradient(135deg, #1742F6, #0D2FB5); }
+        .demo-header.teal  { background: linear-gradient(135deg, #00B6C3, #0082A8); }
+        .demo-header.navy  { background: linear-gradient(135deg, #1B3A8F, #0B1437); }
+        .demo-header.purple{ background: linear-gradient(135deg, #6B3CF6, #3B1D8A); }
+        .demo-num {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        .demo-header h3 { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
+        .demo-header .duration {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        .demo-body {
+            padding: 22px 24px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .demo-body p {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .demo-steps {
+            list-style: none;
+            margin-bottom: 18px;
+        }
+        .demo-steps li {
+            font-size: 13px;
+            color: var(--text-sub);
+            padding: 5px 0 5px 20px;
+            position: relative;
+            border-bottom: 1px solid var(--bg-light);
+        }
+        .demo-steps li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--dk-teal);
+            font-weight: 700;
+        }
+        .demo-tip {
+            margin-top: auto;
+            background: var(--bg-light);
+            border-left: 3px solid var(--dk-teal);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+        .demo-tip strong { color: var(--dk-navy); }
+
+        /* ── DOWNLOAD SECTION ── */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .download-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(11,20,55,0.05);
+        }
+        .download-card:hover {
+            border-color: var(--dk-teal);
+            box-shadow: 0 8px 24px rgba(0,182,195,0.14);
+        }
+        .download-icon {
+            font-size: 36px;
+        }
+        .download-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dk-navy);
+            line-height: 1.3;
+        }
+        .download-card p {
+            font-size: 13px;
+            color: var(--text-sub);
+            flex: 1;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--dk-blue), var(--dk-teal));
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: opacity 0.2s;
+            align-self: flex-start;
+        }
+        .download-btn:hover { opacity: 0.88; }
+
+        /* ── HOMEWORK SECTION ── */
+        .hw-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .hw-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 26px;
+            transition: all 0.25s ease;
+        }
+        .hw-card:hover {
+            border-color: var(--dk-blue);
+            box-shadow: 0 6px 20px rgba(23,66,246,0.1);
+        }
+        .hw-num {
+            display: inline-flex;
+            width: 34px; height: 34px;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--dk-blue), var(--dk-teal));
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 10px;
+            margin-bottom: 14px;
+        }
+        .hw-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--dk-navy);
+            margin-bottom: 8px;
+        }
+        .hw-card p {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.65;
+            margin-bottom: 12px;
+        }
+        .hw-mode {
+            display: inline-block;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            color: var(--dk-blue);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 50px;
+        }
+        .hw-time {
+            float: right;
+            color: var(--text-sub);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ── TIPS BAR ── */
+        .tips-bar {
+            background: linear-gradient(135deg, var(--dk-navy), #1B3A8F);
+            border-radius: var(--radius-lg);
+            padding: 32px 40px;
+            color: white;
+            margin-top: 48px;
+        }
+        .tips-bar h3 { font-size: 19px; font-weight: 700; margin-bottom: 18px; opacity: 0.9; }
+        .tips-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .tip-item {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+        .tip-item code {
+            font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--dk-teal);
+            display: block;
+            margin-bottom: 6px;
+        }
+        .tip-item p {
+            font-size: 13px;
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            padding: 36px 40px;
+            font-size: 13px;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border);
+            margin-top: 16px;
+        }
+        .footer strong { color: var(--dk-navy); }
+        .footer a { color: var(--dk-blue); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .demo-grid { grid-template-columns: 1fr 1fr; }
+            .tips-list  { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 720px) {
+            .hero h1       { font-size: 36px; }
+            .demo-grid,
+            .download-grid,
+            .hw-grid,
+            .tips-list     { grid-template-columns: 1fr; }
+            .setup-banner  { flex-direction: column; }
+            .container     { padding: 0 20px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<div class="hero">
+    <div class="hero-badge">Technical Track · Session 1</div>
+    <h1>Claude <span>Code</span> for Teams</h1>
+    <h2>Deltek Cloud AI Learning Community &mdash; Hands-On Demo Session</h2>
+    <div class="hero-meta">
+        <span>⏱ 60 Minutes</span>
+        <span>💻 3 Live Demos</span>
+        <span>📦 Starter Kit Included</span>
+        <span>#AIforALL</span>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SETUP BANNER
+═══════════════════════════════════════════════ -->
+<div class="container">
+<div class="setup-banner">
+    <div class="setup-text">
+        <h3>⚡ Quick Setup — Do This Now</h3>
+        <p>Extract <strong>cloud-status-api.zip</strong>, open a terminal in that folder, and launch Claude.</p>
+    </div>
+    <div class="code-pill">cd cloud-status-api &nbsp;&nbsp;&&nbsp;&nbsp; claude</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     DEMO GUIDE
+═══════════════════════════════════════════════ -->
+<div class="section-header">
+    <div class="icon">🎬</div>
+    <div>
+        <h2>Live Demo Guide</h2>
+        <p>Three progressively deeper demonstrations — each showing a different Claude Code superpower</p>
+    </div>
+</div>
+
+<div class="demo-grid">
+
+    <!-- Demo 1 -->
+    <div class="demo-card">
+        <div class="demo-header blue">
+            <div class="demo-num">Demo 1</div>
+            <h3>Operational Runbook Generation</h3>
+            <div class="duration">⏱ ~2–3 min &nbsp;·&nbsp; Chat Mode</div>
+        </div>
+        <div class="demo-body">
+            <p>Drop one prompt and watch Claude read 25+ files — source code, Terraform, Docker, CI config, migrations, monitoring — then produce a complete ops runbook.</p>
+            <ul class="demo-steps">
+                <li>Stay in default Chat mode (no mode switch needed)</li>
+                <li>Run the "Operational Runbook" prompt from the guide</li>
+                <li>Watch Claude traverse the whole codebase</li>
+                <li>Check: env vars from code <em>and</em> docker-compose <em>and</em> Terraform?</li>
+                <li>Check: incident INC-2843 surfaced in failure modes?</li>
+            </ul>
+            <div class="demo-tip"><strong>What to highlight:</strong> Multi-file reasoning across 25+ files in under 3 minutes — something no human could match in speed.</div>
+        </div>
+    </div>
+
+    <!-- Demo 2 -->
+    <div class="demo-card">
+        <div class="demo-header teal">
+            <div class="demo-num">Demo 2</div>
+            <h3>Incident Command Center</h3>
+            <div class="duration">⏱ ~3–4 min &nbsp;·&nbsp; Plan Mode → Execute</div>
+        </div>
+        <div class="demo-body">
+            <p>Two-phase live coding: first Claude <em>plans</em> the architecture (review it out loud), then <em>builds</em> a fully functional dark-themed Incident Command Center HTML page.</p>
+            <ul class="demo-steps">
+                <li>Switch to Plan Mode: <strong>Shift+Tab twice</strong> or <code>/plan</code></li>
+                <li>Run Phase 1 — reads postmortem, handoff &amp; change log</li>
+                <li>Review the plan with the audience (~1 min)</li>
+                <li>Exit plan mode, run Phase 2: <em>"The plan looks good, build it"</em></li>
+                <li>Open the generated HTML in browser live</li>
+            </ul>
+            <div class="demo-tip"><strong>What to highlight:</strong> Plan Mode = human oversight before any files are touched. The audience sees AI + control.</div>
+        </div>
+    </div>
+
+    <!-- Demo 3 -->
+    <div class="demo-card">
+        <div class="demo-header navy">
+            <div class="demo-num">Demo 3</div>
+            <h3>Database Migration Plan</h3>
+            <div class="duration">⏱ ~1–2 min &nbsp;·&nbsp; Plan Mode</div>
+        </div>
+        <div class="demo-body">
+            <p>Claude reads a 21 GB / 34%-bloat database health report and slow-query log, then plans a safe partition migration with exact SQL, risk assessment, and rollback for each step.</p>
+            <ul class="demo-steps">
+                <li>Stay in Plan Mode from Demo 2</li>
+                <li>Run the "Database Migration Plan" prompt</li>
+                <li>Claude reads: schema + health report + slow query CSV</li>
+                <li>Output: SQL per step, locking risk, rollback, maintenance window</li>
+                <li>Fast demo — pure planning, no files written</li>
+            </ul>
+            <div class="demo-tip"><strong>What to highlight:</strong> DBA-level reasoning from 3 data sources in 90 seconds — with rollback instructions baked in.</div>
+        </div>
+    </div>
+
+</div><!-- /demo-grid -->
+
+<!-- ═══════════════════════════════════════════════
+     DOWNLOADS
+═══════════════════════════════════════════════ -->
+<div class="section-header">
+    <div class="icon">📦</div>
+    <div>
+        <h2>Session Downloads</h2>
+        <p>Everything you need to follow along and practice after the session</p>
+    </div>
+</div>
+
+<div class="download-grid">
+
+    <div class="download-card">
+        <div class="download-icon">🗜️</div>
+        <h4>Cloud Status API Demo Repo</h4>
+        <p>The full codebase used in all three live demos. Includes source code, Terraform, Docker, migrations, incident docs, DB exports, and cost reports.</p>
+        <a href="cloud-status-api.zip" download class="download-btn">
+            ⬇ Download ZIP
+        </a>
+    </div>
+
+    <div class="download-card">
+        <div class="download-icon">🎯</div>
+        <h4>Demo Prompt Guide</h4>
+        <p>Step-by-step prompt scripts for all three demos with expected outputs, what to look for, and tips to handle surprises during live presentation.</p>
+        <a href="Demo%20Prompt%20Guide.md" download="Demo Prompt Guide.md" class="download-btn">
+            ⬇ Download Guide
+        </a>
+    </div>
+
+    <div class="download-card">
+        <div class="download-icon">📝</div>
+        <h4>Session 1 Homework Handout</h4>
+        <p>Four assignments (~45–60 min total) to practice Claude Code on the demo repo between sessions. Includes explore, audit, CLAUDE.md, and build tasks.</p>
+        <a href="Session1_Homework_Handout.md" download class="download-btn">
+            ⬇ Download Handout
+        </a>
+    </div>
+
+</div><!-- /download-grid -->
+
+<!-- ═══════════════════════════════════════════════
+     HOMEWORK ASSIGNMENTS
+═══════════════════════════════════════════════ -->
+<div class="section-header">
+    <div class="icon">📚</div>
+    <div>
+        <h2>Homework Assignments</h2>
+        <p>Complete all four before Session 2 &mdash; ~45–60 minutes total. Use the cloud-status-api repo.</p>
+    </div>
+</div>
+
+<div class="hw-grid">
+
+    <div class="hw-card">
+        <div class="hw-num">1</div>
+        <span class="hw-mode">Chat Mode</span><span class="hw-time">⏱ 10 min</span>
+        <h4 style="margin-top:12px">Explore the Codebase</h4>
+        <p>Run three exploration prompts: trace a request end-to-end, categorize every file by type, and summarize all operational docs in one page. Note anything that surprises you.</p>
+    </div>
+
+    <div class="hw-card">
+        <div class="hw-num">2</div>
+        <span class="hw-mode">Plan Mode</span><span class="hw-time">⏱ 15 min</span>
+        <h4 style="margin-top:12px">Security &amp; Reliability Audit</h4>
+        <p>Run a full audit across code, config, Terraform, Docker, CI, migrations, docs, DB exports, incident reports, change logs, and cost report. Save the output — you'll use it in Session 2.</p>
+    </div>
+
+    <div class="hw-card">
+        <div class="hw-num">3</div>
+        <span class="hw-mode">Chat Mode</span><span class="hw-time">⏱ 10 min</span>
+        <h4 style="margin-top:12px">Create a CLAUDE.md</h4>
+        <p>Run <code>/init</code> and let Claude generate a project memory file, or write your own using the provided template. Test it: ask Claude to write a DB connection function — does it follow your rules?</p>
+    </div>
+
+    <div class="hw-card">
+        <div class="hw-num">4</div>
+        <span class="hw-mode">Chat Mode</span><span class="hw-time">⏱ 15 min</span>
+        <h4 style="margin-top:12px">Build Something &amp; Share</h4>
+        <p>Pick one: Deltek Cloud Status Dashboard, Incident Timeline, or Cost &amp; Tagging Report. Build it as a single HTML file, open in browser, and <strong>share a screenshot in #claude-code-training on Slack.</strong></p>
+    </div>
+
+</div><!-- /hw-grid -->
+
+<!-- ═══════════════════════════════════════════════
+     KEYBOARD TIPS
+═══════════════════════════════════════════════ -->
+<div class="tips-bar">
+    <h3>⌨️ Essential Keyboard Shortcuts &amp; Commands</h3>
+    <div class="tips-list">
+        <div class="tip-item">
+            <code>Shift+Tab (×2)</code>
+            <p>Cycle permission modes: Approval → Auto-Accept → Plan Mode</p>
+        </div>
+        <div class="tip-item">
+            <code>Esc</code>
+            <p>Interrupt Claude mid-response if it's heading in the wrong direction</p>
+        </div>
+        <div class="tip-item">
+            <code>/plan</code>
+            <p>Jump directly into Plan Mode — Claude will plan before touching any file</p>
+        </div>
+        <div class="tip-item">
+            <code>/init</code>
+            <p>Auto-generate a CLAUDE.md from your current codebase</p>
+        </div>
+        <div class="tip-item">
+            <code>/compact</code>
+            <p>Free up context window if Claude seems slow or forgetful</p>
+        </div>
+        <div class="tip-item">
+            <code>/help</code>
+            <p>Show all available Claude Code commands at any time</p>
+        </div>
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<div class="footer">
+    Deltek Cloud AI Learning Community &nbsp;|&nbsp; <strong>Technical Track</strong> &nbsp;|&nbsp; Session 1 &nbsp;|&nbsp; #AIforALL<br>
+    <br>
+    Questions? Post in <strong>#claude-code-training</strong> on Slack &nbsp;·&nbsp;
+    <a href="index.html">← Back to Main Hub</a>
+</div>
+
+</body>
+</html>
